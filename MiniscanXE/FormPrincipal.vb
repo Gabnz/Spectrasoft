@@ -1,8 +1,6 @@
 ﻿Public Class formPrincipal
 
     Dim conectado As Boolean
-    Dim blancoListo As Boolean
-    Dim negroListo As Boolean
     Const PUNTOS_ESPECTRALES As Integer = 31
 
     Private Sub btnBeep_Click(sender As Object, e As EventArgs) Handles btnBeep.Click
@@ -17,8 +15,7 @@
 
     Private Sub formPrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.btnBeep.Enabled = False
-        Me.btnBlanco.Enabled = False
-        Me.btnNegro.Enabled = False
+        Me.CalibrarToolStripMenuItem.Enabled = False
         Me.btnMedir.Enabled = False
         Me.DesconectarToolStripMenuItem.Enabled = False
         conectado = False
@@ -43,8 +40,7 @@
             Me.ConectarToolStripMenuItem.Enabled = False
             Me.DesconectarToolStripMenuItem.Enabled = True
             Me.btnBeep.Enabled = True
-            Me.btnBlanco.Enabled = True
-            Me.btnNegro.Enabled = True
+            Me.CalibrarToolStripMenuItem.Enabled = True
             Me.btnMedir.Enabled = True
         End If
 
@@ -61,6 +57,7 @@
     End Sub
 
     Private Sub DesconectarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DesconectarToolStripMenuItem.Click
+
         Try
             miniscan.CloseCommPort()
             MessageBox.Show("El dispositivo se ha desconectado correctamente.", "Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -71,31 +68,8 @@
         Me.ConectarToolStripMenuItem.Enabled = True
         Me.DesconectarToolStripMenuItem.Enabled = False
         Me.btnBeep.Enabled = False
-        Me.btnBlanco.Enabled = False
-        Me.btnNegro.Enabled = False
+        Me.CalibrarToolStripMenuItem.Enabled = False
         Me.btnMedir.Enabled = False
-    End Sub
-
-    Private Sub btnBlanco_Click(sender As Object, e As EventArgs) Handles btnBlanco.Click
-        Try
-            miniscan.ReadWhite()
-            blancoListo = True
-            MessageBox.Show("El color blanco se ha calibrado correctamente.", "Calibracion correcta", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Catch ex As Exception
-            MessageBox.Show("El color blanco no se ha calibrado correctamente.", "Error al calibrar", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        End Try
-
-
-    End Sub
-
-    Private Sub btnNegro_Click(sender As Object, e As EventArgs) Handles btnNegro.Click
-        Try
-            miniscan.ReadBlack()
-            negroListo = True
-            MessageBox.Show("El color negro se ha calibrado correctamente.", "Calibracion correcta", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Catch ex As Exception
-            MessageBox.Show("El color negro no se ha calibrado correctamente.", "Error al calibrar", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        End Try
     End Sub
 
     Private Sub btnMedir_Click(sender As Object, e As EventArgs) Handles btnMedir.Click
@@ -118,5 +92,12 @@
 
             Next
         End If
+    End Sub
+
+    Private Sub CalibrarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CalibrarToolStripMenuItem.Click
+        Dim fCalib As FormCalibracion
+        fCalib = New FormCalibracion
+        fCalib.setMiniscan(miniscan)
+        fCalib.Show()
     End Sub
 End Class

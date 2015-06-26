@@ -30,9 +30,8 @@ Partial Class formPrincipal
         Me.ConectarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DesconectarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SalirToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PageSetupDialog1 = New System.Windows.Forms.PageSetupDialog()
-        Me.btnBlanco = New System.Windows.Forms.Button()
-        Me.btnNegro = New System.Windows.Forms.Button()
+        Me.OpcionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CalibrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnMedir = New System.Windows.Forms.Button()
         CType(Me.miniscan, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
@@ -50,7 +49,7 @@ Partial Class formPrincipal
         'miniscan
         '
         Me.miniscan.Enabled = True
-        Me.miniscan.Location = New System.Drawing.Point(172, 42)
+        Me.miniscan.Location = New System.Drawing.Point(189, 27)
         Me.miniscan.Name = "miniscan"
         Me.miniscan.OcxState = CType(resources.GetObject("miniscan.OcxState"), System.Windows.Forms.AxHost.State)
         Me.miniscan.Size = New System.Drawing.Size(24, 26)
@@ -58,7 +57,7 @@ Partial Class formPrincipal
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DispositivoToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DispositivoToolStripMenuItem, Me.OpcionesToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(225, 24)
@@ -90,27 +89,22 @@ Partial Class formPrincipal
         Me.SalirToolStripMenuItem.Size = New System.Drawing.Size(139, 22)
         Me.SalirToolStripMenuItem.Text = "Salir"
         '
-        'btnBlanco
+        'OpcionesToolStripMenuItem
         '
-        Me.btnBlanco.Location = New System.Drawing.Point(55, 104)
-        Me.btnBlanco.Name = "btnBlanco"
-        Me.btnBlanco.Size = New System.Drawing.Size(111, 56)
-        Me.btnBlanco.TabIndex = 4
-        Me.btnBlanco.Text = "Calibrar blanco"
-        Me.btnBlanco.UseVisualStyleBackColor = True
+        Me.OpcionesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CalibrarToolStripMenuItem})
+        Me.OpcionesToolStripMenuItem.Name = "OpcionesToolStripMenuItem"
+        Me.OpcionesToolStripMenuItem.Size = New System.Drawing.Size(69, 20)
+        Me.OpcionesToolStripMenuItem.Text = "Opciones"
         '
-        'btnNegro
+        'CalibrarToolStripMenuItem
         '
-        Me.btnNegro.Location = New System.Drawing.Point(55, 166)
-        Me.btnNegro.Name = "btnNegro"
-        Me.btnNegro.Size = New System.Drawing.Size(111, 56)
-        Me.btnNegro.TabIndex = 5
-        Me.btnNegro.Text = "Calibrar negro"
-        Me.btnNegro.UseVisualStyleBackColor = True
+        Me.CalibrarToolStripMenuItem.Name = "CalibrarToolStripMenuItem"
+        Me.CalibrarToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CalibrarToolStripMenuItem.Text = "Calibrar"
         '
         'btnMedir
         '
-        Me.btnMedir.Location = New System.Drawing.Point(55, 228)
+        Me.btnMedir.Location = New System.Drawing.Point(55, 104)
         Me.btnMedir.Name = "btnMedir"
         Me.btnMedir.Size = New System.Drawing.Size(111, 56)
         Me.btnMedir.TabIndex = 6
@@ -121,10 +115,8 @@ Partial Class formPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(225, 307)
+        Me.ClientSize = New System.Drawing.Size(225, 186)
         Me.Controls.Add(Me.btnMedir)
-        Me.Controls.Add(Me.btnNegro)
-        Me.Controls.Add(Me.btnBlanco)
         Me.Controls.Add(Me.btnBeep)
         Me.Controls.Add(Me.miniscan)
         Me.Controls.Add(Me.MenuStrip1)
@@ -145,10 +137,9 @@ Partial Class formPrincipal
     Friend WithEvents ConectarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DesconectarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SalirToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents PageSetupDialog1 As System.Windows.Forms.PageSetupDialog
     Public WithEvents miniscan As AxMiniScanXE.AxMSXE
-    Friend WithEvents btnBlanco As System.Windows.Forms.Button
-    Friend WithEvents btnNegro As System.Windows.Forms.Button
     Friend WithEvents btnMedir As System.Windows.Forms.Button
+    Friend WithEvents OpcionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CalibrarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
