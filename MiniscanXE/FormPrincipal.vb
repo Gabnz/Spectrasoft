@@ -1,9 +1,12 @@
-﻿Public Class formPrincipal
+﻿Imports System.IO
+
+Public Class formPrincipal
 
     Dim conectado As Boolean
+    Dim curvaGenerada As Boolean = False
     Const PUNTOS_ESPECTRALES As Integer = 31
 
-    Private Sub btnBeep_Click(sender As Object, e As EventArgs) Handles btnBeep.Click
+    Private Sub btnBeep_Click(sender As Object, e As EventArgs)
 
         Try
             miniscan.Beep()
@@ -14,7 +17,7 @@
     End Sub
 
     Private Sub formPrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.btnBeep.Enabled = False
+        Me.BeepToolStripMenuItem.Enabled = False
         Me.CalibrarToolStripMenuItem.Enabled = False
         Me.btnMedir.Enabled = False
         Me.DesconectarToolStripMenuItem.Enabled = False
@@ -39,7 +42,7 @@
         If (conectado) Then
             Me.ConectarToolStripMenuItem.Enabled = False
             Me.DesconectarToolStripMenuItem.Enabled = True
-            Me.btnBeep.Enabled = True
+            Me.BeepToolStripMenuItem.Enabled = True
             Me.CalibrarToolStripMenuItem.Enabled = True
             Me.btnMedir.Enabled = True
         End If
@@ -67,7 +70,7 @@
 
         Me.ConectarToolStripMenuItem.Enabled = True
         Me.DesconectarToolStripMenuItem.Enabled = False
-        Me.btnBeep.Enabled = False
+        Me.BeepToolStripMenuItem.Enabled = False
         Me.CalibrarToolStripMenuItem.Enabled = False
         Me.btnMedir.Enabled = False
     End Sub
@@ -99,5 +102,43 @@
         fCalib = New FormCalibracion
         fCalib.setMiniscan(miniscan)
         fCalib.Show()
+    End Sub
+
+    Private Sub BeepToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BeepToolStripMenuItem.Click
+        Try
+            miniscan.Beep()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub btnArchivo_Click(sender As Object, e As EventArgs) Handles btnArchivo.Click
+        Dim resultado(PUNTOS_ESPECTRALES) As Single
+        Dim flag As Boolean = False
+
+        If (curvaGenerada = False) Then
+            Try
+                Using sr As New StreamReader("D:\Code\tesis-CIMBUC\MiniscanXE\MiniscanXE\datosPrueba.txt")
+                    Dim line As String
+                    Dim i As Integer = 0
+                    Dim val As Single
+                    line = sr.ReadLine 'lee la primera linea para desecharla, puesto que siempre es cero (0)
+
+                    chartReflectancia.ResetAutoValues()
+
+                    For i = 1 To PUNTOS_ESPECTRALES
+
+                        line = sr.ReadLine
+                        val = Single.Parse(line)
+                        chartReflectancia.Series(0).Points.AddY(val)
+                    Next
+                End Using
+                curvaGenerada = True
+            Catch ex As Exception
+                Debug.WriteLine("El archivo no se pudo leer:")
+                Debug.WriteLine(ex.Message)
+            End Try
+        End If
+
     End Sub
 End Class
