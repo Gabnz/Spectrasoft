@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     conectado = false;
     miniscan = new QAxObject;
     miniscan->setControl("MSXEBridge.Bridge");
+    //miniscan->setControl("{C98EA372-100B-3A47-8F5B-F60054801505}");
 
     //QAxObject *miniscanDirecto = new QAxObject;
     //miniscanDirecto->setControl("MiniScanXE.MSXE");
@@ -19,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->adjustSize();
-    this->setFixedSize(this->size());
+    //this->setFixedSize(this->size());
 }
 
 void MainWindow::revisionBtns()
