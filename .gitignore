@@ -1,0 +1,3 @@
+deployment-test/*.exe
+deployment-test/config/packages/main/data/*
+dermatoscopio.pro.*
