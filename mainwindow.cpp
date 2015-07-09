@@ -85,6 +85,13 @@ void MainWindow::on_actionCalibrar_Negro_triggered()
 
 void MainWindow::on_btnMedir_clicked()
 {
+    QVariant resultado;
+    QList<float> medicion;
+
+    for(int i = 0; i < 31; ++i){
+        medicion.push_back(0.1);
+    }
+
     miniscan->dynamicCall("medirMuestra()");
     revisionBtns();
 }
