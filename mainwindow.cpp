@@ -73,13 +73,13 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_actionCalibrar_Blanco_triggered()
 {
-    miniscan->dynamicCall("medirBlanco()");
+    miniscan->dynamicCall("leerBlanco()");
     revisionBtns();
 }
 
 void MainWindow::on_actionCalibrar_Negro_triggered()
 {
-    miniscan->dynamicCall("medirNegro()");
+    miniscan->dynamicCall("leerNegro()");
     revisionBtns();
 }
 
@@ -92,7 +92,8 @@ void MainWindow::on_btnMedir_clicked()
         medicion.push_back(0.1);
     }
 
-    miniscan->dynamicCall("medirMuestra()");
+    resultado = miniscan->dynamicCall("medirMuestra()");
+    qDebug() << resultado;
     revisionBtns();
 }
 
