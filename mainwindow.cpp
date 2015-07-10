@@ -19,30 +19,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnBeep, btnBlanco, btnNegro, btnMedir;
+    bool btnConectar, btnDesconectar, btnBlanco, btnNegro, btnMedir;
 
     if(conectado){
         btnConectar = false;
         btnDesconectar = true;
-        btnBeep = btnBlanco = btnNegro = btnMedir = true;
+        btnBlanco = btnNegro = btnMedir = true;
     }else{
         btnConectar = true;
         btnDesconectar = false;
-        btnBeep = btnBlanco = btnNegro = btnMedir = false;
+        btnBlanco = btnNegro = btnMedir = false;
     }
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    ui->actionBeep->setEnabled(btnBeep);
     ui->actionCalibrar_Blanco->setEnabled(btnBlanco);
     ui->actionCalibrar_Negro->setEnabled(btnNegro);
-    //este boton queda temporalmente habilitado en todo momento para probar el QCustomPlot
-    //ui->btnMedir->setEnabled(btnMedir);
+    ui->btnMedir->setEnabled(btnMedir);
 }
 
 MainWindow::~MainWindow()
 {
     if(conectado)
-        ui->actionDesconectar->trigger();
+        miniscan->dynamicCall("cerrarPuerto()");
 
     delete ui;
 }
@@ -52,6 +50,7 @@ void MainWindow::on_actionConectar_triggered()
     conectado = miniscan->dynamicCall("abrirPuerto()").toBool();
 
     if(conectado){
+        miniscan->dynamicCall("Beep()");
         QMessageBox::information(this, "Dispositivo conectado", "El dispositivo ha sido conectado correctamente");
     }else{
         QMessageBox::critical(this, "Error al conectar", "El dispositivo no se pudo conectar");
@@ -120,9 +119,8 @@ void MainWindow::on_btnMedir_clicked()
     qDebug() << resultado << endl;
     medicion = resultado.toList();
 
-    if(medicion.size() > 0){
+    if(medicion.size() == 0){
 
-    }else{
         QMessageBox::critical(this, "Error al medir muestra", "La medicion no se pudo realizar");
 
         medicion.push_back(0.01);
@@ -177,17 +175,11 @@ void MainWindow::on_btnMedir_clicked()
     ui->plotReflectancia->graph(0)->setData(x, y);
     ui->plotReflectancia->xAxis->setRange(400, 700);
     ui->plotReflectancia->yAxis->setRange(0, yMax);
-    ui->plotReflectancia->xAxis->setLabel("Eje X");
+    ui->plotReflectancia->xAxis->setLabel("Nanometros");
     ui->plotReflectancia->yAxis->setLabel("Eje Y");
     //ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
     //ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
     ui->plotReflectancia->replot();
 
-    revisionBtns();
-}
-
-void MainWindow::on_actionBeep_triggered()
-{
-    miniscan->dynamicCall("Beep()");
     revisionBtns();
 }

@@ -132,7 +132,6 @@
      <string>Dispositivo</string>
     </property>
     <addaction name="actionConectar"/>
-    <addaction name="actionBeep"/>
     <addaction name="actionDesconectar"/>
     <addaction name="separator"/>
     <addaction name="actionSalir"/>
@@ -141,8 +140,8 @@
     <property name="title">
      <string>Calibracion</string>
     </property>
-    <addaction name="actionCalibrar_Blanco"/>
     <addaction name="actionCalibrar_Negro"/>
+    <addaction name="actionCalibrar_Blanco"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -182,11 +181,6 @@
   <action name="actionAcerca_de">
    <property name="text">
     <string>Acerca de</string>
-   </property>
-  </action>
-  <action name="actionBeep">
-   <property name="text">
-    <string>Beep</string>
    </property>
   </action>
  </widget>
