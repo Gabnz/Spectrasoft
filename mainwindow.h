@@ -33,7 +33,7 @@ private slots:
 
     void on_btnMedir_clicked();
 
-    void on_btnBeep_clicked();
+    void on_actionBeep_triggered();
 
 private:
     Ui::MainWindow *ui;
