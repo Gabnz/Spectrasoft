@@ -4,9 +4,32 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    yMax = 0;
+    numCurvas = yMax = 0;
     conectado = false;
     miniscan = new QAxObject;
+    QCPPlotTitle *titulo = new QCPPlotTitle(ui->plotReflectancia);
+    titulo->setText("Curva de reflectancia difusa");
+    titulo->setFont(QFont("sans", 12, QFont::Bold));
+    // then we add it to the main plot layout:
+    ui->plotReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
+    ui->plotReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
+    ui->plotReflectancia->xAxis->setRange(400, 700);
+    ui->plotReflectancia->xAxis->setLabel("Longitud de onda");
+    ui->plotReflectancia->yAxis->setLabel("Reflectancia");
+    ui->plotReflectancia->xAxis->setAutoTicks(false);
+
+    QVector<double> ticks;
+    int j = 400;
+    for(int i = 0; i < 31; ++i){
+        ticks.push_back((double)j);
+        x.push_back(j);
+        j+=10;
+    }
+    ui->plotReflectancia->xAxis->setTickVector(ticks);
+    ui->plotReflectancia->xAxis->setTickLabelRotation(-45);
+    ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
+    ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
+
     connect(ui->plotReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
     connect(ui->plotReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
     //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
@@ -34,8 +57,8 @@ void MainWindow::revisionBtns()
     }
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    ui->actionCalibrar_Blanco->setEnabled(btnBlanco);
-    ui->actionCalibrar_Negro->setEnabled(btnNegro);
+    ui->actionEstandarizar_Blanco->setEnabled(btnBlanco);
+    ui->actionEstandarizar_Negro->setEnabled(btnNegro);
     //ui->btnMedir->setEnabled(btnMedir);
 }
 
@@ -79,41 +102,11 @@ void MainWindow::on_actionSalir_triggered()
     close();
 }
 
-void MainWindow::on_actionCalibrar_Blanco_triggered()
-{
-    bool calibrado;
-
-    calibrado = miniscan->dynamicCall("leerBlanco()").toBool();
-
-    if(calibrado){
-        QMessageBox::information(this, "Blanco calibrado", "El color blanco ha sido calibrado correctamente");
-    }else{
-        QMessageBox::critical(this, "Error al calibrar blanco", "El color blanco no se pudo calibrar");
-    }
-
-    revisionBtns();
-}
-
-void MainWindow::on_actionCalibrar_Negro_triggered()
-{
-    bool calibrado;
-
-    calibrado = miniscan->dynamicCall("leerNegro()").toBool();
-
-    if(calibrado){
-        QMessageBox::information(this, "Negro calibrado", "El color negro ha sido calibrado correctamente");
-    }else{
-        QMessageBox::critical(this, "Error al calibrar negro", "El color negro no se pudo calibrar");
-    }
-
-    revisionBtns();
-}
-
 void MainWindow::on_btnMedir_clicked()
 {
     QVariant resultado;
     QList<QVariant> medicion;
-    QVector<double> x(31), y(31);
+    QVector<double> y(31);
 
     resultado = miniscan->dynamicCall("medirMuestra()");
     qDebug() << resultado << endl;
@@ -129,37 +122,37 @@ void MainWindow::on_btnMedir_clicked()
 
         QMessageBox::critical(this, "Error al medir muestra", "La medicion no se pudo realizar");
 
-        medicion.push_back(17.2101);
-        medicion.push_back(15.2329);
-        medicion.push_back(15.13);
-        medicion.push_back(14.2457);
-        medicion.push_back(16.0641);
-        medicion.push_back(18.2752);
-        medicion.push_back(19.687);
-        medicion.push_back(21.0481);
-        medicion.push_back(21.9136);
-        medicion.push_back(23.1382);
-        medicion.push_back(23.9694);
-        medicion.push_back(25.4163);
-        medicion.push_back(25.2229);
-        medicion.push_back(24.8392);
-        medicion.push_back(24.9241);
-        medicion.push_back(25.2234);
-        medicion.push_back(26.2638);
-        medicion.push_back(26.5036);
-        medicion.push_back(27.8098);
-        medicion.push_back(31.5459);
-        medicion.push_back(36.2515);
-        medicion.push_back(39.0012);
-        medicion.push_back(40.6161);
-        medicion.push_back(42.1796);
-        medicion.push_back(43.205);
-        medicion.push_back(44.057);
-        medicion.push_back(45.0165);
-        medicion.push_back(45.779);
-        medicion.push_back(46.4996);
-        medicion.push_back(47.3194);
-        medicion.push_back(47.8099);
+        medicion.push_back(17.2101 + numCurvas);
+        medicion.push_back(15.2329 + numCurvas);
+        medicion.push_back(15.13 + numCurvas);
+        medicion.push_back(14.2457 + numCurvas);
+        medicion.push_back(16.0641 + numCurvas);
+        medicion.push_back(18.2752 + numCurvas);
+        medicion.push_back(19.687 + numCurvas);
+        medicion.push_back(21.0481 + numCurvas);
+        medicion.push_back(21.9136 + numCurvas);
+        medicion.push_back(23.1382 + numCurvas);
+        medicion.push_back(23.9694 + numCurvas);
+        medicion.push_back(25.4163 + numCurvas);
+        medicion.push_back(25.2229 + numCurvas);
+        medicion.push_back(24.8392 + numCurvas);
+        medicion.push_back(24.9241 + numCurvas);
+        medicion.push_back(25.2234 + numCurvas);
+        medicion.push_back(26.2638 + numCurvas);
+        medicion.push_back(26.5036 + numCurvas);
+        medicion.push_back(27.8098 + numCurvas);
+        medicion.push_back(31.5459 + numCurvas);
+        medicion.push_back(36.2515 + numCurvas);
+        medicion.push_back(39.0012 + numCurvas);
+        medicion.push_back(40.6161 + numCurvas);
+        medicion.push_back(42.1796 + numCurvas);
+        medicion.push_back(43.205 + numCurvas);
+        medicion.push_back(44.057 + numCurvas);
+        medicion.push_back(45.0165 + numCurvas);
+        medicion.push_back(45.779 + numCurvas);
+        medicion.push_back(46.4996 + numCurvas);
+        medicion.push_back(47.3194 + numCurvas);
+        medicion.push_back(47.8099 + numCurvas);
     }
 
     float yMaxAux = std::numeric_limits<float>::min();
@@ -167,7 +160,7 @@ void MainWindow::on_btnMedir_clicked()
     int j = 400;
 
     for(int i = 0; i < 31; ++i){
-        x[i] = j;
+
         y[i] = medicion.at(i).toDouble();
 
         aux = medicion.at(i).toFloat();
@@ -178,18 +171,16 @@ void MainWindow::on_btnMedir_clicked()
         j+=10;
     }
 
-    yMax = static_cast<int>(yMaxAux) + 1;
+    if(static_cast<int>(yMaxAux) > yMax){
+        yMax = static_cast<int>(yMaxAux) + 1;
+        ui->spinY->setValue(double(yMax));
+    }
 
     ui->plotReflectancia->addGraph();
-    ui->plotReflectancia->graph(0)->setData(x, y);
-    ui->plotReflectancia->xAxis->setRange(400, 700);
+    ui->plotReflectancia->graph(numCurvas)->setData(x, y);
     ui->plotReflectancia->yAxis->setRange(0, yMax);
-    ui->plotReflectancia->xAxis->setLabel("Eje X");
-    ui->plotReflectancia->yAxis->setLabel("Eje Y");
-    ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
-    ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
+    numCurvas += 1;
     ui->plotReflectancia->replot();
-
     revisionBtns();
 }
 
@@ -226,7 +217,7 @@ void MainWindow::ajustarY(const QCPRange &newRange)
     if (boundedRange.size() > upperRangeBound-lowerRangeBound)
     {
       boundedRange = QCPRange(lowerRangeBound, upperRangeBound);
-    } else
+    }else
     {
       double oldSize = boundedRange.size();
       if (boundedRange.lower < lowerRangeBound)
@@ -241,4 +232,41 @@ void MainWindow::ajustarY(const QCPRange &newRange)
       }
     }
     ui->plotReflectancia->yAxis->setRange(boundedRange);
+}
+
+void MainWindow::on_actionEstandarizar_Negro_triggered()
+{
+    bool estandarizado;
+
+    estandarizado = miniscan->dynamicCall("leerNegro()").toBool();
+
+    if(estandarizado){
+        QMessageBox::information(this, "Trampa de luz estandarizada", "La trampa de luz ha sido estandarizada correctamente");
+    }else{
+        QMessageBox::critical(this, "Error al estandarizar trampa", "No se pudo estandarizar la trampa de luz");
+    }
+
+    revisionBtns();
+}
+
+void MainWindow::on_actionEstandarizar_Blanco_triggered()
+{
+    bool estandarizado;
+
+    estandarizado = miniscan->dynamicCall("leerBlanco()").toBool();
+
+    if(estandarizado){
+        QMessageBox::information(this, "Placa blanca estandarizada", "La placa blanca ha sido estandarizada correctamente");
+    }else{
+        QMessageBox::critical(this, "Error al estandarizar placa", "No se pudo estandarizar la placa blanca");
+    }
+
+    revisionBtns();
+}
+
+void MainWindow::on_spinY_valueChanged(double arg1)
+{
+    yMax = double(arg1);
+    ui->plotReflectancia->yAxis->setRange(0, yMax);
+    ui->plotReflectancia->replot();
 }

@@ -30,19 +30,22 @@ private slots:
 
     void on_actionSalir_triggered();
 
-    void on_actionCalibrar_Blanco_triggered();
-
-    void on_actionCalibrar_Negro_triggered();
-
     void on_btnMedir_clicked();
 
     void ajustarX(const QCPRange &newRange);
     void ajustarY(const QCPRange &newRange);
 
+    void on_actionEstandarizar_Negro_triggered();
+
+    void on_actionEstandarizar_Blanco_triggered();
+
+    void on_spinY_valueChanged(double arg1);
+
 private:
     Ui::MainWindow *ui;
     QAxObject *miniscan;
-    int yMax;
+    int yMax, numCurvas;
+    QVector<double> x;
     bool conectado;
 };
 
