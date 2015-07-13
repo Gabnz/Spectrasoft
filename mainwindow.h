@@ -6,7 +6,10 @@
 #include <QAxBase>
 #include <QAxWidget>
 #include <QDebug>
-
+///
+#include <qcustomplot.h>
+#include <limits>
+///
 namespace Ui {
 class MainWindow;
 }
@@ -33,9 +36,13 @@ private slots:
 
     void on_btnMedir_clicked();
 
+    void ajustarX(const QCPRange &newRange);
+    void ajustarY(const QCPRange &newRange);
+
 private:
     Ui::MainWindow *ui;
     QAxObject *miniscan;
+    int yMax;
     bool conectado;
 };
 
