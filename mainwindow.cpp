@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //miniscan->setControl(":/dll/MSXEBridge.dll");
 
     miniscan->setControl("MSXE.Bridge");
-
     this->adjustSize();
     //this->setFixedSize(this->size());
     revisionBtns();
@@ -117,6 +116,7 @@ void MainWindow::on_btnMedir_clicked()
 
     if(iter == medicion.end()){
         //si no se consigue ningun cero exacto (0), es porque la lista fue llenada correctamente y por lo tanto la medicion ocurrio
+        miniscan->dynamicCall("Beep()");
     }else{
         medicion.clear();
 
@@ -171,13 +171,14 @@ void MainWindow::on_btnMedir_clicked()
         j+=10;
     }
 
-    if(static_cast<int>(yMaxAux) > yMax){
+    if(static_cast<int>(yMaxAux) + 1 > yMax){
         yMax = static_cast<int>(yMaxAux) + 1;
         ui->spinY->setValue(double(yMax));
     }
 
     ui->plotReflectancia->addGraph();
     ui->plotReflectancia->graph(numCurvas)->setData(x, y);
+    ui->plotReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
     ui->plotReflectancia->yAxis->setRange(0, yMax);
     numCurvas += 1;
     ui->plotReflectancia->replot();
