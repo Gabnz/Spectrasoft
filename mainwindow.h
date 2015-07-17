@@ -5,6 +5,7 @@
 #include <QAxObject>
 #include <QAxBase>
 #include <QAxWidget>
+#include <QtSerialPort>
 #include <QDebug>
 ///
 #include <qcustomplot.h>
@@ -44,7 +45,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QAxObject *miniscan;
-    int yMax, numCurvas;
+    int puertoCOM, yMax, numCurvas;
     QVector<double> x;
     bool conectado;
 };

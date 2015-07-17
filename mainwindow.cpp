@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    numCurvas = yMax = 0;
+    puertoCOM = numCurvas = yMax = 0;
     conectado = false;
     miniscan = new QAxObject;
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->plotReflectancia);
@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->plotReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
     ui->plotReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
     ui->plotReflectancia->xAxis->setRange(400, 700);
-    ui->plotReflectancia->xAxis->setLabel("Longitud de onda");
-    ui->plotReflectancia->yAxis->setLabel("Reflectancia");
+    ui->plotReflectancia->xAxis->setLabel("Longitud de onda (nm)");
+    ui->plotReflectancia->yAxis->setLabel("Reflectancia (%)");
     ui->plotReflectancia->xAxis->setAutoTicks(false);
 
     QVector<double> ticks;
@@ -36,9 +36,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //miniscan->setControl(":/dll/MSXEBridge.dll");
 
     miniscan->setControl("MSXE.Bridge");
-    this->adjustSize();
-    //this->setFixedSize(this->size());
     revisionBtns();
+    this->adjustSize();
+    this->setFixedSize(this->size());
 }
 
 void MainWindow::revisionBtns()
@@ -58,7 +58,7 @@ void MainWindow::revisionBtns()
     ui->actionDesconectar->setEnabled(btnDesconectar);
     ui->actionEstandarizar_Blanco->setEnabled(btnBlanco);
     ui->actionEstandarizar_Negro->setEnabled(btnNegro);
-    //ui->btnMedir->setEnabled(btnMedir);
+    ui->btnMedir->setEnabled(btnMedir);
 }
 
 MainWindow::~MainWindow()
@@ -71,10 +71,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionConectar_triggered()
 {
-    conectado = miniscan->dynamicCall("abrirPuerto()").toBool();
+    if(QSerialPortInfo::availablePorts().size() > 0){
+
+        QSerialPortInfo puerto = QSerialPortInfo::availablePorts().at(0);
+        puertoCOM = puerto.portName().remove("COM").toInt();
+    }
+
+    conectado = miniscan->dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
 
     if(conectado){
-        miniscan->dynamicCall("Beep()");
+        miniscan->dynamicCall("BeepDoble()");
         QMessageBox::information(this, "Dispositivo conectado", "El dispositivo ha sido conectado correctamente");
     }else{
         QMessageBox::critical(this, "Error al conectar", "El dispositivo no se pudo conectar");
