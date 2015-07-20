@@ -58,7 +58,7 @@ void MainWindow::revisionBtns()
     ui->actionDesconectar->setEnabled(btnDesconectar);
     ui->actionEstandarizar_Blanco->setEnabled(btnBlanco);
     ui->actionEstandarizar_Negro->setEnabled(btnNegro);
-    ui->btnMedir->setEnabled(btnMedir);
+    //ui->btnMedir->setEnabled(btnMedir);
 }
 
 MainWindow::~MainWindow()
