@@ -26,12 +26,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         j+=10;
     }
     ui->plotReflectancia->xAxis->setTickVector(ticks);
+    ui->plotReflectancia->xAxis->setTickLabelPadding(30);
     ui->plotReflectancia->xAxis->setTickLabelRotation(-45);
     ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
     ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
 
     connect(ui->plotReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
     connect(ui->plotReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
+
+    //ui->etqEspectroVisible->setFixedHeight(20);
+    //ui->etqEspectroVisible->setFixedWidth(ui->plotReflectancia->xAxis->range().size()*31);
+    //QGridLayout * layout = new QGridLayout(ui->plotReflectancia);
+    //layout->setAlignment(Qt::AlignCenter | Qt::AlignBottom);
+    //layout->addWidget(ui->etqEspectroVisible ,ui->plotReflectancia->plotLayout()->rowCount(),0);
+
     //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
     //miniscan->setControl(":/dll/MSXEBridge.dll");
 

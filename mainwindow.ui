@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>861</width>
-    <height>616</height>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,6 +111,25 @@
           <width>841</width>
           <height>471</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="etqEspectroVisible">
+        <property name="minimumSize">
+         <size>
+          <width>841</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
