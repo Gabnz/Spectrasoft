@@ -16,9 +16,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    spectralops.cpp
 
 HEADERS  += mainwindow.h \
-    qcustomplot.h
+    qcustomplot.h \
+    spectralops.h
 
 FORMS    += mainwindow.ui

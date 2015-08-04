@@ -11,6 +11,7 @@
 #include <qcustomplot.h>
 #include <limits>
 ///
+#include <spectralops.h>
 namespace Ui {
 class MainWindow;
 }
