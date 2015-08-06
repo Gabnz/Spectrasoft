@@ -10,17 +10,19 @@ QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = miniscanXE
+TARGET = Spectralsoft
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
-    spectralops.cpp
+    spectralops.cpp \
+    miniscanxe.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
-    spectralops.h
+    spectralops.h \
+    miniscanxe.h
 
 FORMS    += mainwindow.ui

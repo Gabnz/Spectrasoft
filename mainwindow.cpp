@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     puertoCOM = numCurvas = yMax = 0;
     conectado = false;
-    miniscan = new QAxObject;
+    //miniscan = new QAxObject;
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->plotReflectancia);
     titulo->setText("Curva de reflectancia difusa");
     titulo->setFont(QFont("sans", 12, QFont::Bold));
@@ -34,16 +34,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->plotReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
     connect(ui->plotReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
 
-    //ui->etqEspectroVisible->setFixedHeight(20);
-    //ui->etqEspectroVisible->setFixedWidth(ui->plotReflectancia->xAxis->range().size()*31);
-    //QGridLayout * layout = new QGridLayout(ui->plotReflectancia);
-    //layout->setAlignment(Qt::AlignCenter | Qt::AlignBottom);
-    //layout->addWidget(ui->etqEspectroVisible ,ui->plotReflectancia->plotLayout()->rowCount(),0);
-
     //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
     //miniscan->setControl(":/dll/MSXEBridge.dll");
 
-    miniscan->setControl("MSXE.Bridge");
+    //miniscan->setControl("MSXE.Bridge");
+
     revisionBtns();
     this->adjustSize();
     this->setFixedSize(this->size());
@@ -71,24 +66,27 @@ void MainWindow::revisionBtns()
 
 MainWindow::~MainWindow()
 {
-    if(conectado)
-        miniscan->dynamicCall("cerrarPuerto()");
-
+    if(conectado){
+        //miniscan->dynamicCall("cerrarPuerto()");
+        miniscan.desconectar();
+    }
     delete ui;
 }
 
 void MainWindow::on_actionConectar_triggered()
 {
-    if(QSerialPortInfo::availablePorts().size() > 0){
+//    if(QSerialPortInfo::availablePorts().size() > 0){
 
-        QSerialPortInfo puerto = QSerialPortInfo::availablePorts().at(0);
-        puertoCOM = puerto.portName().remove("COM").toInt();
-    }
+//        QSerialPortInfo puerto = QSerialPortInfo::availablePorts().at(0);
+//        puertoCOM = puerto.portName().remove("COM").toInt();
+//    }
 
-    conectado = miniscan->dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
+//    conectado = miniscan->dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
+
+    conectado = miniscan.conectar();
 
     if(conectado){
-        miniscan->dynamicCall("BeepDoble()");
+        //miniscan->dynamicCall("BeepDoble()");
         QMessageBox::information(this, "Dispositivo conectado", "El dispositivo ha sido conectado correctamente");
     }else{
         QMessageBox::critical(this, "Error al conectar", "El dispositivo no se pudo conectar");
@@ -99,7 +97,9 @@ void MainWindow::on_actionConectar_triggered()
 
 void MainWindow::on_actionDesconectar_triggered()
 {
-    conectado = !(miniscan->dynamicCall("cerrarPuerto()").toBool());
+    //conectado = !(miniscan->dynamicCall("cerrarPuerto()").toBool());
+    conectado = miniscan.desconectar();
+
 
     if(!conectado){
         QMessageBox::information(this, "Dispositivo desconectado", "El dispositivo ha sido desconectado correctamente");
@@ -117,57 +117,62 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_btnMedir_clicked()
 {
-    QVariant resultado;
+    //QVariant resultado;
     QList<QVariant> medicion;
     QVector<double> y(31);
 
-    resultado = miniscan->dynamicCall("medirMuestra()");
-    qDebug() << resultado << endl;
+    //resultado = miniscan->dynamicCall("medirMuestra()");
 
-    medicion = resultado.toList();
+    //medicion = resultado.toList();
+
+    medicion = miniscan.medir();
+
+    //qDebug() << medicion << endl;
 
     QList<QVariant>::const_iterator iter = qFind(medicion.begin(), medicion.end(), 0);
 
     if(iter == medicion.end()){
         //si no se consigue ningun cero exacto (0), es porque la lista fue llenada correctamente y por lo tanto la medicion ocurrio
-        miniscan->dynamicCall("Beep()");
+        //miniscan->dynamicCall("Beep()");
     }else{
         medicion.clear();
 
         QMessageBox::critical(this, "Error al medir muestra", "La medicion no se pudo realizar");
 
-        medicion.push_back(17.2101 + numCurvas);
-        medicion.push_back(15.2329 + numCurvas);
-        medicion.push_back(15.13 + numCurvas);
-        medicion.push_back(14.2457 + numCurvas);
-        medicion.push_back(16.0641 + numCurvas);
-        medicion.push_back(18.2752 + numCurvas);
-        medicion.push_back(19.687 + numCurvas);
-        medicion.push_back(21.0481 + numCurvas);
-        medicion.push_back(21.9136 + numCurvas);
-        medicion.push_back(23.1382 + numCurvas);
-        medicion.push_back(23.9694 + numCurvas);
-        medicion.push_back(25.4163 + numCurvas);
-        medicion.push_back(25.2229 + numCurvas);
-        medicion.push_back(24.8392 + numCurvas);
-        medicion.push_back(24.9241 + numCurvas);
-        medicion.push_back(25.2234 + numCurvas);
-        medicion.push_back(26.2638 + numCurvas);
-        medicion.push_back(26.5036 + numCurvas);
-        medicion.push_back(27.8098 + numCurvas);
-        medicion.push_back(31.5459 + numCurvas);
-        medicion.push_back(36.2515 + numCurvas);
-        medicion.push_back(39.0012 + numCurvas);
-        medicion.push_back(40.6161 + numCurvas);
-        medicion.push_back(42.1796 + numCurvas);
-        medicion.push_back(43.205 + numCurvas);
-        medicion.push_back(44.057 + numCurvas);
-        medicion.push_back(45.0165 + numCurvas);
-        medicion.push_back(45.779 + numCurvas);
-        medicion.push_back(46.4996 + numCurvas);
-        medicion.push_back(47.3194 + numCurvas);
-        medicion.push_back(47.8099 + numCurvas);
+        medicion.push_back(float(17.2101 + numCurvas));
+        medicion.push_back(float(15.2329 + numCurvas));
+        medicion.push_back(float(15.13 + numCurvas));
+        medicion.push_back(float(14.2457 + numCurvas));
+        medicion.push_back(float(16.0641 + numCurvas));
+        medicion.push_back(float(18.2752 + numCurvas));
+        medicion.push_back(float(19.687 + numCurvas));
+        medicion.push_back(float(21.0481 + numCurvas));
+        medicion.push_back(float(21.9136 + numCurvas));
+        medicion.push_back(float(23.1382 + numCurvas));
+        medicion.push_back(float(23.9694 + numCurvas));
+        medicion.push_back(float(25.4163 + numCurvas));
+        medicion.push_back(float(25.2229 + numCurvas));
+        medicion.push_back(float(24.8392 + numCurvas));
+        medicion.push_back(float(24.9241 + numCurvas));
+        medicion.push_back(float(25.2234 + numCurvas));
+        medicion.push_back(float(26.2638 + numCurvas));
+        medicion.push_back(float(26.5036 + numCurvas));
+        medicion.push_back(float(27.8098 + numCurvas));
+        medicion.push_back(float(31.5459 + numCurvas));
+        medicion.push_back(float(36.2515 + numCurvas));
+        medicion.push_back(float(39.0012 + numCurvas));
+        medicion.push_back(float(40.6161 + numCurvas));
+        medicion.push_back(float(42.1796 + numCurvas));
+        medicion.push_back(float(43.205 + numCurvas));
+        medicion.push_back(float(44.057 + numCurvas));
+        medicion.push_back(float(45.0165 + numCurvas));
+        medicion.push_back(float(45.779 + numCurvas));
+        medicion.push_back(float(46.4996 + numCurvas));
+        medicion.push_back(float(47.3194 + numCurvas));
+        medicion.push_back(float(47.8099 + numCurvas));
     }
+
+    qDebug() << ops.eritema(medicion) << endl;
 
     float yMaxAux = std::numeric_limits<float>::min();
     float aux;
@@ -253,7 +258,8 @@ void MainWindow::on_actionEstandarizar_Negro_triggered()
 {
     bool estandarizado;
 
-    estandarizado = miniscan->dynamicCall("leerNegro()").toBool();
+    //estandarizado = miniscan->dynamicCall("leerNegro()").toBool();
+    estandarizado = miniscan.estNegro();
 
     if(estandarizado){
         QMessageBox::information(this, "Trampa de luz estandarizada", "La trampa de luz ha sido estandarizada correctamente");
@@ -268,7 +274,8 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
 {
     bool estandarizado;
 
-    estandarizado = miniscan->dynamicCall("leerBlanco()").toBool();
+    //estandarizado = miniscan->dynamicCall("leerBlanco()").toBool();
+    estandarizado = miniscan.estBlanco();
 
     if(estandarizado){
         QMessageBox::information(this, "Placa blanca estandarizada", "La placa blanca ha sido estandarizada correctamente");

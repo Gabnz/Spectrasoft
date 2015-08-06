@@ -11,6 +11,7 @@
 #include <qcustomplot.h>
 #include <limits>
 ///
+#include <miniscanxe.h>
 #include <spectralops.h>
 namespace Ui {
 class MainWindow;
@@ -35,6 +36,7 @@ private slots:
     void on_btnMedir_clicked();
 
     void ajustarX(const QCPRange &newRange);
+
     void ajustarY(const QCPRange &newRange);
 
     void on_actionEstandarizar_Negro_triggered();
@@ -45,7 +47,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QAxObject *miniscan;
+    //QAxObject *miniscan;
+    MiniScanXE miniscan;
+    SpectralOps ops;
     int puertoCOM, yMax, numCurvas;
     QVector<double> x;
     bool conectado;
