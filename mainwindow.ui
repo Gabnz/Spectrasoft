@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Spectrasoft</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -112,8 +112,6 @@
           <height>471</height>
          </size>
         </property>
-        <zorder>plotReflectancia_2</zorder>
-        <zorder>plotReflectancia_2</zorder>
        </widget>
       </item>
       <item>
