@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         j+=10;
     }
     ui->plotReflectancia->xAxis->setTickVector(ticks);
-    ui->plotReflectancia->xAxis->setTickLabelPadding(30);
+    ui->plotReflectancia->xAxis->setTickLabelPadding(5);
     ui->plotReflectancia->xAxis->setTickLabelRotation(-45);
     ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
     ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
