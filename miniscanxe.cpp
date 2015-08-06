@@ -10,13 +10,17 @@ MiniScanXE::MiniScanXE()
 
 bool MiniScanXE::conectar()
 {
-    if(QSerialPortInfo::availablePorts().size() > 0){
+    QList<QSerialPortInfo> puertos = QSerialPortInfo::availablePorts();
 
-        QSerialPortInfo puerto = QSerialPortInfo::availablePorts().at(0);
+    while(!conectado && puertos.size() > 0){
+
+        QSerialPortInfo puerto = puertos.at(0);
+        puertos.removeAt(0);
         puertoCOM = puerto.portName().remove("COM").toInt();
+        conectado = miniscan.dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
     }
 
-    conectado = miniscan.dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
+    qDebug() << puertoCOM;
 
     if(conectado){
         miniscan.dynamicCall("BeepDoble()");

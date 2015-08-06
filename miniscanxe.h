@@ -5,6 +5,7 @@
 #include <QAxBase>
 #include <QAxWidget>
 #include <QtSerialPort>
+#include <QDebug>
 
 class MiniScanXE
 {
