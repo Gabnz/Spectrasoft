@@ -2,6 +2,9 @@
 
 MiniScanXE::MiniScanXE()
 {
+    //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
+    //miniscan->setControl(":/dll/MSXEBridge.dll");
+
     miniscan.setControl("MSXE.Bridge");
 
     conectado = negroEstandarizado = blancoEstandarizado = false;

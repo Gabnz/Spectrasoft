@@ -2,10 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QAxObject>
-#include <QAxBase>
-#include <QAxWidget>
-#include <QtSerialPort>
 #include <QDebug>
 ///
 #include <qcustomplot.h>
@@ -13,6 +9,8 @@
 ///
 #include <miniscanxe.h>
 #include <spectralops.h>
+#include <grafica.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -43,11 +41,10 @@ private slots:
 
     void on_actionEstandarizar_Blanco_triggered();
 
-    void on_spinY_valueChanged(double arg1);
+    void on_refSpinY_valueChanged(double arg1);
 
 private:
     Ui::MainWindow *ui;
-    //QAxObject *miniscan;
     MiniScanXE miniscan;
     SpectralOps ops;
     int puertoCOM, yMax, numCurvas;

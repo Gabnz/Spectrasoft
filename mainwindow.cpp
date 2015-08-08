@@ -6,17 +6,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     puertoCOM = numCurvas = yMax = 0;
     conectado = false;
-    //miniscan = new QAxObject;
-    QCPPlotTitle *titulo = new QCPPlotTitle(ui->curvaReflectancia);
+    QCPPlotTitle *titulo = new QCPPlotTitle(ui->graficaReflectancia);
     titulo->setText("Curva de reflectancia difusa");
     titulo->setFont(QFont("sans", 12, QFont::Bold));
     // then we add it to the main plot layout:
-    ui->curvaReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
-    ui->curvaReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
-    ui->curvaReflectancia->xAxis->setRange(400, 700);
-    ui->curvaReflectancia->xAxis->setLabel("Longitud de onda (nm)");
-    ui->curvaReflectancia->yAxis->setLabel("Reflectancia (%)");
-    ui->curvaReflectancia->xAxis->setAutoTicks(false);
+    ui->graficaReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
+    ui->graficaReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
+    ui->graficaReflectancia->xAxis->setRange(400, 700);
+    ui->graficaReflectancia->xAxis->setLabel("Longitud de onda (nm)");
+    ui->graficaReflectancia->yAxis->setLabel("Reflectancia (%)");
+    ui->graficaReflectancia->xAxis->setAutoTicks(false);
 
     QVector<double> ticks;
     int j = 400;
@@ -25,19 +24,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         x.push_back(j);
         j+=10;
     }
-    ui->curvaReflectancia->xAxis->setTickVector(ticks);
-    ui->curvaReflectancia->xAxis->setTickLabelPadding(5);
-    ui->curvaReflectancia->xAxis->setTickLabelRotation(-45);
-    ui->curvaReflectancia->setInteraction(QCP::iRangeDrag, true);
-    ui->curvaReflectancia->setInteraction(QCP::iRangeZoom, true);
 
-    connect(ui->curvaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
-    connect(ui->curvaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
+    ui->graficaReflectancia->xAxis->setTickVector(ticks);
+    ui->graficaReflectancia->xAxis->setTickLabelPadding(5);
+    ui->graficaReflectancia->xAxis->setTickLabelRotation(-45);
+    ui->graficaReflectancia->setInteraction(QCP::iRangeDrag, true);
+    ui->graficaReflectancia->setInteraction(QCP::iRangeZoom, true);
 
-    //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
-    //miniscan->setControl(":/dll/MSXEBridge.dll");
-
-    //miniscan->setControl("MSXE.Bridge");
+    connect(ui->graficaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
+    connect(ui->graficaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
 
     revisionBtns();
     this->adjustSize();
@@ -67,26 +62,17 @@ void MainWindow::revisionBtns()
 MainWindow::~MainWindow()
 {
     if(conectado){
-        //miniscan->dynamicCall("cerrarPuerto()");
         miniscan.desconectar();
     }
+
     delete ui;
 }
 
 void MainWindow::on_actionConectar_triggered()
 {
-//    if(QSerialPortInfo::availablePorts().size() > 0){
-
-//        QSerialPortInfo puerto = QSerialPortInfo::availablePorts().at(0);
-//        puertoCOM = puerto.portName().remove("COM").toInt();
-//    }
-
-//    conectado = miniscan->dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
-
     conectado = miniscan.conectar();
 
     if(conectado){
-        //miniscan->dynamicCall("BeepDoble()");
         QMessageBox::information(this, "Dispositivo conectado", "El dispositivo ha sido conectado correctamente");
     }else{
         QMessageBox::critical(this, "Error al conectar", "El dispositivo no se pudo conectar");
@@ -97,9 +83,7 @@ void MainWindow::on_actionConectar_triggered()
 
 void MainWindow::on_actionDesconectar_triggered()
 {
-    //conectado = !(miniscan->dynamicCall("cerrarPuerto()").toBool());
     conectado = miniscan.desconectar();
-
 
     if(!conectado){
         QMessageBox::information(this, "Dispositivo desconectado", "El dispositivo ha sido desconectado correctamente");
@@ -117,23 +101,16 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_btnMedir_clicked()
 {
-    //QVariant resultado;
     QList<QVariant> medicion;
     QVector<double> y(31);
 
-    //resultado = miniscan->dynamicCall("medirMuestra()");
-
-    //medicion = resultado.toList();
-
     medicion = miniscan.medir();
-
-    //qDebug() << medicion << endl;
 
     QList<QVariant>::const_iterator iter = qFind(medicion.begin(), medicion.end(), 0);
 
     if(iter == medicion.end()){
         //si no se consigue ningun cero exacto (0), es porque la lista fue llenada correctamente y por lo tanto la medicion ocurrio
-        //miniscan->dynamicCall("Beep()");
+
     }else{
         medicion.clear();
 
@@ -192,15 +169,15 @@ void MainWindow::on_btnMedir_clicked()
 
     if(static_cast<int>(yMaxAux) + 1 > yMax){
         yMax = static_cast<int>(yMaxAux) + 1;
-        ui->spinY->setValue(double(yMax));
+        ui->refSpinY->setValue(double(yMax));
     }
 
-    ui->curvaReflectancia->addGraph();
-    ui->curvaReflectancia->graph(numCurvas)->setData(x, y);
-    ui->curvaReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
-    ui->curvaReflectancia->yAxis->setRange(0, yMax);
+    ui->graficaReflectancia->addGraph();
+    ui->graficaReflectancia->graph(numCurvas)->setData(x, y);
+    ui->graficaReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    ui->graficaReflectancia->yAxis->setRange(0, yMax);
     numCurvas += 1;
-    ui->curvaReflectancia->replot();
+    ui->graficaReflectancia->replot();
     revisionBtns();
 }
 
@@ -226,7 +203,7 @@ void MainWindow::ajustarX(const QCPRange &newRange)
         boundedRange.upper = upperRangeBound;
       }
     }
-    ui->curvaReflectancia->xAxis->setRange(boundedRange);
+    ui->graficaReflectancia->xAxis->setRange(boundedRange);
 }
 
 void MainWindow::ajustarY(const QCPRange &newRange)
@@ -251,14 +228,13 @@ void MainWindow::ajustarY(const QCPRange &newRange)
         boundedRange.upper = upperRangeBound;
       }
     }
-    ui->curvaReflectancia->yAxis->setRange(boundedRange);
+    ui->graficaReflectancia->yAxis->setRange(boundedRange);
 }
 
 void MainWindow::on_actionEstandarizar_Negro_triggered()
 {
     bool estandarizado;
 
-    //estandarizado = miniscan->dynamicCall("leerNegro()").toBool();
     estandarizado = miniscan.estNegro();
 
     if(estandarizado){
@@ -274,7 +250,6 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
 {
     bool estandarizado;
 
-    //estandarizado = miniscan->dynamicCall("leerBlanco()").toBool();
     estandarizado = miniscan.estBlanco();
 
     if(estandarizado){
@@ -286,9 +261,9 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
     revisionBtns();
 }
 
-void MainWindow::on_spinY_valueChanged(double arg1)
+void MainWindow::on_refSpinY_valueChanged(double arg1)
 {
     yMax = double(arg1);
-    ui->curvaReflectancia->yAxis->setRange(0, yMax);
-    ui->curvaReflectancia->replot();
+    ui->graficaReflectancia->yAxis->setRange(0, yMax);
+    ui->graficaReflectancia->replot();
 }

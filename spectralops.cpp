@@ -16,7 +16,7 @@ float SpectralOps::eritema(QList<QVariant> medicion)
     float promVerde = (medicion.at(16).toFloat()/2 + medicion.at(17).toFloat() + medicion.at(18).toFloat()/2)/2;
 
     /*E = calcula el indice de eritema, empleando el uso de los promedios calculados anteriormente*/
-    float E = log10(1/promVerde) - log10(1/promRojo);
+    float E = log(1/promVerde) - log(1/promRojo);
 
     return E;
 }
