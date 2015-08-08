@@ -7,16 +7,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     puertoCOM = numCurvas = yMax = 0;
     conectado = false;
     //miniscan = new QAxObject;
-    QCPPlotTitle *titulo = new QCPPlotTitle(ui->plotReflectancia);
+    QCPPlotTitle *titulo = new QCPPlotTitle(ui->curvaReflectancia);
     titulo->setText("Curva de reflectancia difusa");
     titulo->setFont(QFont("sans", 12, QFont::Bold));
     // then we add it to the main plot layout:
-    ui->plotReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
-    ui->plotReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
-    ui->plotReflectancia->xAxis->setRange(400, 700);
-    ui->plotReflectancia->xAxis->setLabel("Longitud de onda (nm)");
-    ui->plotReflectancia->yAxis->setLabel("Reflectancia (%)");
-    ui->plotReflectancia->xAxis->setAutoTicks(false);
+    ui->curvaReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
+    ui->curvaReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
+    ui->curvaReflectancia->xAxis->setRange(400, 700);
+    ui->curvaReflectancia->xAxis->setLabel("Longitud de onda (nm)");
+    ui->curvaReflectancia->yAxis->setLabel("Reflectancia (%)");
+    ui->curvaReflectancia->xAxis->setAutoTicks(false);
 
     QVector<double> ticks;
     int j = 400;
@@ -25,14 +25,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         x.push_back(j);
         j+=10;
     }
-    ui->plotReflectancia->xAxis->setTickVector(ticks);
-    ui->plotReflectancia->xAxis->setTickLabelPadding(5);
-    ui->plotReflectancia->xAxis->setTickLabelRotation(-45);
-    ui->plotReflectancia->setInteraction(QCP::iRangeDrag, true);
-    ui->plotReflectancia->setInteraction(QCP::iRangeZoom, true);
+    ui->curvaReflectancia->xAxis->setTickVector(ticks);
+    ui->curvaReflectancia->xAxis->setTickLabelPadding(5);
+    ui->curvaReflectancia->xAxis->setTickLabelRotation(-45);
+    ui->curvaReflectancia->setInteraction(QCP::iRangeDrag, true);
+    ui->curvaReflectancia->setInteraction(QCP::iRangeZoom, true);
 
-    connect(ui->plotReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
-    connect(ui->plotReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
+    connect(ui->curvaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
+    connect(ui->curvaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
 
     //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
     //miniscan->setControl(":/dll/MSXEBridge.dll");
@@ -195,12 +195,12 @@ void MainWindow::on_btnMedir_clicked()
         ui->spinY->setValue(double(yMax));
     }
 
-    ui->plotReflectancia->addGraph();
-    ui->plotReflectancia->graph(numCurvas)->setData(x, y);
-    ui->plotReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
-    ui->plotReflectancia->yAxis->setRange(0, yMax);
+    ui->curvaReflectancia->addGraph();
+    ui->curvaReflectancia->graph(numCurvas)->setData(x, y);
+    ui->curvaReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    ui->curvaReflectancia->yAxis->setRange(0, yMax);
     numCurvas += 1;
-    ui->plotReflectancia->replot();
+    ui->curvaReflectancia->replot();
     revisionBtns();
 }
 
@@ -226,7 +226,7 @@ void MainWindow::ajustarX(const QCPRange &newRange)
         boundedRange.upper = upperRangeBound;
       }
     }
-    ui->plotReflectancia->xAxis->setRange(boundedRange);
+    ui->curvaReflectancia->xAxis->setRange(boundedRange);
 }
 
 void MainWindow::ajustarY(const QCPRange &newRange)
@@ -251,7 +251,7 @@ void MainWindow::ajustarY(const QCPRange &newRange)
         boundedRange.upper = upperRangeBound;
       }
     }
-    ui->plotReflectancia->yAxis->setRange(boundedRange);
+    ui->curvaReflectancia->yAxis->setRange(boundedRange);
 }
 
 void MainWindow::on_actionEstandarizar_Negro_triggered()
@@ -289,6 +289,6 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
 void MainWindow::on_spinY_valueChanged(double arg1)
 {
     yMax = double(arg1);
-    ui->plotReflectancia->yAxis->setRange(0, yMax);
-    ui->plotReflectancia->replot();
+    ui->curvaReflectancia->yAxis->setRange(0, yMax);
+    ui->curvaReflectancia->replot();
 }
