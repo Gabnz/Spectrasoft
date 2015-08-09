@@ -5,10 +5,10 @@
 #include <QDebug>
 ///
 #include <qcustomplot.h>
-#include <limits>
 ///
 #include <miniscanxe.h>
 #include <spectralops.h>
+#include <grafica.h>
 
 namespace Ui {
 class MainWindow;
@@ -52,8 +52,8 @@ private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
-    int yRefMax, yAbsMax, numCurvas;
-    QVector<double> x;
+    Grafica *reflectancia, *absorbancia;
+    int numCurvas;
     bool conectado;
 };
 

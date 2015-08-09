@@ -1,8 +1,7 @@
 #ifndef SPECTRALOPS_H
 #define SPECTRALOPS_H
 
-#include <QList>
-#include <QVariant>
+#include <QVector>
 #include <math.h>
 
 class SpectralOps
@@ -17,11 +16,8 @@ public:
         @param medicion la lista que contiene los 31 puntos espectrales de la muestra
         @return el indice de eritema.
     */
-    float eritema(QList<QVariant> medicion);
+    float eritema(QVector<double> medicion);
     ~SpectralOps();
-
-private:
-    QList<QVariant> medicion;
 };
 
 #endif // SPECTRALOPS_H
