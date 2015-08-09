@@ -18,13 +18,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
     spectralops.cpp \
-    miniscanxe.cpp \
-    grafica.cpp
+    miniscanxe.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
     spectralops.h \
-    miniscanxe.h \
-    grafica.h
+    miniscanxe.h
 
 FORMS    += mainwindow.ui

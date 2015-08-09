@@ -4,18 +4,14 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    puertoCOM = numCurvas = yMax = 0;
     conectado = false;
-    QCPPlotTitle *titulo = new QCPPlotTitle(ui->graficaReflectancia);
-    titulo->setText("Curva de reflectancia difusa");
-    titulo->setFont(QFont("sans", 12, QFont::Bold));
-    // then we add it to the main plot layout:
-    ui->graficaReflectancia->plotLayout()->insertRow(0); // insert an empty row above the axis rect
-    ui->graficaReflectancia->plotLayout()->addElement(0, 0, titulo); // place the title in the empty cell we've just create
-    ui->graficaReflectancia->xAxis->setRange(400, 700);
-    ui->graficaReflectancia->xAxis->setLabel("Longitud de onda (nm)");
-    ui->graficaReflectancia->yAxis->setLabel("Reflectancia (%)");
-    ui->graficaReflectancia->xAxis->setAutoTicks(false);
+    /*---------------------------------------*/
+    /*         Curva de reflectancia         */
+    /*---------------------------------------*/
+    numCurvas = yRefMax = yAbsMax = 0;
+    QCPPlotTitle *tituloReflectancia = new QCPPlotTitle(ui->graficaReflectancia);
+    tituloReflectancia->setText("Curva de reflectancia difusa");
+    tituloReflectancia->setFont(QFont("sans", 12, QFont::Bold));
 
     QVector<double> ticks;
     int j = 400;
@@ -25,15 +21,42 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         j+=10;
     }
 
+    ui->graficaReflectancia->plotLayout()->insertRow(0);
+    ui->graficaReflectancia->plotLayout()->addElement(0, 0, tituloReflectancia);
+    ui->graficaReflectancia->xAxis->setRange(400, 700);
+    ui->graficaReflectancia->xAxis->setLabel("Longitud de onda (nm)");
+    ui->graficaReflectancia->yAxis->setLabel("Reflectancia (%)");
+    ui->graficaReflectancia->xAxis->setAutoTicks(false);
     ui->graficaReflectancia->xAxis->setTickVector(ticks);
     ui->graficaReflectancia->xAxis->setTickLabelPadding(5);
     ui->graficaReflectancia->xAxis->setTickLabelRotation(-45);
     ui->graficaReflectancia->setInteraction(QCP::iRangeDrag, true);
     ui->graficaReflectancia->setInteraction(QCP::iRangeZoom, true);
 
-    connect(ui->graficaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarX(QCPRange)));
-    connect(ui->graficaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
+    connect(ui->graficaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarRefX(QCPRange)));
+    connect(ui->graficaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarRefY(QCPRange)));
+    /*---------------------------------------*/
+    /*         Curva de absorbancia          */
+    /*---------------------------------------*/
+    QCPPlotTitle *tituloAbsorbancia = new QCPPlotTitle(ui->graficaAbsorbancia);
+    tituloAbsorbancia->setText("Curva de absorbancia aparente");
+    tituloAbsorbancia->setFont(QFont("sans", 12, QFont::Bold));
 
+    ui->graficaAbsorbancia->plotLayout()->insertRow(0);
+    ui->graficaAbsorbancia->plotLayout()->addElement(0, 0, tituloAbsorbancia);
+    ui->graficaAbsorbancia->xAxis->setRange(400, 700);
+    ui->graficaAbsorbancia->xAxis->setLabel("Longitud de onda (nm)");
+    ui->graficaAbsorbancia->yAxis->setLabel("Absorbancia (%)");
+    ui->graficaAbsorbancia->xAxis->setAutoTicks(false);
+    ui->graficaAbsorbancia->xAxis->setTickVector(ticks);
+    ui->graficaAbsorbancia->xAxis->setTickLabelPadding(5);
+    ui->graficaAbsorbancia->xAxis->setTickLabelRotation(-45);
+    ui->graficaAbsorbancia->setInteraction(QCP::iRangeDrag, true);
+    ui->graficaAbsorbancia->setInteraction(QCP::iRangeZoom, true);
+
+    connect(ui->graficaAbsorbancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsX(QCPRange)));
+    connect(ui->graficaAbsorbancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsY(QCPRange)));
+    /*---------------------------------------*/
     revisionBtns();
     this->adjustSize();
     this->setFixedSize(this->size());
@@ -102,7 +125,7 @@ void MainWindow::on_actionSalir_triggered()
 void MainWindow::on_btnMedir_clicked()
 {
     QList<QVariant> medicion;
-    QVector<double> y(31);
+    QVector<double> yRef(31), yAbs(31);
 
     medicion = miniscan.medir();
 
@@ -151,37 +174,58 @@ void MainWindow::on_btnMedir_clicked()
 
     qDebug() << ops.eritema(medicion) << endl;
 
-    float yMaxAux = std::numeric_limits<float>::min();
-    float aux;
+    float yRefMaxAux, yAbsMaxAux;
+    yRefMaxAux = yAbsMaxAux = std::numeric_limits<float>::min();
+    float refAux, absAux;
     int j = 400;
 
     for(int i = 0; i < 31; ++i){
 
-        y[i] = medicion.at(i).toDouble();
+        yRef[i] = medicion.at(i).toDouble();
+        yAbs[i] = double(100) - medicion.at(i).toDouble();
 
-        aux = medicion.at(i).toFloat();
+        refAux = float(yRef[i]);
+        absAux = float(yAbs[i]);
 
-        if(aux > yMaxAux){
-            yMaxAux = aux;
+        if(refAux > yRefMaxAux){
+            yRefMaxAux = refAux;
         }
+
+        if(absAux > yAbsMaxAux){
+            yAbsMaxAux = absAux;
+        }
+
         j+=10;
     }
 
-    if(static_cast<int>(yMaxAux) + 1 > yMax){
-        yMax = static_cast<int>(yMaxAux) + 1;
-        ui->refSpinY->setValue(double(yMax));
+    if(static_cast<int>(yRefMaxAux) + 1 > yRefMax){
+        yRefMax = static_cast<int>(yRefMaxAux) + 1;
+        ui->refSpinY->setValue(double(yRefMax));
+    }
+
+    if(static_cast<int>(yAbsMaxAux) + 1 > yAbsMax){
+        yAbsMax = static_cast<int>(yAbsMaxAux) + 1;
+        ui->absSpinY->setValue(double(yAbsMax));
     }
 
     ui->graficaReflectancia->addGraph();
-    ui->graficaReflectancia->graph(numCurvas)->setData(x, y);
+    ui->graficaReflectancia->graph(numCurvas)->setData(x, yRef);
     ui->graficaReflectancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
-    ui->graficaReflectancia->yAxis->setRange(0, yMax);
-    numCurvas += 1;
+    ui->graficaReflectancia->yAxis->setRange(0, yRefMax);
     ui->graficaReflectancia->replot();
+
+    ui->graficaAbsorbancia->addGraph();
+    ui->graficaAbsorbancia->graph(numCurvas)->setData(x, yAbs);
+    ui->graficaAbsorbancia->graph(numCurvas)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    ui->graficaAbsorbancia->yAxis->setRange(0, yAbsMax);
+    ui->graficaAbsorbancia->replot();
+
+    numCurvas += 1;
+
     revisionBtns();
 }
 
-void MainWindow::ajustarX(const QCPRange &newRange)
+void MainWindow::ajustarRefX(const QCPRange &newRange)
 {
     QCPRange boundedRange = newRange;
     double lowerRangeBound = 400;
@@ -206,11 +250,11 @@ void MainWindow::ajustarX(const QCPRange &newRange)
     ui->graficaReflectancia->xAxis->setRange(boundedRange);
 }
 
-void MainWindow::ajustarY(const QCPRange &newRange)
+void MainWindow::ajustarRefY(const QCPRange &newRange)
 {
     QCPRange boundedRange = newRange;
     double lowerRangeBound = 0;
-    double upperRangeBound = yMax;
+    double upperRangeBound = yRefMax;
     if (boundedRange.size() > upperRangeBound-lowerRangeBound)
     {
       boundedRange = QCPRange(lowerRangeBound, upperRangeBound);
@@ -229,6 +273,56 @@ void MainWindow::ajustarY(const QCPRange &newRange)
       }
     }
     ui->graficaReflectancia->yAxis->setRange(boundedRange);
+}
+
+void MainWindow::ajustarAbsX(const QCPRange &newRange)
+{
+    QCPRange boundedRange = newRange;
+    double lowerRangeBound = 400;
+    double upperRangeBound = 700;
+    if (boundedRange.size() > upperRangeBound-lowerRangeBound)
+    {
+      boundedRange = QCPRange(lowerRangeBound, upperRangeBound);
+    } else
+    {
+      double oldSize = boundedRange.size();
+      if (boundedRange.lower < lowerRangeBound)
+      {
+        boundedRange.lower = lowerRangeBound;
+        boundedRange.upper = lowerRangeBound+oldSize;
+      }
+      if (boundedRange.upper > upperRangeBound)
+      {
+        boundedRange.lower = upperRangeBound-oldSize;
+        boundedRange.upper = upperRangeBound;
+      }
+    }
+    ui->graficaAbsorbancia->xAxis->setRange(boundedRange);
+}
+
+void MainWindow::ajustarAbsY(const QCPRange &newRange)
+{
+    QCPRange boundedRange = newRange;
+    double lowerRangeBound = 0;
+    double upperRangeBound = yAbsMax;
+    if (boundedRange.size() > upperRangeBound-lowerRangeBound)
+    {
+      boundedRange = QCPRange(lowerRangeBound, upperRangeBound);
+    }else
+    {
+      double oldSize = boundedRange.size();
+      if (boundedRange.lower < lowerRangeBound)
+      {
+        boundedRange.lower = lowerRangeBound;
+        boundedRange.upper = lowerRangeBound+oldSize;
+      }
+      if (boundedRange.upper > upperRangeBound)
+      {
+        boundedRange.lower = upperRangeBound-oldSize;
+        boundedRange.upper = upperRangeBound;
+      }
+    }
+    ui->graficaAbsorbancia->yAxis->setRange(boundedRange);
 }
 
 void MainWindow::on_actionEstandarizar_Negro_triggered()
@@ -263,7 +357,14 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
 
 void MainWindow::on_refSpinY_valueChanged(double arg1)
 {
-    yMax = double(arg1);
-    ui->graficaReflectancia->yAxis->setRange(0, yMax);
+    yRefMax = double(arg1);
+    ui->graficaReflectancia->yAxis->setRange(0, yRefMax);
     ui->graficaReflectancia->replot();
+}
+
+void MainWindow::on_absSpinY_valueChanged(double arg1)
+{
+    yAbsMax = double(arg1);
+    ui->graficaAbsorbancia->yAxis->setRange(0, yAbsMax);
+    ui->graficaAbsorbancia->replot();
 }

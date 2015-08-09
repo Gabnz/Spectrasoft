@@ -9,7 +9,6 @@
 ///
 #include <miniscanxe.h>
 #include <spectralops.h>
-#include <grafica.h>
 
 namespace Ui {
 class MainWindow;
@@ -33,9 +32,13 @@ private slots:
 
     void on_btnMedir_clicked();
 
-    void ajustarX(const QCPRange &newRange);
+    void ajustarRefX(const QCPRange &newRange);
 
-    void ajustarY(const QCPRange &newRange);
+    void ajustarRefY(const QCPRange &newRange);
+
+    void ajustarAbsX(const QCPRange &newRange);
+
+    void ajustarAbsY(const QCPRange &newRange);
 
     void on_actionEstandarizar_Negro_triggered();
 
@@ -43,11 +46,13 @@ private slots:
 
     void on_refSpinY_valueChanged(double arg1);
 
+    void on_absSpinY_valueChanged(double arg1);
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
-    int puertoCOM, yMax, numCurvas;
+    int yRefMax, yAbsMax, numCurvas;
     QVector<double> x;
     bool conectado;
 };
