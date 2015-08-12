@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>887</width>
-    <height>661</height>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Spectrasoft</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="recursos.qrc">
+    <normaloff>:/img/logo_icon.ico</normaloff>:/img/logo_icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -254,7 +258,7 @@
      <x>0</x>
      <y>0</y>
      <width>887</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDispositivo">
@@ -323,6 +327,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>

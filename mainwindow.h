@@ -48,6 +48,8 @@ private slots:
 
     void on_absSpinY_valueChanged(double arg1);
 
+    void on_actionAcerca_de_triggered();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
@@ -55,6 +57,7 @@ private:
     Grafica *reflectancia, *absorbancia;
     int numCurvas, yRef, yAbs;
     bool conectado;
+    QString version;
 };
 
 #endif // MAINWINDOW_H

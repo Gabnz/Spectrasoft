@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     conectado = false;
     numCurvas = 0;
     yRef = yAbs = 100;
+    version = "08122015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando la curva de reflectancia difusa y la curva de absorbancia aparente       */
     /*------------------------------------------------------------------------------------------*/
@@ -226,4 +227,16 @@ void MainWindow::on_absSpinY_valueChanged(double arg1)
     yAbs = int(arg1 + 1);
     ui->graficaAbsorbancia->yAxis->setRange(0, double(arg1));
     ui->graficaAbsorbancia->replot();
+}
+
+void MainWindow::on_actionAcerca_de_triggered()
+{
+    QImage logo(":/img/logo_small.png");
+    QMessageBox msgBox;
+    msgBox.setIconPixmap(QPixmap::fromImage(logo));
+    QString titulo("<html><head/><body><p><span style=' font-size:14pt; font-weight:600; color:#4b4b4b;'>Spectrasoft</span>&nbsp; &nbsp;<span style=' font-size:8pt; font-weight:450; color:#4b4b4b;'>versión " + version + "</span></p>");
+    QString resumen("<p>Software para el manejo del MiniScan XE Plus.</p>");
+    QString desarrollador("<p>Diseñado, desarrollado e implementado por Gabriel Núñez.\nContacto: gabriel.nzn@gmail.com</p></body></html>");
+    msgBox.setText(titulo + resumen + desarrollador);
+    msgBox.exec();
 }

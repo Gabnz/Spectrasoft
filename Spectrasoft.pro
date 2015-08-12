@@ -13,7 +13,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = Spectrasoft
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
@@ -28,3 +27,8 @@ HEADERS  += mainwindow.h \
     grafica.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    recursos.qrc
+
+RC_ICONS += img/logo_icon.ico
