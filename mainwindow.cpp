@@ -7,11 +7,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     conectado = false;
     numCurvas = 0;
     yRef = yAbs = 100;
-    modelo = new QStandardItemModel(31, 2, this);
+    modelo = new QStandardItemModel(2, 31, this);
     QStringList cabeceras;
-    cabeceras.push_back("Longitud");
     cabeceras.push_back("Valor");
-    modelo->setHorizontalHeaderLabels(cabeceras);
+    cabeceras.push_back("Longitud");
+    modelo->setVerticalHeaderLabels(cabeceras);
     ui->tablaPuntosEspectrales->setModel(modelo);
     version = "08122015";
     /*------------------------------------------------------------------------------------------*/
@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->adjustSize();
+    this->setFixedSize(this->size());
 }
 
 void MainWindow::revisionBtns()
@@ -143,20 +144,17 @@ void MainWindow::on_btnMedir_clicked()
     }
 
     int rango = 400;
-
+    QModelIndex indice;
     for(int i = 0; i < 31; ++i){
 
         yRef[i] = medicion.at(i).toDouble();
         yAbs[i] = double(100) - medicion.at(i).toDouble();
 
-
-        QModelIndex indice = modelo->index(i, 0, QModelIndex());
-
-        modelo->setData(indice, rango);
-
-        indice = modelo->index(i, 1, QModelIndex());
-
+        indice = modelo->index(0, i, QModelIndex());
         modelo->setData(indice, yRef[i]);
+
+        indice = modelo->index(1, i, QModelIndex());
+        modelo->setData(indice, rango);
 
         rango+=10;
     }
@@ -203,13 +201,13 @@ void MainWindow::ajustarAbsY(const QCPRange &newRange)
 void MainWindow::on_actionEstandarizar_Negro_triggered()
 {
     bool estandarizado;
-
+    QMessageBox::information(this, "Prepare la trampa de luz", "Asegurese de tener lista la trampa de luz");
     estandarizado = miniscan.estNegro();
 
     if(estandarizado){
-        QMessageBox::information(this, "Trampa de luz estandarizada", "La trampa de luz ha sido estandarizada correctamente");
+        QMessageBox::information(this, "Color negro estandarizado", "El color negro ha sido estandarizado correctamente");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar trampa", "No se pudo estandarizar la trampa de luz");
+        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el color negro");
     }
 
     revisionBtns();
@@ -218,13 +216,13 @@ void MainWindow::on_actionEstandarizar_Negro_triggered()
 void MainWindow::on_actionEstandarizar_Blanco_triggered()
 {
     bool estandarizado;
-
+    QMessageBox::information(this, "Prepare la cerámica blanca", "Asegurese de tener lista la cerámica blanca");
     estandarizado = miniscan.estBlanco();
 
     if(estandarizado){
-        QMessageBox::information(this, "Placa blanca estandarizada", "La placa blanca ha sido estandarizada correctamente");
+        QMessageBox::information(this, "Color blanco estandarizado", "El color blanco ha sido estandarizado correctamente");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar placa", "No se pudo estandarizar la placa blanca");
+        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el color blanco");
     }
 
     revisionBtns();
