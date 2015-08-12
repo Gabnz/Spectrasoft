@@ -4,6 +4,7 @@ Grafica::Grafica(QCustomPlot *graficaExt, QMainWindow *padreExt, QString tituloE
 {
     grafica = graficaExt;
     padre = padreExt;
+    n = 0;
 
     QCPPlotTitle *titulo = new QCPPlotTitle(grafica);
     titulo->setText(tituloExt);
@@ -33,25 +34,41 @@ Grafica::Grafica(QCustomPlot *graficaExt, QMainWindow *padreExt, QString tituloE
 
 void Grafica::agregarCurva(QVector<double> y)
 {
+    QCPScatterStyle myScatter;
+    QPen pen;
+    pen.setColor(Qt::black);
+    pen.setWidth(1);
+
+    myScatter.setShape(QCPScatterStyle::ssDisc);
+    myScatter.setPen(pen);
+    myScatter.setSize(5);
     grafica->addGraph();
-    grafica->graph(grafica->graphCount() - 1)->setData(x, y);
-    grafica->graph(grafica->graphCount() - 1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    grafica->graph(n)->setData(x, y);
+    grafica->graph(n)->setScatterStyle(myScatter);
+    grafica->graph(n)->setPen(QPen(Qt::black));
     grafica->yAxis->setRange(0, 100);
     grafica->replot();
+
+    n++;
 }
 
-void Grafica::ajustarGrafica(QString axis, const QCPRange &newRange)
+bool Grafica::numCurvas()
+{
+    return n;
+}
+
+void Grafica::quitarCurva()
+{
+    grafica->removeGraph(n - 1);
+    n--;
+}
+
+void Grafica::ajustarGrafica(QString axis, const QCPRange &newRange, double lower, double upper)
 {
     QCPRange boundedRange = newRange;
-    double lowerRangeBound, upperRangeBound;
 
-    if(axis == "x"){
-        lowerRangeBound = 400;
-        upperRangeBound = 700;
-    }else{
-        lowerRangeBound = 0;
-        upperRangeBound = 100;
-    }
+    double lowerRangeBound = lower;
+    double upperRangeBound = upper;
 
     if(boundedRange.size() > upperRangeBound - lowerRangeBound){
         boundedRange = QCPRange(lowerRangeBound, upperRangeBound);

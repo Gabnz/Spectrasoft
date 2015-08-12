@@ -53,7 +53,7 @@ private:
     MiniScanXE miniscan;
     SpectralOps ops;
     Grafica *reflectancia, *absorbancia;
-    int numCurvas;
+    int numCurvas, yRef, yAbs;
     bool conectado;
 };
 

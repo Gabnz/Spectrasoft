@@ -9,13 +9,16 @@ class Grafica
 public:
     Grafica(QCustomPlot *graficaExt, QMainWindow *padreExt, QString tituloExt, QString etqX, QString etqY);
     void agregarCurva(QVector<double> y);
-    void ajustarGrafica(QString axis, const QCPRange &newRange);
+    bool numCurvas();
+    void quitarCurva();
+    void ajustarGrafica(QString axis, const QCPRange &newRange, double lower,double upper);
     ~Grafica();
 
 private:
     QCustomPlot *grafica;
     QMainWindow *padre;
     QVector<double> x;
+    int n;
 };
 
 #endif // GRAFICA_H

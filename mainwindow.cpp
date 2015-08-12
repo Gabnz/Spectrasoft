@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     conectado = false;
     numCurvas = 0;
+    yRef = yAbs = 100;
     /*------------------------------------------------------------------------------------------*/
     /*         Creando la curva de reflectancia difusa y la curva de absorbancia aparente       */
     /*------------------------------------------------------------------------------------------*/
@@ -17,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->graficaAbsorbancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsX(QCPRange)));
     connect(ui->graficaAbsorbancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsY(QCPRange)));
 
-    ui->refSpinY->setValue(100);
-    ui->absSpinY->setValue(100);
+    ui->refSpinY->setValue(yRef);
+    ui->absSpinY->setValue(yAbs);
 
     revisionBtns();
     this->adjustSize();
@@ -144,8 +145,18 @@ void MainWindow::on_btnMedir_clicked()
         j+=10;
     }
 
+    if(reflectancia->numCurvas() > 0){
+
+        reflectancia->quitarCurva();
+    }
     reflectancia->agregarCurva(yRef);
+
+    if(absorbancia->numCurvas() > 0){
+
+        absorbancia->quitarCurva();
+    }
     absorbancia->agregarCurva(yAbs);
+
     qDebug() << ops.eritema(yRef) << endl;
 
     numCurvas += 1;
@@ -155,22 +166,22 @@ void MainWindow::on_btnMedir_clicked()
 
 void MainWindow::ajustarRefX(const QCPRange &newRange)
 {
-    reflectancia->ajustarGrafica("x", newRange);
+    reflectancia->ajustarGrafica("x", newRange, 400, 700);
 }
 
 void MainWindow::ajustarRefY(const QCPRange &newRange)
 {
-    reflectancia->ajustarGrafica("y", newRange);
+    reflectancia->ajustarGrafica("y", newRange, 0, yRef);
 }
 
 void MainWindow::ajustarAbsX(const QCPRange &newRange)
 {
-    absorbancia->ajustarGrafica("x", newRange);
+    absorbancia->ajustarGrafica("x", newRange, 400, 700);
 }
 
 void MainWindow::ajustarAbsY(const QCPRange &newRange)
 {
-    absorbancia->ajustarGrafica("y",  newRange);
+    absorbancia->ajustarGrafica("y",  newRange, 0, yAbs);
 }
 
 void MainWindow::on_actionEstandarizar_Negro_triggered()
@@ -205,12 +216,14 @@ void MainWindow::on_actionEstandarizar_Blanco_triggered()
 
 void MainWindow::on_refSpinY_valueChanged(double arg1)
 {
+    yRef = int(arg1 + 1);
     ui->graficaReflectancia->yAxis->setRange(0, double(arg1));
     ui->graficaReflectancia->replot();
 }
 
 void MainWindow::on_absSpinY_valueChanged(double arg1)
 {
+    yAbs = int(arg1 + 1);
     ui->graficaAbsorbancia->yAxis->setRange(0, double(arg1));
     ui->graficaAbsorbancia->replot();
 }
