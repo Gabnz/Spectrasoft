@@ -30,15 +30,16 @@ Grafica::Grafica(QCustomPlot *graficaExt, QMainWindow *padreExt, QString tituloE
     grafica->xAxis->setTickLabelRotation(-45);
     grafica->setInteraction(QCP::iRangeDrag, true);
     grafica->setInteraction(QCP::iRangeZoom, true);
+    grafica->setInteraction(QCP::iSelectItems, true);
 }
 
 void Grafica::agregarCurva(QVector<double> y)
 {
     QCPScatterStyle myScatter;
     QPen pen;
+
     pen.setColor(Qt::black);
     pen.setWidth(1);
-
     myScatter.setShape(QCPScatterStyle::ssDisc);
     myScatter.setPen(pen);
     myScatter.setSize(5);

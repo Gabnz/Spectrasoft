@@ -15505,6 +15505,52 @@ void QCPGraph::drawFill(QCPPainter *painter, QVector<QPointF> *lineData) const
 */
 void QCPGraph::drawScatterPlot(QCPPainter *painter, QVector<QCPData> *scatterData) const
 {
+  ///
+  QVector<QPen> spectralPen(31);
+
+  spectralPen[0].setColor(QColor(32, 0, 97));
+  spectralPen[1].setColor(QColor(70, 0, 195));
+  spectralPen[2].setColor(QColor(100, 0, 255));
+  spectralPen[3].setColor(QColor(111, 0, 255));
+  spectralPen[4].setColor(QColor(105, 0, 255));
+  spectralPen[5].setColor(QColor(56, 0, 255));
+  spectralPen[6].setColor(QColor(0, 22, 255));
+  spectralPen[7].setColor(QColor(0, 125, 254));
+  spectralPen[8].setColor(QColor(0, 175, 255));
+  spectralPen[9].setColor(QColor(1, 210, 188));
+  spectralPen[10].setColor(QColor(0, 241, 124));
+  spectralPen[11].setColor(QColor(0, 255, 41));
+  spectralPen[12].setColor(QColor(0, 255, 1));
+  spectralPen[13].setColor(QColor(0, 255, 1));
+  spectralPen[14].setColor(QColor(0, 255, 1));
+  spectralPen[15].setColor(QColor(65, 255, 0));
+  spectralPen[16].setColor(QColor(204, 254, 0));
+  spectralPen[17].setColor(QColor(255, 251, 1));
+  spectralPen[18].setColor(QColor(254, 213, 0));
+  spectralPen[19].setColor(QColor(255, 168, 0));
+  spectralPen[20].setColor(QColor(255, 111, 0));
+  spectralPen[21].setColor(QColor(254, 10, 0));
+  spectralPen[22].setColor(QColor(254, 0, 0));
+  spectralPen[23].setColor(QColor(254, 0, 0));
+  spectralPen[24].setColor(QColor(254, 0, 0));
+  spectralPen[25].setColor(QColor(213, 1, 0));
+  spectralPen[26].setColor(QColor(164, 0, 0));
+  spectralPen[27].setColor(QColor(124, 0, 0));
+  spectralPen[28].setColor(QColor(90, 0, 0));
+  spectralPen[29].setColor(QColor(64, 0, 0));
+  spectralPen[30].setColor(QColor(42, 0, 1));
+
+  QVector<int> spectralKey(31);
+  int j = 400;
+
+  for(int i = 0; i < 31; ++i){
+
+      spectralKey[i] = j;
+      spectralPen[i].setWidth(5);
+      j+=10;
+  }
+  ///
+
   QCPAxis *keyAxis = mKeyAxis.data();
   QCPAxis *valueAxis = mValueAxis.data();
   if (!keyAxis || !valueAxis) { qDebug() << Q_FUNC_INFO << "invalid key or value axis"; return; }
@@ -15530,14 +15576,24 @@ void QCPGraph::drawScatterPlot(QCPPainter *painter, QVector<QCPData> *scatterDat
   mScatterStyle.applyTo(painter, mPen);
   if (keyAxis->orientation() == Qt::Vertical)
   {
-    for (int i=0; i<scatterData->size(); ++i)
-      if (!qIsNaN(scatterData->at(i).value))
-        mScatterStyle.drawShape(painter, valueAxis->coordToPixel(scatterData->at(i).value), keyAxis->coordToPixel(scatterData->at(i).key));
+      for (int i=0; i<scatterData->size(); ++i){
+          ///
+          QVector<int>::const_iterator iter = qFind(spectralKey.begin(), spectralKey.end(), scatterData->at(i).key);
+          painter->setPen(spectralPen[iter - spectralKey.begin()]);
+          ///
+          if (!qIsNaN(scatterData->at(i).value))
+              mScatterStyle.drawShape(painter, valueAxis->coordToPixel(scatterData->at(i).value), keyAxis->coordToPixel(scatterData->at(i).key));
+      }
   } else
   {
-    for (int i=0; i<scatterData->size(); ++i)
-      if (!qIsNaN(scatterData->at(i).value))
-        mScatterStyle.drawShape(painter, keyAxis->coordToPixel(scatterData->at(i).key), valueAxis->coordToPixel(scatterData->at(i).value));
+      for (int i=0; i<scatterData->size(); ++i){
+          ///
+          QVector<int>::const_iterator iter = qFind(spectralKey.begin(), spectralKey.end(), scatterData->at(i).key);
+          painter->setPen(spectralPen[iter - spectralKey.begin()]);
+          ///
+          if (!qIsNaN(scatterData->at(i).value))
+              mScatterStyle.drawShape(painter, keyAxis->coordToPixel(scatterData->at(i).key), valueAxis->coordToPixel(scatterData->at(i).value));
+      }
   }
 }
 
