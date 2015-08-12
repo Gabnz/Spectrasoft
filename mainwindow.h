@@ -55,6 +55,7 @@ private:
     MiniScanXE miniscan;
     SpectralOps ops;
     Grafica *reflectancia, *absorbancia;
+    QStandardItemModel *modelo;
     int numCurvas, yRef, yAbs;
     bool conectado;
     QString version;

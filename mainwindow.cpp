@@ -7,6 +7,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     conectado = false;
     numCurvas = 0;
     yRef = yAbs = 100;
+    modelo = new QStandardItemModel(31, 2, this);
+    QStringList cabeceras;
+    cabeceras.push_back("Longitud");
+    cabeceras.push_back("Valor");
+    modelo->setHorizontalHeaderLabels(cabeceras);
+    ui->tablaPuntosEspectrales->setModel(modelo);
     version = "08122015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando la curva de reflectancia difusa y la curva de absorbancia aparente       */
@@ -24,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->adjustSize();
-    this->setFixedSize(this->size());
 }
 
 void MainWindow::revisionBtns()
@@ -137,13 +142,23 @@ void MainWindow::on_btnMedir_clicked()
         medicion.push_back(float(47.8099 + numCurvas));
     }
 
-    int j = 400;
+    int rango = 400;
 
     for(int i = 0; i < 31; ++i){
 
         yRef[i] = medicion.at(i).toDouble();
         yAbs[i] = double(100) - medicion.at(i).toDouble();
-        j+=10;
+
+
+        QModelIndex indice = modelo->index(i, 0, QModelIndex());
+
+        modelo->setData(indice, rango);
+
+        indice = modelo->index(i, 1, QModelIndex());
+
+        modelo->setData(indice, yRef[i]);
+
+        rango+=10;
     }
 
     if(reflectancia->numCurvas() > 0){
@@ -158,7 +173,7 @@ void MainWindow::on_btnMedir_clicked()
     }
     absorbancia->agregarCurva(yAbs);
 
-    qDebug() << ops.eritema(yRef) << endl;
+    ui->lineaEritema->setText(QString().setNum(ops.eritema(yRef)));
 
     numCurvas += 1;
 
