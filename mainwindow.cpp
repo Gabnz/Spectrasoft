@@ -35,21 +35,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnBlanco, btnNegro, btnMedir;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir;
 
     if(conectado){
         btnConectar = false;
         btnDesconectar = true;
-        btnBlanco = btnNegro = btnMedir = true;
+        btnEstandarizar = btnMedir = true;
     }else{
         btnConectar = true;
         btnDesconectar = false;
-        btnBlanco = btnNegro = btnMedir = false;
+         btnEstandarizar = btnMedir = false;
     }
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    ui->actionEstandarizar_Blanco->setEnabled(btnBlanco);
-    ui->actionEstandarizar_Negro->setEnabled(btnNegro);
+    //ui->btnEstandarizar->setEnabled( btnEstandarizar);
     //ui->btnMedir->setEnabled(btnMedir);
 }
 
@@ -198,36 +197,6 @@ void MainWindow::ajustarAbsY(const QCPRange &newRange)
     absorbancia->ajustarGrafica("y",  newRange, 0, yAbs);
 }
 
-void MainWindow::on_actionEstandarizar_Negro_triggered()
-{
-    bool estandarizado;
-    QMessageBox::information(this, "Prepare la trampa de luz", "Asegurese de tener lista la trampa de luz");
-    estandarizado = miniscan.estNegro();
-
-    if(estandarizado){
-        QMessageBox::information(this, "Color negro estandarizado", "El color negro ha sido estandarizado correctamente");
-    }else{
-        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el color negro");
-    }
-
-    revisionBtns();
-}
-
-void MainWindow::on_actionEstandarizar_Blanco_triggered()
-{
-    bool estandarizado;
-    QMessageBox::information(this, "Prepare la cerámica blanca", "Asegurese de tener lista la cerámica blanca");
-    estandarizado = miniscan.estBlanco();
-
-    if(estandarizado){
-        QMessageBox::information(this, "Color blanco estandarizado", "El color blanco ha sido estandarizado correctamente");
-    }else{
-        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el color blanco");
-    }
-
-    revisionBtns();
-}
-
 void MainWindow::on_refSpinY_valueChanged(double arg1)
 {
     yRef = int(arg1 + 1);
@@ -252,4 +221,26 @@ void MainWindow::on_actionAcerca_de_triggered()
     QString desarrollador("<p>Diseñado, desarrollado e implementado por Gabriel Núñez.\nContacto: gabriel.nzn@gmail.com</p></body></html>");
     msgBox.setText(titulo + resumen + desarrollador);
     msgBox.exec();
+}
+
+void MainWindow::on_btnEstandarizar_clicked()
+{
+    bool negroListo, blancoListo;
+    negroListo = blancoListo = false;
+    QMessageBox::information(this, "Prepare la trampa de luz", "Asegurese de tener lista la trampa de luz");
+    negroListo = miniscan.estNegro();
+
+    if(negroListo){
+
+        QMessageBox::information(this, "Prepare la cerámica blanca", "Asegurese de tener lista la cerámica blanca");
+        blancoListo = miniscan.estBlanco();
+    }
+
+    if(negroListo && blancoListo){
+        QMessageBox::information(this, "Instrumento estandarizado", "El instrumento se ha estandarizado correctamente");
+    }else{
+        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el instrumento");
+    }
+
+    revisionBtns();
 }

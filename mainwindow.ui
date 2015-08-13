@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>887</width>
-    <height>663</height>
+    <height>668</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,43 +23,21 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="1">
-         <widget class="QPushButton" name="btnMedir">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Medir muestra</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <spacer name="horizontalSpacer_4">
+        <item row="0" column="0">
+         <spacer name="verticalSpacer_9">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>60</width>
-            <height>20</height>
+            <width>20</width>
+            <height>13</height>
            </size>
           </property>
          </spacer>
         </item>
-        <item row="2" column="1">
-         <spacer name="verticalSpacer">
+        <item row="0" column="1">
+         <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -75,7 +53,76 @@
          </spacer>
         </item>
         <item row="1" column="0">
-         <spacer name="horizontalSpacer_2">
+         <widget class="QPushButton" name="btnEstandarizar">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>120</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <stylestrategy>PreferDefault</stylestrategy>
+           </font>
+          </property>
+          <property name="text">
+           <string>Estandarizar</string>
+          </property>
+          <property name="icon">
+           <iconset resource="recursos.qrc">
+            <normaloff>:/img/blanco_negro_small.png</normaloff>:/img/blanco_negro_small.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="btnMedir">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>120</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Medir muestra</string>
+          </property>
+          <property name="icon">
+           <iconset resource="recursos.qrc">
+            <normaloff>:/img/logo_small.png</normaloff>:/img/logo_small.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -84,14 +131,27 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>60</width>
+            <width>13</width>
             <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
-        <item row="0" column="1">
-         <spacer name="verticalSpacer_2">
+        <item row="2" column="0">
+         <spacer name="verticalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -888,13 +948,6 @@
     <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
-   <widget class="QMenu" name="menuEstandarizacion">
-    <property name="title">
-     <string>Estandarización</string>
-    </property>
-    <addaction name="actionEstandarizar_Negro"/>
-    <addaction name="actionEstandarizar_Blanco"/>
-   </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
      <string>Ayuda</string>
@@ -902,7 +955,6 @@
     <addaction name="actionAcerca_de"/>
    </widget>
    <addaction name="menuDispositivo"/>
-   <addaction name="menuEstandarizacion"/>
    <addaction name="menuAyuda"/>
   </widget>
   <action name="actionConectar">
@@ -918,16 +970,6 @@
   <action name="actionSalir">
    <property name="text">
     <string>Salir</string>
-   </property>
-  </action>
-  <action name="actionEstandarizar_Blanco">
-   <property name="text">
-    <string>Color blanco</string>
-   </property>
-  </action>
-  <action name="actionEstandarizar_Negro">
-   <property name="text">
-    <string>Color negro</string>
    </property>
   </action>
   <action name="actionAcerca_de">

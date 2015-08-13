@@ -40,15 +40,13 @@ private slots:
 
     void ajustarAbsY(const QCPRange &newRange);
 
-    void on_actionEstandarizar_Negro_triggered();
-
-    void on_actionEstandarizar_Blanco_triggered();
-
     void on_refSpinY_valueChanged(double arg1);
 
     void on_absSpinY_valueChanged(double arg1);
 
     void on_actionAcerca_de_triggered();
+
+    void on_btnEstandarizar_clicked();
 
 private:
     Ui::MainWindow *ui;

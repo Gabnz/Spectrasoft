@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>img/logo_small.png</file>
         <file>img/logo_icon.ico</file>
+        <file>img/blanco_negro_small.png</file>
     </qresource>
 </RCC>
