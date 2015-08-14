@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
     /*------------------------------------------------------------------------------------------*/
-    ref = new dlgGrafica("reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
-    abs = new dlgGrafica("absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
+    ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
+    abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
 
     revisionBtns();
     this->setFixedSize(this->size());

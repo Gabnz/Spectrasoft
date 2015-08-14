@@ -9,8 +9,15 @@ dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *p
 
     n = 0;
     yMax = 100;
+
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->grafica);
-    titulo->setText("Curva de " + tituloExt);
+
+    if(tituloExt == "reflectancia"){
+        titulo->setText("Curva de " + tituloExt + "difusa");
+    }else{
+        titulo->setText("Curva de " + tituloExt + "aparente");
+    }
+
     titulo->setFont(QFont("sans", 12, QFont::Bold));
 
     QVector<double> ticks;
