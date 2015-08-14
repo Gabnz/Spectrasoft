@@ -18,25 +18,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
     /*------------------------------------------------------------------------------------------*/
-    reflectancia = new Grafica(ui->graficaReflectancia, this, "Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
-    absorbancia = new Grafica(ui->graficaAbsorbancia, this, "Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
-
-    connect(ui->graficaReflectancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarRefX(QCPRange)));
-    connect(ui->graficaReflectancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarRefY(QCPRange)));
-    connect(ui->graficaAbsorbancia->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsX(QCPRange)));
-    connect(ui->graficaAbsorbancia->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarAbsY(QCPRange)));
-
-    ui->refSpinY->setValue(yRef);
-    ui->absSpinY->setValue(yAbs);
+    ref = new dlgGrafica("reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
+    abs = new dlgGrafica("absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
 
     revisionBtns();
-    this->adjustSize();
     this->setFixedSize(this->size());
 }
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnFototipo;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnFototipo, btnRef, btnAbs;
 
     if(conectado){
         btnConectar = false;
@@ -49,9 +40,9 @@ void MainWindow::revisionBtns()
     }
 
     if(!medicion.isEmpty()){
-        btnFototipo = true;
+        btnFototipo = btnRef = btnAbs = true;
     }else{
-        btnFototipo = false;
+        btnFototipo = btnRef = btnAbs = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
@@ -59,6 +50,8 @@ void MainWindow::revisionBtns()
     //ui->btnEstandarizar->setEnabled( btnEstandarizar);
     //ui->btnMedir->setEnabled(btnMedir);
     ui->btnFototipo->setEnabled(btnFototipo);
+    ui->btnReflectancia->setEnabled(btnRef);
+    ui->btnAbsorbancia->setEnabled(btnAbs);
 }
 
 MainWindow::~MainWindow()
@@ -167,57 +160,18 @@ void MainWindow::on_btnMedir_clicked()
         rango+=10;
     }
 
-    if(reflectancia->numCurvas() > 0){
-
-        reflectancia->quitarCurva();
+    if(ref->numCurvas() > 0){
+        ref->quitarCurva();
+        abs->quitarCurva();
     }
-    reflectancia->agregarCurva(yRef);
-
-    if(absorbancia->numCurvas() > 0){
-
-        absorbancia->quitarCurva();
-    }
-    absorbancia->agregarCurva(yAbs);
+    ref->agregarCurva(yRef);
+    abs->agregarCurva(yAbs);
 
     ui->lineaEritema->setText(QString().setNum(ops.eritema(yRef)));
 
     numCurvas += 1;
 
     revisionBtns();
-}
-
-void MainWindow::ajustarRefX(const QCPRange &newRange)
-{
-    reflectancia->ajustarGrafica("x", newRange, 400, 700);
-}
-
-void MainWindow::ajustarRefY(const QCPRange &newRange)
-{
-    reflectancia->ajustarGrafica("y", newRange, 0, yRef);
-}
-
-void MainWindow::ajustarAbsX(const QCPRange &newRange)
-{
-    absorbancia->ajustarGrafica("x", newRange, 400, 700);
-}
-
-void MainWindow::ajustarAbsY(const QCPRange &newRange)
-{
-    absorbancia->ajustarGrafica("y",  newRange, 0, yAbs);
-}
-
-void MainWindow::on_refSpinY_valueChanged(double arg1)
-{
-    yRef = int(arg1 + 1);
-    ui->graficaReflectancia->yAxis->setRange(0, double(arg1));
-    ui->graficaReflectancia->replot();
-}
-
-void MainWindow::on_absSpinY_valueChanged(double arg1)
-{
-    yAbs = int(arg1 + 1);
-    ui->graficaAbsorbancia->yAxis->setRange(0, double(arg1));
-    ui->graficaAbsorbancia->replot();
 }
 
 void MainWindow::on_actionAcerca_de_triggered()
@@ -262,5 +216,10 @@ void MainWindow::on_btnFototipo_clicked()
 
 void MainWindow::on_btnReflectancia_clicked()
 {
+    ref->exec();
+}
 
+void MainWindow::on_btnAbsorbancia_clicked()
+{
+    abs->exec();
 }

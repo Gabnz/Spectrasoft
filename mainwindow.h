@@ -9,6 +9,7 @@
 #include <miniscanxe.h>
 #include <spectralops.h>
 #include <grafica.h>
+#include <dlggrafica.h>
 #include <dlgfototipo.h>
 
 namespace Ui {
@@ -33,18 +34,6 @@ private slots:
 
     void on_btnMedir_clicked();
 
-    void ajustarRefX(const QCPRange &newRange);
-
-    void ajustarRefY(const QCPRange &newRange);
-
-    void ajustarAbsX(const QCPRange &newRange);
-
-    void ajustarAbsY(const QCPRange &newRange);
-
-    void on_refSpinY_valueChanged(double arg1);
-
-    void on_absSpinY_valueChanged(double arg1);
-
     void on_actionAcerca_de_triggered();
 
     void on_btnEstandarizar_clicked();
@@ -53,11 +42,13 @@ private slots:
 
     void on_btnReflectancia_clicked();
 
+    void on_btnAbsorbancia_clicked();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
-    Grafica *reflectancia, *absorbancia;
+    dlgGrafica *ref, *abs;
     QStandardItemModel *modelo;
     QList<QVariant> medicion;
     int numCurvas, yRef, yAbs;

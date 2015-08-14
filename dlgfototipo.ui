@@ -17,7 +17,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Clasificación de fototipo</string>
+   <string>Clasificación del fototipo</string>
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
