@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     conectado = false;
+    medicion.clear();
     numCurvas = 0;
     yRef = yAbs = 100;
     modelo = new QStandardItemModel(2, 31, this);
@@ -15,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tablaPuntosEspectrales->setModel(modelo);
     version = "08122015";
     /*------------------------------------------------------------------------------------------*/
-    /*         Creando la curva de reflectancia difusa y la curva de absorbancia aparente       */
+    /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
     /*------------------------------------------------------------------------------------------*/
     reflectancia = new Grafica(ui->graficaReflectancia, this, "Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
     absorbancia = new Grafica(ui->graficaAbsorbancia, this, "Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnFototipo;
 
     if(conectado){
         btnConectar = false;
@@ -46,10 +47,18 @@ void MainWindow::revisionBtns()
         btnDesconectar = false;
          btnEstandarizar = btnMedir = false;
     }
+
+    if(!medicion.isEmpty()){
+        btnFototipo = true;
+    }else{
+        btnFototipo = false;
+    }
+
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
     //ui->btnEstandarizar->setEnabled( btnEstandarizar);
     //ui->btnMedir->setEnabled(btnMedir);
+    ui->btnFototipo->setEnabled(btnFototipo);
 }
 
 MainWindow::~MainWindow()
@@ -64,11 +73,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionConectar_triggered()
 {
     conectado = miniscan.conectar();
+    QMessageBox msg;
 
     if(conectado){
-        QMessageBox::information(this, "Dispositivo conectado", "El dispositivo ha sido conectado correctamente");
+        QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente");
     }else{
-        QMessageBox::critical(this, "Error al conectar", "El dispositivo no se pudo conectar");
+        QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar");
     }
 
     revisionBtns();
@@ -79,9 +89,9 @@ void MainWindow::on_actionDesconectar_triggered()
     conectado = miniscan.desconectar();
 
     if(!conectado){
-        QMessageBox::information(this, "Dispositivo desconectado", "El dispositivo ha sido desconectado correctamente");
+        QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente");
     }else{
-        QMessageBox::critical(this, "Error al desconectar", "El dispositivo no se pudo desconectar");
+        QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar");
     }
 
     revisionBtns();
@@ -94,7 +104,6 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_btnMedir_clicked()
 {
-    QList<QVariant> medicion;
     QVector<double> yRef(31), yAbs(31);
 
     medicion = miniscan.medir();
@@ -237,10 +246,21 @@ void MainWindow::on_btnEstandarizar_clicked()
     }
 
     if(negroListo && blancoListo){
-        QMessageBox::information(this, "Instrumento estandarizado", "El instrumento se ha estandarizado correctamente");
+        QMessageBox::information(this, "Estandarizado", "El MiniScan se ha estandarizado correctamente");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el instrumento");
+        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el MiniScan");
     }
 
     revisionBtns();
+}
+
+void MainWindow::on_btnFototipo_clicked()
+{
+    dlgFototipo fototipo(ops.fototipo());
+    fototipo.exec();
+}
+
+void MainWindow::on_btnReflectancia_clicked()
+{
+
 }

@@ -3,5 +3,27 @@
         <file>img/logo_small.png</file>
         <file>img/logo_icon.ico</file>
         <file>img/blanco_negro_small.png</file>
+        <file>img/fototipo_1.png</file>
+        <file>img/fototipo_2.png</file>
+        <file>img/fototipo_3.png</file>
+        <file>img/fototipo_4.png</file>
+        <file>img/fototipo_5.png</file>
+        <file>img/fototipo_6.png</file>
+        <file>img/fototipos_small.png</file>
+        <file>img/fototipo_6_seleccionado.png</file>
+        <file>img/fototipo_1_seleccionado.png</file>
+        <file>img/fototipo_2_seleccionado.png</file>
+        <file>img/fototipo_3_seleccionado.png</file>
+        <file>img/fototipo_4_seleccionado.png</file>
+        <file>img/fototipo_5_seleccionado.png</file>
+        <file>img/curva_absorbancia.png</file>
+        <file>img/curva_reflectancia.png</file>
+        <file>img/color_blanco.png</file>
+        <file>img/color_negro.png</file>
+        <file>img/color_rojo.png</file>
+        <file>img/color_verde.png</file>
+        <file>img/error.png</file>
+        <file>img/pregunta.png</file>
+        <file>img/informacion.png</file>
     </qresource>
 </RCC>

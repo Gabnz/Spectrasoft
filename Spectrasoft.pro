@@ -18,15 +18,21 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     spectralops.cpp \
     miniscanxe.cpp \
-    grafica.cpp
+    grafica.cpp \
+    dlgfototipo.cpp \
+    dlggrafica.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
     spectralops.h \
     miniscanxe.h \
-    grafica.h
+    grafica.h \
+    dlgfototipo.h \
+    dlggrafica.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dlgfototipo.ui \
+    dlggrafica.ui
 
 RESOURCES += \
     recursos.qrc

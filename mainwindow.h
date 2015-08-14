@@ -9,6 +9,7 @@
 #include <miniscanxe.h>
 #include <spectralops.h>
 #include <grafica.h>
+#include <dlgfototipo.h>
 
 namespace Ui {
 class MainWindow;
@@ -48,12 +49,17 @@ private slots:
 
     void on_btnEstandarizar_clicked();
 
+    void on_btnFototipo_clicked();
+
+    void on_btnReflectancia_clicked();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
     Grafica *reflectancia, *absorbancia;
     QStandardItemModel *modelo;
+    QList<QVariant> medicion;
     int numCurvas, yRef, yAbs;
     bool conectado;
     QString version;
