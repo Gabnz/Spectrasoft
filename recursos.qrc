@@ -27,5 +27,6 @@
         <file>img/informacion.png</file>
         <file>img/logo_vacio.png</file>
         <file>img/gris.png</file>
+        <file>img/logo_gris.png</file>
     </qresource>
 </RCC>
