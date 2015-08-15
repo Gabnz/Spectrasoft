@@ -48,7 +48,7 @@ private:
     MiniScanXE miniscan;
     SpectralOps ops;
     dlgGrafica *ref, *abs;
-    QStandardItemModel *modelo;
+    QStandardItemModel *modeloPuntos, *modeloXYZ, *modeloLAB, *modeloAbsEsp;
     QList<QVariant> medicion;
     int numCurvas, yRef, yAbs;
     bool conectado;

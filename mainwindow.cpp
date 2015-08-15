@@ -8,12 +8,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     medicion.clear();
     numCurvas = 0;
     yRef = yAbs = 100;
-    modelo = new QStandardItemModel(2, 31, this);
+
+    modeloPuntos = new QStandardItemModel(2, 31, this);
     QStringList cabeceras;
     cabeceras.push_back("Valor");
     cabeceras.push_back("Longitud");
-    modelo->setVerticalHeaderLabels(cabeceras);
-    ui->tablaPuntosEspectrales->setModel(modelo);
+    modeloPuntos->setVerticalHeaderLabels(cabeceras);
+    ui->tablaPuntosEspectrales->setModel(modeloPuntos);
     ui->tablaPuntosEspectrales->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tablaPuntosEspectrales->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
@@ -24,9 +25,62 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tablaPuntosEspectrales->setRowHeight(0, alto);
     ui->tablaPuntosEspectrales->setRowHeight(1, alto);
 
+    int rango = 400;
+    QModelIndex indice;
+
     for(int i = 0; i < 31; ++i){
         ui->tablaPuntosEspectrales->setColumnWidth(i, ancho);
+
+        indice = modeloPuntos->index(1, i, QModelIndex());
+        modeloPuntos->setData(indice, rango);
+
+        rango+=10;
     }
+
+    alto = 37;
+    ancho = 55;
+
+    modeloXYZ = new QStandardItemModel(1, 3, this);
+    cabeceras.clear();
+    cabeceras.push_back("X");
+    cabeceras.push_back("Y");
+    cabeceras.push_back("Z");
+    modeloXYZ->setHorizontalHeaderLabels(cabeceras);
+    ui->tablaXYZ->setModel(modeloXYZ);
+    ui->tablaXYZ->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaXYZ->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaXYZ->setRowHeight(0, alto);
+    ui->tablaXYZ->setColumnWidth(0, ancho);
+    ui->tablaXYZ->setColumnWidth(1, ancho);
+    ui->tablaXYZ->setColumnWidth(2, ancho);
+
+    modeloLAB = new QStandardItemModel(1, 3, this);
+    cabeceras.clear();
+    cabeceras.push_back("L");
+    cabeceras.push_back("a");
+    cabeceras.push_back("b");
+    modeloLAB->setHorizontalHeaderLabels(cabeceras);
+    ui->tablaLAB->setModel(modeloLAB);
+    ui->tablaLAB->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaLAB->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaLAB->setRowHeight(0, alto);
+    ui->tablaLAB->setColumnWidth(0, ancho);
+    ui->tablaLAB->setColumnWidth(1, ancho);
+    ui->tablaLAB->setColumnWidth(2, ancho);
+
+    ancho = 99;
+
+    modeloAbsEsp = new QStandardItemModel(1, 2, this);
+    cabeceras.clear();
+    cabeceras.push_back("Absorción");
+    cabeceras.push_back("Esparcimiento");
+    modeloAbsEsp->setHorizontalHeaderLabels(cabeceras);
+    ui->tablaAbsEsp->setModel(modeloAbsEsp);
+    ui->tablaAbsEsp->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaAbsEsp->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaAbsEsp->setRowHeight(0, alto);
+    ui->tablaAbsEsp->setColumnWidth(0, ancho);
+    ui->tablaAbsEsp->setColumnWidth(1, ancho);
 
     version = "08142015";
     /*------------------------------------------------------------------------------------------*/
@@ -159,7 +213,6 @@ void MainWindow::on_btnMedir_clicked()
         medicion.push_back(float(47.8099 + numCurvas));
     }
 
-    int rango = 400;
     QModelIndex indice;
 
     for(int i = 0; i < 31; ++i){
@@ -167,13 +220,8 @@ void MainWindow::on_btnMedir_clicked()
         yRef[i] = medicion.at(i).toDouble();
         yAbs[i] = double(100) - medicion.at(i).toDouble();
 
-        indice = modelo->index(0, i, QModelIndex());
-        modelo->setData(indice, yRef[i]);
-
-        indice = modelo->index(1, i, QModelIndex());
-        modelo->setData(indice, rango);
-
-        rango+=10;
+        indice = modeloPuntos->index(0, i, QModelIndex());
+        modeloPuntos->setData(indice, yRef[i]);
     }
 
     if(ref->numCurvas() > 0){
