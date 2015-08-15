@@ -13,9 +13,9 @@ dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *p
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->grafica);
 
     if(tituloExt == "reflectancia"){
-        titulo->setText("Curva de " + tituloExt + "difusa");
+        titulo->setText("Curva de " + tituloExt + " difusa");
     }else{
-        titulo->setText("Curva de " + tituloExt + "aparente");
+        titulo->setText("Curva de " + tituloExt + " aparente");
     }
 
     titulo->setFont(QFont("sans", 12, QFont::Bold));
@@ -38,6 +38,7 @@ dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *p
     ui->grafica->xAxis->setTickVector(ticks);
     ui->grafica->xAxis->setTickLabelPadding(5);
     ui->grafica->xAxis->setTickLabelRotation(-45);
+    ui->grafica->xAxis->setAutoTickStep(true);
     ui->grafica->setInteraction(QCP::iRangeDrag, true);
     ui->grafica->setInteraction(QCP::iRangeZoom, true);
     ui->grafica->setInteraction(QCP::iSelectItems, true);
@@ -46,6 +47,8 @@ dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *p
     connect(ui->grafica->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(ajustarY(QCPRange)));
 
     ui->spinY->setValue(yMax);
+    ui->grafica->rescaleAxes();
+    ui->grafica->yAxis->setTickStep(1);
     this->setWindowFlags(Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 }
 
@@ -63,7 +66,7 @@ void dlgGrafica::agregarCurva(QVector<double> y)
     ui->grafica->graph(n)->setData(x, y);
     ui->grafica->graph(n)->setScatterStyle(myScatter);
     ui->grafica->graph(n)->setPen(QPen(Qt::black));
-    ui->grafica->yAxis->setRange(0, 100);
+    ui->grafica->yAxis->setRange(0, yMax);
     ui->grafica->replot();
 
     ++n;

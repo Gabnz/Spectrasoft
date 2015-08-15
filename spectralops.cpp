@@ -5,6 +5,46 @@ SpectralOps::SpectralOps()
 
 }
 
+QVector<float> SpectralOps::CIEXYZ(QVector<double> medicion)
+{
+    QVector<float> resultado;
+
+    resultado.push_back(0);
+    resultado.push_back(0);
+    resultado.push_back(0);
+
+    return resultado;
+}
+
+QVector<float> SpectralOps::CIELAB(QVector<double> medicion)
+{
+    QVector<float> resultado;
+
+    resultado.push_back(0);
+    resultado.push_back(0);
+    resultado.push_back(0);
+
+    return resultado;
+}
+
+float SpectralOps::absorcion(QVector<double> medicion)
+{
+    float resultado;
+
+    resultado = 0;
+
+    return resultado;
+}
+
+float SpectralOps::esparcimiento(QVector<double> medicion)
+{
+    float resultado;
+
+    resultado = 0;
+
+    return resultado;
+}
+
 float SpectralOps::eritema(QVector<double> medicion)
 {
     /*promRojo: calcula el promedio ponderado del rango de longitud de onda que produce
@@ -16,9 +56,9 @@ float SpectralOps::eritema(QVector<double> medicion)
     float promVerde = (medicion[16]/2 + medicion[17] + medicion[18]/2)/2;
 
     /*E = calcula el indice de eritema, empleando el uso de los promedios calculados anteriormente*/
-    float E = log(1/promVerde) - log(1/promRojo);
+    float resultado = log(1/promVerde) - log(1/promRojo);
 
-    return E;
+    return resultado;
 }
 
 int SpectralOps::fototipo()

@@ -9,6 +9,10 @@ class SpectralOps
 public:
     SpectralOps();
 
+    QVector<float> CIEXYZ(QVector<double> medicion);
+    QVector<float> CIELAB(QVector<double> medicion);
+    float absorcion(QVector<double> medicion);
+    float esparcimiento(QVector<double> medicion);
     /*
         Retorna el indice de eritema, utilizado para determinar el nivel
         inflamatorio de la epidermis en la piel de un paciente.

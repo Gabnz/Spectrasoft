@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     spectralops.cpp \
     miniscanxe.cpp \
-    grafica.cpp \
     dlgfototipo.cpp \
     dlggrafica.cpp
 
@@ -26,7 +25,6 @@ HEADERS  += mainwindow.h \
     qcustomplot.h \
     spectralops.h \
     miniscanxe.h \
-    grafica.h \
     dlgfototipo.h \
     dlggrafica.h
 

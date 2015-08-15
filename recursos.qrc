@@ -25,5 +25,7 @@
         <file>img/error.png</file>
         <file>img/pregunta.png</file>
         <file>img/informacion.png</file>
+        <file>img/logo_vacio.png</file>
+        <file>img/gris.png</file>
     </qresource>
 </RCC>

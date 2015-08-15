@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     cabeceras.push_back("Longitud");
     modelo->setVerticalHeaderLabels(cabeceras);
     ui->tablaPuntosEspectrales->setModel(modelo);
-    version = "08122015";
+    version = "08142015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
     /*------------------------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnFototipo, btnRef, btnAbs;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnBorrar,btnFototipo, btnRef, btnAbs;
 
     if(conectado){
         btnConectar = false;
@@ -40,15 +40,16 @@ void MainWindow::revisionBtns()
     }
 
     if(!medicion.isEmpty()){
-        btnFototipo = btnRef = btnAbs = true;
+        btnBorrar = btnFototipo = btnRef = btnAbs = true;
     }else{
-        btnFototipo = btnRef = btnAbs = false;
+        btnBorrar = btnFototipo = btnRef = btnAbs = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    //ui->btnEstandarizar->setEnabled( btnEstandarizar);
+    //ui->btnEstandarizar->setEnabled(btnEstandarizar);
     //ui->btnMedir->setEnabled(btnMedir);
+    ui->btnBorrar->setEnabled(btnBorrar);
     ui->btnFototipo->setEnabled(btnFototipo);
     ui->btnReflectancia->setEnabled(btnRef);
     ui->btnAbsorbancia->setEnabled(btnAbs);

@@ -8,7 +8,6 @@
 ///
 #include <miniscanxe.h>
 #include <spectralops.h>
-#include <grafica.h>
 #include <dlggrafica.h>
 #include <dlgfototipo.h>
 

@@ -12,12 +12,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>783</height>
+    <width>511</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Clasificación del fototipo</string>
+   <string>Clasificación del tipo de piel</string>
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
