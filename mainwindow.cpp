@@ -14,6 +14,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     cabeceras.push_back("Longitud");
     modelo->setVerticalHeaderLabels(cabeceras);
     ui->tablaPuntosEspectrales->setModel(modelo);
+    ui->tablaPuntosEspectrales->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaPuntosEspectrales->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    int alto, ancho;
+    alto = 45;
+    ancho = 55;
+
+    ui->tablaPuntosEspectrales->setRowHeight(0, alto);
+    ui->tablaPuntosEspectrales->setRowHeight(1, alto);
+
+    for(int i = 0; i < 31; ++i){
+        ui->tablaPuntosEspectrales->setColumnWidth(i, ancho);
+    }
+
     version = "08142015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
@@ -147,6 +161,7 @@ void MainWindow::on_btnMedir_clicked()
 
     int rango = 400;
     QModelIndex indice;
+
     for(int i = 0; i < 31; ++i){
 
         yRef[i] = medicion.at(i).toDouble();
