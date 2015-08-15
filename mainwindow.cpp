@@ -91,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->setFixedSize(this->size());
+    qDebug() << ui->tablaPuntosEspectrales->size().height();
 }
 
 void MainWindow::revisionBtns()
@@ -115,7 +116,7 @@ void MainWindow::revisionBtns()
 
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    //ui->btnEstandarizar->setEnabled(btnEstandarizar);
+    //ui->actionEstandarizar->setEnabled(btnEstandarizar);
     //ui->btnMedir->setEnabled(btnMedir);
     ui->btnBorrar->setEnabled(btnBorrar);
     ui->btnFototipo->setEnabled(btnFototipo);
@@ -250,7 +251,23 @@ void MainWindow::on_actionAcerca_de_triggered()
     msgBox.exec();
 }
 
-void MainWindow::on_btnEstandarizar_clicked()
+void MainWindow::on_btnFototipo_clicked()
+{
+    dlgFototipo fototipo(ops.fototipo());
+    fototipo.exec();
+}
+
+void MainWindow::on_btnReflectancia_clicked()
+{
+    ref->exec();
+}
+
+void MainWindow::on_btnAbsorbancia_clicked()
+{
+    abs->exec();
+}
+
+void MainWindow::on_actionEstandarizar_triggered()
 {
     bool negroListo, blancoListo;
     negroListo = blancoListo = false;
@@ -270,20 +287,4 @@ void MainWindow::on_btnEstandarizar_clicked()
     }
 
     revisionBtns();
-}
-
-void MainWindow::on_btnFototipo_clicked()
-{
-    dlgFototipo fototipo(ops.fototipo());
-    fototipo.exec();
-}
-
-void MainWindow::on_btnReflectancia_clicked()
-{
-    ref->exec();
-}
-
-void MainWindow::on_btnAbsorbancia_clicked()
-{
-    abs->exec();
 }

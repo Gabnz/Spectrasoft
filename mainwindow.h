@@ -35,13 +35,13 @@ private slots:
 
     void on_actionAcerca_de_triggered();
 
-    void on_btnEstandarizar_clicked();
-
     void on_btnFototipo_clicked();
 
     void on_btnReflectancia_clicked();
 
     void on_btnAbsorbancia_clicked();
+
+    void on_actionEstandarizar_triggered();
 
 private:
     Ui::MainWindow *ui;
