@@ -91,12 +91,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->setFixedSize(this->size());
-    qDebug() << ui->tablaPuntosEspectrales->size().height();
 }
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnBorrar,btnFototipo, btnRef, btnAbs;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar,btnFototipo, btnRef, btnAbs;
 
     if(conectado){
         btnConectar = false;
@@ -109,15 +108,16 @@ void MainWindow::revisionBtns()
     }
 
     if(!medicion.isEmpty()){
-        btnBorrar = btnFototipo = btnRef = btnAbs = true;
+        btnGuardar = btnBorrar = btnFototipo = btnRef = btnAbs = true;
     }else{
-        btnBorrar = btnFototipo = btnRef = btnAbs = false;
+        btnGuardar = btnBorrar = btnFototipo = btnRef = btnAbs = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
     ui->actionDesconectar->setEnabled(btnDesconectar);
-    //ui->actionEstandarizar->setEnabled(btnEstandarizar);
-    //ui->btnMedir->setEnabled(btnMedir);
+    ui->actionEstandarizar->setEnabled(btnEstandarizar);
+    ui->btnMedir->setEnabled(btnMedir);
+    ui->btnGuardar->setEnabled(btnGuardar);
     ui->btnBorrar->setEnabled(btnBorrar);
     ui->btnFototipo->setEnabled(btnFototipo);
     ui->btnReflectancia->setEnabled(btnRef);
@@ -127,7 +127,7 @@ void MainWindow::revisionBtns()
 MainWindow::~MainWindow()
 {
     if(conectado){
-        miniscan.desconectar();
+        //miniscan.desconectar();
     }
 
     delete ui;
@@ -135,7 +135,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionConectar_triggered()
 {
-    conectado = miniscan.conectar();
+    conectado = true;
+    //conectado = miniscan.conectar();
     QMessageBox msg;
 
     if(conectado){
@@ -149,7 +150,8 @@ void MainWindow::on_actionConectar_triggered()
 
 void MainWindow::on_actionDesconectar_triggered()
 {
-    conectado = miniscan.desconectar();
+    conectado = false;
+    //conectado = miniscan.desconectar();
 
     if(!conectado){
         QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente");
@@ -285,6 +287,22 @@ void MainWindow::on_actionEstandarizar_triggered()
     }else{
         QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el MiniScan");
     }
+
+    revisionBtns();
+}
+
+void MainWindow::on_btnBorrar_clicked()
+{
+    medicion.clear();
+
+    QModelIndex indice;
+
+    for(int i = 0; i < 31; ++i){
+        indice = modeloPuntos->index(0, i, QModelIndex());
+        modeloPuntos->setData(indice, "");
+    }
+
+    ui->lineaEritema->setText("");
 
     revisionBtns();
 }

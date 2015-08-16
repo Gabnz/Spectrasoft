@@ -202,7 +202,7 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/logo_vacio.png</normaloff>:/img/logo_vacio.png</iconset>
+              <normaloff>:/img/base_datos.png</normaloff>:/img/base_datos.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -231,7 +231,7 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/logo_vacio.png</normaloff>:/img/logo_vacio.png</iconset>
+              <normaloff>:/img/basura.png</normaloff>:/img/basura.png</iconset>
             </property>
             <property name="iconSize">
              <size>

@@ -43,6 +43,8 @@ private slots:
 
     void on_actionEstandarizar_triggered();
 
+    void on_btnBorrar_clicked();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
