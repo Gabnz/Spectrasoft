@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void borrarResultados();
     void revisionBtns();
     ~MainWindow();
 
@@ -52,7 +53,7 @@ private:
     dlgGrafica *ref, *abs;
     QStandardItemModel *modeloPuntos, *modeloXYZ, *modeloLAB, *modeloAbsEsp;
     QList<QVariant> medicion;
-    int numCurvas, yRef, yAbs;
+    int numCurvas, yRef, yAbs, fototipo;
     bool conectado;
     QString version;
 };

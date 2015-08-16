@@ -30,5 +30,6 @@
         <file>img/logo_gris.png</file>
         <file>img/base_datos.png</file>
         <file>img/basura.png</file>
+        <file>img/fototipo_0.png</file>
     </qresource>
 </RCC>

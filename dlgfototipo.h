@@ -16,6 +16,7 @@ class dlgFototipo : public QDialog
 
 public:
     explicit dlgFototipo(int fototipoRecomendadoExt, QWidget *parent = 0);
+    int fototipoSeleccionado();
     ~dlgFototipo();
 
 private slots:
@@ -29,7 +30,7 @@ private:
     Ui::dlgFototipo *ui;
     QList<QPushButton*> btnsFototipos;
     QSignalMapper fototiposMapper;
-    int fototipo, numFototipos, fototipoRecomendado;
+    int fototipo, numFototipos, fototipoRecomendado, aux;
     QSize tam, tamSeleccionado;
 };
 

@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     conectado = false;
     medicion.clear();
     numCurvas = 0;
+    fototipo = 0;
     yRef = yAbs = 100;
 
     modeloPuntos = new QStandardItemModel(2, 31, this);
@@ -68,20 +69,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tablaLAB->setColumnWidth(1, ancho);
     ui->tablaLAB->setColumnWidth(2, ancho);
 
-    ancho = 99;
-
-    modeloAbsEsp = new QStandardItemModel(1, 2, this);
-    cabeceras.clear();
-    cabeceras.push_back("Absorción");
-    cabeceras.push_back("Esparcimiento");
-    modeloAbsEsp->setHorizontalHeaderLabels(cabeceras);
-    ui->tablaAbsEsp->setModel(modeloAbsEsp);
-    ui->tablaAbsEsp->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaAbsEsp->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaAbsEsp->setRowHeight(0, alto);
-    ui->tablaAbsEsp->setColumnWidth(0, ancho);
-    ui->tablaAbsEsp->setColumnWidth(1, ancho);
-
     version = "08142015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
@@ -91,6 +78,41 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     revisionBtns();
     this->setFixedSize(this->size());
+}
+
+void MainWindow::borrarResultados()
+{
+    medicion.clear();
+
+    QModelIndex indice;
+
+    for(int i = 0; i < 31; ++i){
+        indice = modeloPuntos->index(0, i, QModelIndex());
+        modeloPuntos->setData(indice, "");
+    }
+
+    for(int i = 0; i < 3; ++i){
+        indice = modeloXYZ->index(0, i, QModelIndex());
+        modeloXYZ->setData(indice, "");
+
+        indice = modeloLAB->index(0, i, QModelIndex());
+        modeloLAB->setData(indice, "");
+    }
+
+    ui->lineaAbsorcion->setText("");
+    ui->lineaEsparcimiento->setText("");
+    ui->lineaEritema->setText("");
+
+    QSize tam;
+
+    tam.setWidth(125);
+    tam.setHeight(125);
+
+    QPixmap imgFototipo(":/img/fototipo_0.png");
+
+    imgFototipo.scaled(tam);
+    ui->etqNumeroFototipo->setText("-");
+    ui->etqFototipo->setPixmap(imgFototipo);
 }
 
 void MainWindow::revisionBtns()
@@ -169,6 +191,8 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_btnMedir_clicked()
 {
+    borrarResultados();
+
     QVector<double> yRef(31), yAbs(31);
 
     medicion = miniscan.medir();
@@ -234,7 +258,23 @@ void MainWindow::on_btnMedir_clicked()
     ref->agregarCurva(yRef);
     abs->agregarCurva(yAbs);
 
-    ui->lineaEritema->setText(QString().setNum(ops.eritema(yRef)));
+    QVector<float> XYZ = ops.CIEXYZ(yRef);
+    QVector<float> LAB = ops.CIELAB(yRef);
+    float absorcion = ops.absorcion(yRef);
+    float esparcimiento = ops.esparcimiento(yRef);
+    float eritema = ops.eritema(yRef);
+
+    for(int i = 0; i < 3; ++i){
+        indice = modeloXYZ->index(0, i, QModelIndex());
+        modeloXYZ->setData(indice, XYZ.at(i));
+
+        indice = modeloLAB->index(0, i, QModelIndex());
+        modeloLAB->setData(indice, LAB.at(i));
+    }
+
+    ui->lineaAbsorcion->setText(QString().setNum(absorcion));
+    ui->lineaEsparcimiento->setText(QString().setNum(esparcimiento));
+    ui->lineaEritema->setText(QString().setNum(eritema));
 
     numCurvas += 1;
 
@@ -255,8 +295,26 @@ void MainWindow::on_actionAcerca_de_triggered()
 
 void MainWindow::on_btnFototipo_clicked()
 {
-    dlgFototipo fototipo(ops.fototipo());
-    fototipo.exec();
+    dlgFototipo dlg(ops.fototipo());
+    dlg.exec();
+
+    int fototipoSeleccionado;
+    fototipoSeleccionado = dlg.fototipoSeleccionado();
+
+    if(fototipoSeleccionado != 0){
+        fototipo = fototipoSeleccionado;
+        QSize tam;
+
+        tam.setWidth(125);
+        tam.setHeight(125);
+
+        QPixmap imgFototipo(":/img/fototipo_" + QString().setNum(fototipo) + ".png");
+        imgFototipo.scaled(tam);
+
+        ui->etqNumeroFototipo->setText(QString().setNum(fototipo));
+
+        ui->etqFototipo->setPixmap(imgFototipo);
+    }
 }
 
 void MainWindow::on_btnReflectancia_clicked()
@@ -293,16 +351,7 @@ void MainWindow::on_actionEstandarizar_triggered()
 
 void MainWindow::on_btnBorrar_clicked()
 {
-    medicion.clear();
-
-    QModelIndex indice;
-
-    for(int i = 0; i < 31; ++i){
-        indice = modeloPuntos->index(0, i, QModelIndex());
-        modeloPuntos->setData(indice, "");
-    }
-
-    ui->lineaEritema->setText("");
+    borrarResultados();
 
     revisionBtns();
 }
