@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::borrarResultados()
 {
     medicion.clear();
+    fototipo = 0;
 
     QModelIndex indice;
 
@@ -130,9 +131,16 @@ void MainWindow::revisionBtns()
     }
 
     if(!medicion.isEmpty()){
-        btnGuardar = btnBorrar = btnFototipo = btnRef = btnAbs = true;
+        btnBorrar = btnFototipo = btnRef = btnAbs = true;
+
     }else{
-        btnGuardar = btnBorrar = btnFototipo = btnRef = btnAbs = false;
+        btnBorrar = btnFototipo = btnRef = btnAbs = false;
+    }
+
+    if(fototipo != 0){
+        btnGuardar = true;
+    }else{
+        btnGuardar = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
@@ -298,11 +306,11 @@ void MainWindow::on_btnFototipo_clicked()
     dlgFototipo dlg(ops.fototipo());
     dlg.exec();
 
-    int fototipoSeleccionado;
-    fototipoSeleccionado = dlg.fototipoSeleccionado();
+    int aux;
+    aux = dlg.fototipoSeleccionado();
 
-    if(fototipoSeleccionado != 0){
-        fototipo = fototipoSeleccionado;
+    if(aux != 0){
+        fototipo = aux;
         QSize tam;
 
         tam.setWidth(125);
@@ -315,6 +323,8 @@ void MainWindow::on_btnFototipo_clicked()
 
         ui->etqFototipo->setPixmap(imgFototipo);
     }
+
+    revisionBtns();
 }
 
 void MainWindow::on_btnReflectancia_clicked()

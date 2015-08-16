@@ -186,7 +186,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Guardar muestra</string>
+           <string>Guardar resultados</string>
           </property>
           <property name="icon">
            <iconset resource="recursos.qrc">
@@ -215,7 +215,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Borrar muestra</string>
+           <string>Borrar resultados</string>
           </property>
           <property name="icon">
            <iconset resource="recursos.qrc">
