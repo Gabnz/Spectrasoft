@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tablaLAB->setColumnWidth(1, ancho);
     ui->tablaLAB->setColumnWidth(2, ancho);
 
-    version = "08142015";
+    version = "08162015";
     /*------------------------------------------------------------------------------------------*/
     /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
     /*------------------------------------------------------------------------------------------*/
