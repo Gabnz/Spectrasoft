@@ -272,7 +272,7 @@ void MainWindow::on_btnMedir_clicked()
     QVector<float> LAB = ops.CIELAB(datosEspectrales);
     float absorcion = ops.absorcion(yRef);
     float esparcimiento = ops.esparcimiento(yRef);
-    float eritema = ops.eritema(yRef);
+    float eritema = ops.eritema(datosEspectrales);
 
     for(int i = 0; i < 3; ++i){
         indice = modeloXYZ->index(0, i, QModelIndex());

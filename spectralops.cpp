@@ -100,7 +100,7 @@ float SpectralOps::esparcimiento(QVector<double> medicion)
     return resultado;
 }
 
-float SpectralOps::eritema(QVector<double> medicion)
+float SpectralOps::eritema(QVector<float> medicion)
 {
     /*promRojo: calcula el promedio ponderado del rango de longitud de onda que produce
         la sensacion de color rojo, dandole mayor importancia a los puntos que se encuentran en el medio*/
@@ -111,7 +111,7 @@ float SpectralOps::eritema(QVector<double> medicion)
     float promVerde = (medicion[16]/2.0 + medicion[17] + medicion[18]/2.0)/2.0;
 
     /*E = calcula el indice de eritema, empleando el uso de los promedios calculados anteriormente*/
-    float resultado = log(1.0/promVerde) - log(1.0/promRojo);
+    float resultado = 100.0*(log(1.0/promVerde) - log(1.0/promRojo));
 
     return resultado;
 }

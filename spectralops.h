@@ -174,7 +174,7 @@ public:
         @param medicion la lista que contiene los 31 puntos espectrales de la muestra
         @return el indice de eritema.
     */
-    float eritema(QVector<double> medicion);
+    float eritema(QVector<float> medicion);
 
     /*
         Retorna el fototipo de la piel de un paciente segun la escala Fitz Patrick, empleando
