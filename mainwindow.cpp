@@ -202,7 +202,7 @@ void MainWindow::on_btnMedir_clicked()
     borrarResultados();
 
     QVector<double> yRef(31), yAbs(31);
-    QVector<float> aux(31);
+    QVector<float> datosEspectrales(31);
 
     medicion = miniscan.medir();
 
@@ -254,7 +254,7 @@ void MainWindow::on_btnMedir_clicked()
     for(int i = 0; i < 31; ++i){
 
         yRef[i] = medicion.at(i).toDouble();
-        aux[i] = medicion.at(i).toFloat();
+        datosEspectrales[i] = medicion.at(i).toFloat()/100.0;//se dividen los valores entre 100 para obtenerlos en su forma pura
         yAbs[i] = double(100) - medicion.at(i).toDouble();
 
         indice = modeloPuntos->index(0, i, QModelIndex());
@@ -268,8 +268,8 @@ void MainWindow::on_btnMedir_clicked()
     ref->agregarCurva(yRef);
     abs->agregarCurva(yAbs);
 
-    QVector<float> XYZ = ops.CIExyz(aux);
-    QVector<float> LAB = ops.CIELAB(yRef);
+    QVector<float> XYZ = ops.CIExyz(datosEspectrales);
+    QVector<float> LAB = ops.CIELAB(datosEspectrales);
     float absorcion = ops.absorcion(yRef);
     float esparcimiento = ops.esparcimiento(yRef);
     float eritema = ops.eritema(yRef);

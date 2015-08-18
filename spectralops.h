@@ -2,9 +2,10 @@
 #define SPECTRALOPS_H
 
 #include <QVector>
+#include <QDebug>
 #include <math.h>
 
-/*Distribucion de energia espectral relativa del iluminante CIE D65*/
+/*Distribucion de energia espectral relativa del iluminante estandar CIE D65*/
 const float iluCIED65[31] = {
 /*400nm*/82.7549,
 /*410nm*/91.4860,
@@ -38,7 +39,7 @@ const float iluCIED65[31] = {
 /*690nm*/69.7213,
 /*700nm*/71.6091};
 
-/*Funciones de correspondencia del color, dado el observador estandar CIE 1964 de 10 grados*/
+/*Funciones de correspondencia del color, dado el observador estandar CIE de 10 grados*/
 const float xCIE10[31] = {
 /*400nm*/0.019110,
 /*410nm*/0.084736,
@@ -138,10 +139,24 @@ const float zCIE10[31] = {
 /*690nm*/0.000000,
 /*700nm*/0.000000};
 
+/*Valores triestimulo del iluminante estandar CIE D65, tomando en cuenta el observador estandar CIE de 10 grados*/
+const float XnYnZn[3] = {
+/*Xn*/94.81,
+/*Yn*/100.00,
+/*Zn*/107.32
+};
+
 class SpectralOps
 {
 public:
     SpectralOps();
+    /*
+        Retorna los valores triestimulo CIE XYZ.
+
+        @param medicion la lista que contiene los 31 puntos espectrales de la muestra
+        @return los valores triestimulo XYZ.
+    */
+    QVector<float> CIEXYZ(QVector<float> medicion);
     /*
         Retorna las coordenadas de cromaticidad CIE xyz.
 
@@ -149,7 +164,7 @@ public:
         @return las coordenadas de cromaticidad xyz.
     */
     QVector<float> CIExyz(QVector<float> medicion);
-    QVector<float> CIELAB(QVector<double> medicion);
+    QVector<float> CIELAB(QVector<float> medicion);
     float absorcion(QVector<double> medicion);
     float esparcimiento(QVector<double> medicion);
     /*
