@@ -43,9 +43,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     modeloXYZ = new QStandardItemModel(1, 3, this);
     cabeceras.clear();
-    cabeceras.push_back("X");
-    cabeceras.push_back("Y");
-    cabeceras.push_back("Z");
+    cabeceras.push_back("x");
+    cabeceras.push_back("y");
+    cabeceras.push_back("z");
     modeloXYZ->setHorizontalHeaderLabels(cabeceras);
     ui->tablaXYZ->setModel(modeloXYZ);
     ui->tablaXYZ->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -202,6 +202,7 @@ void MainWindow::on_btnMedir_clicked()
     borrarResultados();
 
     QVector<double> yRef(31), yAbs(31);
+    QVector<float> aux(31);
 
     medicion = miniscan.medir();
 
@@ -253,6 +254,7 @@ void MainWindow::on_btnMedir_clicked()
     for(int i = 0; i < 31; ++i){
 
         yRef[i] = medicion.at(i).toDouble();
+        aux[i] = medicion.at(i).toFloat();
         yAbs[i] = double(100) - medicion.at(i).toDouble();
 
         indice = modeloPuntos->index(0, i, QModelIndex());
@@ -266,7 +268,7 @@ void MainWindow::on_btnMedir_clicked()
     ref->agregarCurva(yRef);
     abs->agregarCurva(yAbs);
 
-    QVector<float> XYZ = ops.CIEXYZ(yRef);
+    QVector<float> XYZ = ops.CIExyz(aux);
     QVector<float> LAB = ops.CIELAB(yRef);
     float absorcion = ops.absorcion(yRef);
     float esparcimiento = ops.esparcimiento(yRef);
@@ -280,9 +282,17 @@ void MainWindow::on_btnMedir_clicked()
         modeloLAB->setData(indice, LAB.at(i));
     }
 
-    ui->lineaAbsorcion->setText(QString().setNum(absorcion));
-    ui->lineaEsparcimiento->setText(QString().setNum(esparcimiento));
-    ui->lineaEritema->setText(QString().setNum(eritema));
+    QString auxR;
+
+    auxR.setNum(absorcion);
+    auxR.replace(".", ",");
+    ui->lineaAbsorcion->setText(auxR);
+    auxR.setNum(esparcimiento);
+    auxR.replace(".", ",");
+    ui->lineaEsparcimiento->setText(auxR);
+    auxR.setNum(eritema);
+    auxR.replace(".", ",");
+    ui->lineaEritema->setText(auxR);
 
     numCurvas += 1;
 

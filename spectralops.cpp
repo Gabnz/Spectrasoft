@@ -5,13 +5,41 @@ SpectralOps::SpectralOps()
 
 }
 
-QVector<float> SpectralOps::CIEXYZ(QVector<double> medicion)
+QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
 {
     QVector<float> resultado;
+    int i;
+    float k, auxK, auxX, auxY, auxZ, X, Y, Z, x, y, z;
 
-    resultado.push_back(0);
-    resultado.push_back(0);
-    resultado.push_back(0);
+    auxK = 0;
+
+    for(i = 0; i < 31; ++i){
+
+        auxK+= (iluCIED65[i]*yCIE10[i]);
+    }
+
+    k = 100/auxK;
+
+    auxX = auxY = auxZ = 0;
+
+    for(i = 0; i < 31; ++i){
+
+        auxX+= (medicion[i]*iluCIED65[i]*xCIE10[i]);
+        auxY+= (medicion[i]*iluCIED65[i]*yCIE10[i]);
+        auxY+= (medicion[i]*iluCIED65[i]*zCIE10[i]);
+    }
+
+    X = (k*auxX);
+    Y = (k*auxY);
+    Z = (k*auxZ);
+
+    x = X/(X + Y + Z);
+    y = Y/(X + Y + Z);
+    z = Z/(X + Y + Z);
+
+    resultado.push_back(x);
+    resultado.push_back(y);
+    resultado.push_back(z);
 
     return resultado;
 }
