@@ -10,6 +10,7 @@
 #include <spectralops.h>
 #include <dlggrafica.h>
 #include <dlgfototipo.h>
+#include <dlgdatosadicionales.h>
 
 namespace Ui {
 class MainWindow;
@@ -36,9 +37,11 @@ private slots:
 
     void on_actionAcerca_de_triggered();
 
-    void on_btnFototipo_clicked();
+//    void on_btnFototipo_clicked();
 
     void on_btnReflectancia_clicked();
+
+    void on_btnDatosAdicionales_clicked();
 
     void on_btnAbsorbancia_clicked();
 
@@ -51,11 +54,13 @@ private:
     MiniScanXE miniscan;
     SpectralOps ops;
     dlgGrafica *ref, *abs;
-    QStandardItemModel *modeloPuntos, *modeloXYZ, *modeloLAB, *modeloAbsEsp;
-    QList<QVariant> medicion;
-    int numCurvas, yRef, yAbs, fototipo;
+    dlgDatosAdicionales *dts;
+    QVector<float> datosEspectrales;
+    QStandardItemModel *modeloPuntos;
+    int numCurvas;
     bool conectado;
     QString version;
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

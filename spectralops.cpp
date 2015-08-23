@@ -36,8 +36,8 @@ QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
 QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
 {
     QVector<float> resultado;
-    float x, y, z;
     QVector<float> XYZ = CIEXYZ(medicion);
+    float x, y, z;
 
     x = XYZ[0]/(XYZ[0] + XYZ[1] + XYZ[2]);
     y = XYZ[1]/(XYZ[0] + XYZ[1] + XYZ[2]);
@@ -82,7 +82,7 @@ QVector<float> SpectralOps::CIELAB(QVector<float> medicion)
     return resultado;
 }
 
-float SpectralOps::absorcion(QVector<double> medicion)
+float SpectralOps::absorcion(QVector<float> medicion)
 {
     float resultado;
 
@@ -91,7 +91,7 @@ float SpectralOps::absorcion(QVector<double> medicion)
     return resultado;
 }
 
-float SpectralOps::esparcimiento(QVector<double> medicion)
+float SpectralOps::esparcimiento(QVector<float> medicion)
 {
     float resultado;
 
@@ -102,15 +102,15 @@ float SpectralOps::esparcimiento(QVector<double> medicion)
 
 float SpectralOps::eritema(QVector<float> medicion)
 {
-    /*promRojo: calcula el promedio ponderado del rango de longitud de onda que produce
+    /*promRojo: contiene el promedio ponderado del rango de longitud de onda que produce
         la sensacion de color rojo, dandole mayor importancia a los puntos que se encuentran en el medio*/
     float promRojo = (medicion[24]/2.0 + medicion[25] + medicion[26] + medicion[27]/2.0)/3.0;
 
-    /*promVerde: calcula el promedio ponderado del rango de longitud de onda que produce
+    /*promVerde: contiene el promedio ponderado del rango de longitud de onda que produce
         la sensacion de color verde, dandole mayor importancia al punto que se encuentra en el medio*/
     float promVerde = (medicion[16]/2.0 + medicion[17] + medicion[18]/2.0)/2.0;
 
-    /*E = calcula el indice de eritema, empleando el uso de los promedios calculados anteriormente*/
+    /*resultado = contiene el indice de eritema, empleando el uso de los promedios calculados anteriormente*/
     float resultado = 100.0*(log(1.0/promVerde) - log(1.0/promRojo));
 
     return resultado;

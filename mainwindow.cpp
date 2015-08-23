@@ -5,10 +5,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     conectado = false;
-    medicion.clear();
     numCurvas = 0;
-    fototipo = 0;
-    yRef = yAbs = 100;
+    ref = abs = NULL;
+    dts = NULL;
+    //fototipo = 0;
 
     modeloPuntos = new QStandardItemModel(2, 31, this);
     QStringList cabeceras;
@@ -38,52 +38,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         rango+=10;
     }
 
-    alto = 37;
-    ancho = 55;
-
-    modeloXYZ = new QStandardItemModel(1, 3, this);
-    cabeceras.clear();
-    cabeceras.push_back("x");
-    cabeceras.push_back("y");
-    cabeceras.push_back("z");
-    modeloXYZ->setHorizontalHeaderLabels(cabeceras);
-    ui->tablaXYZ->setModel(modeloXYZ);
-    ui->tablaXYZ->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaXYZ->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaXYZ->setRowHeight(0, alto);
-    ui->tablaXYZ->setColumnWidth(0, ancho);
-    ui->tablaXYZ->setColumnWidth(1, ancho);
-    ui->tablaXYZ->setColumnWidth(2, ancho);
-
-    modeloLAB = new QStandardItemModel(1, 3, this);
-    cabeceras.clear();
-    cabeceras.push_back("L");
-    cabeceras.push_back("a");
-    cabeceras.push_back("b");
-    modeloLAB->setHorizontalHeaderLabels(cabeceras);
-    ui->tablaLAB->setModel(modeloLAB);
-    ui->tablaLAB->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaLAB->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaLAB->setRowHeight(0, alto);
-    ui->tablaLAB->setColumnWidth(0, ancho);
-    ui->tablaLAB->setColumnWidth(1, ancho);
-    ui->tablaLAB->setColumnWidth(2, ancho);
-
     version = "08162015";
-    /*------------------------------------------------------------------------------------------*/
-    /*         Creando las curvas de reflectancia difusa y absorbancia aparente                 */
-    /*------------------------------------------------------------------------------------------*/
-    ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
-    abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
-
     revisionBtns();
     this->setFixedSize(this->size());
 }
 
 void MainWindow::borrarResultados()
 {
-    medicion.clear();
-    fototipo = 0;
+    datosEspectrales.clear();
+    //fototipo = 0;
 
     QModelIndex indice;
 
@@ -92,33 +55,36 @@ void MainWindow::borrarResultados()
         modeloPuntos->setData(indice, "");
     }
 
-    for(int i = 0; i < 3; ++i){
-        indice = modeloXYZ->index(0, i, QModelIndex());
-        modeloXYZ->setData(indice, "");
-
-        indice = modeloLAB->index(0, i, QModelIndex());
-        modeloLAB->setData(indice, "");
+    if(ref != NULL){
+        delete ref;
+        ref = NULL;
     }
 
-    ui->lineaAbsorcion->setText("");
-    ui->lineaEsparcimiento->setText("");
-    ui->lineaEritema->setText("");
+    if(abs != NULL){
+        delete abs;
+        abs = NULL;
+    }
 
-    QSize tam;
+    if(dts != NULL){
+        delete dts;
+        dts = NULL;
+    }
 
-    tam.setWidth(125);
-    tam.setHeight(125);
+//    QSize tam;
 
-    QPixmap imgFototipo(":/img/fototipo_0.png");
+//    tam.setWidth(125);
+//    tam.setHeight(125);
 
-    imgFototipo.scaled(tam);
-    ui->etqNumeroFototipo->setText("-");
-    ui->etqFototipo->setPixmap(imgFototipo);
+//    QPixmap imgFototipo(":/img/fototipo_0.png");
+
+//    imgFototipo.scaled(tam);
+//    ui->etqNumeroFototipo->setText("-");
+//    ui->etqFototipo->setPixmap(imgFototipo);
 }
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar,btnFototipo, btnRef, btnAbs;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar, btnRef, btnAbs, btnDatosAdicionales;
 
     if(conectado){
         btnConectar = false;
@@ -130,17 +96,11 @@ void MainWindow::revisionBtns()
          btnEstandarizar = btnMedir = false;
     }
 
-    if(!medicion.isEmpty()){
-        btnBorrar = btnFototipo = btnRef = btnAbs = true;
+    if(!datosEspectrales.isEmpty()){
+        btnGuardar = btnBorrar = btnRef = btnAbs = btnDatosAdicionales = true;
 
     }else{
-        btnBorrar = btnFototipo = btnRef = btnAbs = false;
-    }
-
-    if(fototipo != 0){
-        btnGuardar = true;
-    }else{
-        btnGuardar = false;
+        btnGuardar = btnBorrar = btnRef = btnAbs = btnDatosAdicionales = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
@@ -149,17 +109,13 @@ void MainWindow::revisionBtns()
     ui->btnMedir->setEnabled(btnMedir);
     ui->btnGuardar->setEnabled(btnGuardar);
     ui->btnBorrar->setEnabled(btnBorrar);
-    ui->btnFototipo->setEnabled(btnFototipo);
     ui->btnReflectancia->setEnabled(btnRef);
     ui->btnAbsorbancia->setEnabled(btnAbs);
+    ui->btnDatosAdicionales->setEnabled(btnDatosAdicionales);
 }
 
 MainWindow::~MainWindow()
 {
-    if(conectado){
-        //miniscan.desconectar();
-    }
-
     delete ui;
 }
 
@@ -189,6 +145,7 @@ void MainWindow::on_actionDesconectar_triggered()
         QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar");
     }
 
+    borrarResultados();
     revisionBtns();
 }
 
@@ -201,8 +158,7 @@ void MainWindow::on_btnMedir_clicked()
 {
     borrarResultados();
 
-    QVector<double> yRef(31), yAbs(31);
-    QVector<float> datosEspectrales(31);
+    QList<QVariant> medicion;
 
     medicion = miniscan.medir();
 
@@ -253,49 +209,12 @@ void MainWindow::on_btnMedir_clicked()
 
     for(int i = 0; i < 31; ++i){
 
-        yRef[i] = medicion.at(i).toDouble();
-        datosEspectrales[i] = medicion.at(i).toFloat()/100.0;//se dividen los valores entre 100 para obtenerlos en su forma pura
-        yAbs[i] = double(100) - medicion.at(i).toDouble();
-
+        datosEspectrales.push_back(medicion.at(i).toFloat());
         indice = modeloPuntos->index(0, i, QModelIndex());
-        modeloPuntos->setData(indice, yRef[i]);
+        modeloPuntos->setData(indice, datosEspectrales.at(i));
     }
-
-    if(ref->numCurvas() > 0){
-        ref->quitarCurva();
-        abs->quitarCurva();
-    }
-    ref->agregarCurva(yRef);
-    abs->agregarCurva(yAbs);
-
-    QVector<float> XYZ = ops.CIExyz(datosEspectrales);
-    QVector<float> LAB = ops.CIELAB(datosEspectrales);
-    float absorcion = ops.absorcion(yRef);
-    float esparcimiento = ops.esparcimiento(yRef);
-    float eritema = ops.eritema(datosEspectrales);
-
-    for(int i = 0; i < 3; ++i){
-        indice = modeloXYZ->index(0, i, QModelIndex());
-        modeloXYZ->setData(indice, XYZ.at(i));
-
-        indice = modeloLAB->index(0, i, QModelIndex());
-        modeloLAB->setData(indice, LAB.at(i));
-    }
-
-    QString auxR;
-
-    auxR.setNum(absorcion);
-    auxR.replace(".", ",");
-    ui->lineaAbsorcion->setText(auxR);
-    auxR.setNum(esparcimiento);
-    auxR.replace(".", ",");
-    ui->lineaEsparcimiento->setText(auxR);
-    auxR.setNum(eritema);
-    auxR.replace(".", ",");
-    ui->lineaEritema->setText(auxR);
 
     numCurvas += 1;
-
     revisionBtns();
 }
 
@@ -311,40 +230,90 @@ void MainWindow::on_actionAcerca_de_triggered()
     msgBox.exec();
 }
 
-void MainWindow::on_btnFototipo_clicked()
-{
-    dlgFototipo dlg(ops.fototipo());
-    dlg.exec();
+//void MainWindow::on_btnFototipo_clicked()
+//{
+//    dlgFototipo dlg(ops.fototipo());
+//    dlg.exec();
 
-    int aux;
-    aux = dlg.fototipoSeleccionado();
+//    int aux;
+//    aux = dlg.fototipoSeleccionado();
 
-    if(aux != 0){
-        fototipo = aux;
-        QSize tam;
+//    if(aux != 0){
+//        fototipo = aux;
+//        QSize tam;
 
-        tam.setWidth(125);
-        tam.setHeight(125);
+//        tam.setWidth(125);
+//        tam.setHeight(125);
 
-        QPixmap imgFototipo(":/img/fototipo_" + QString().setNum(fototipo) + ".png");
-        imgFototipo.scaled(tam);
+//        QPixmap imgFototipo(":/img/fototipo_" + QString().setNum(fototipo) + ".png");
+//        imgFototipo.scaled(tam);
 
-        ui->etqNumeroFototipo->setText(QString().setNum(fototipo));
+//        ui->etqNumeroFototipo->setText(QString().setNum(fototipo));
 
-        ui->etqFototipo->setPixmap(imgFototipo);
-    }
+//        ui->etqFototipo->setPixmap(imgFototipo);
+//    }
 
-    revisionBtns();
-}
+    //revisionBtns();
+//}
 
 void MainWindow::on_btnReflectancia_clicked()
 {
-    ref->exec();
+    if(ref == NULL){
+
+        ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosEspectrales[i]);
+        }
+
+        ref->agregarCurva(aux);
+        ref->show();
+    }else{
+        if(ref->isMinimized()){
+            ref->showMaximized();
+        }
+    }
 }
 
 void MainWindow::on_btnAbsorbancia_clicked()
 {
-    abs->exec();
+    if(abs == NULL){
+
+        abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(100.0 - datosEspectrales[i]);
+        }
+
+        abs->agregarCurva(aux);
+        abs->show();
+    }else{
+        if(abs->isMinimized()){
+            abs->showMaximized();
+        }
+    }
+}
+
+void MainWindow::on_btnDatosAdicionales_clicked()
+{
+    if(dts == NULL){
+
+        QVector<float> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = datosEspectrales[i]/100.0;
+        }
+
+        dts = new dlgDatosAdicionales(aux);
+
+        dts->show();
+    }else{
+        if(dts->isMinimized()){
+            dts->showMaximized();
+        }
+    }
 }
 
 void MainWindow::on_actionEstandarizar_triggered()
@@ -372,6 +341,15 @@ void MainWindow::on_actionEstandarizar_triggered()
 void MainWindow::on_btnBorrar_clicked()
 {
     borrarResultados();
-
     revisionBtns();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(conectado){
+        //miniscan.desconectar();
+    }
+
+    borrarResultados();
+    event->accept();
 }

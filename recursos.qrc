@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>img/logo_small.png</file>
         <file>img/logo_icon.ico</file>
-        <file>img/blanco_negro_small.png</file>
         <file>img/fototipo_1.png</file>
         <file>img/fototipo_2.png</file>
         <file>img/fototipo_3.png</file>
@@ -22,14 +21,25 @@
         <file>img/color_negro.png</file>
         <file>img/color_rojo.png</file>
         <file>img/color_verde.png</file>
-        <file>img/error.png</file>
-        <file>img/pregunta.png</file>
-        <file>img/informacion.png</file>
         <file>img/logo_vacio.png</file>
         <file>img/gris.png</file>
         <file>img/logo_gris.png</file>
         <file>img/base_datos.png</file>
         <file>img/basura.png</file>
         <file>img/fototipo_0.png</file>
+        <file>img/datos_adicionales.png</file>
+        <file>img/usuario.png</file>
+        <file>img/historia.png</file>
+        <file>img/blanco_negro.png</file>
+        <file>img/lupa.png</file>
+        <file>img/usuario_nuevo.png</file>
+        <file>img/plus_historia.png</file>
+        <file>img/plus_usuario.png</file>
+        <file>img/historia_logout.png</file>
+        <file>img/usuario_logout.png</file>
+        <file>img/padlock.png</file>
+        <file>img/salir.png</file>
+        <file>img/off.png</file>
+        <file>img/on.png</file>
     </qresource>
 </RCC>

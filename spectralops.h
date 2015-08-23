@@ -150,39 +150,51 @@ class SpectralOps
 {
 public:
     SpectralOps();
-    /*
-        Retorna los valores triestimulo CIE XYZ.
 
-        @param medicion la lista que contiene los 31 puntos espectrales de la muestra
-        @return los valores triestimulo XYZ.
+    /*
+    **   Calcula los valores triestimulo CIE XYZ, dados los 31 datos espectrales de una muestra.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return QVector<float>  Valores triestimulo CIE XYZ.
     */
     QVector<float> CIEXYZ(QVector<float> medicion);
-    /*
-        Retorna las coordenadas de cromaticidad CIE xyz.
 
-        @param medicion la lista que contiene los 31 puntos espectrales de la muestra
-        @return las coordenadas de cromaticidad xyz.
+    /*
+    **  Calcula las coordenadas de cromaticidad CIE xyz, dados los 31 datos espectrales de una muestra.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return QVector<float>  Coordenadas de cromaticidad CIE xyz.
     */
     QVector<float> CIExyz(QVector<float> medicion);
-    QVector<float> CIELAB(QVector<float> medicion);
-    float absorcion(QVector<double> medicion);
-    float esparcimiento(QVector<double> medicion);
-    /*
-        Retorna el indice de eritema, utilizado para determinar el nivel
-        inflamatorio de la epidermis en la piel de un paciente.
 
-        @param medicion la lista que contiene los 31 puntos espectrales de la muestra
-        @return el indice de eritema.
+    /*
+    **  Calcula las coordenadas de del espacio CIELAB, dados los 31 datos espectrales de una muestra.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return QVector<float>  Coordenadas del espacio CIELAB.
+    */
+    QVector<float> CIELAB(QVector<float> medicion);
+
+    float absorcion(QVector<float> medicion);
+
+    float esparcimiento(QVector<float> medicion);
+
+    /*
+    **  Calcula el indice de eritema asociado a los 31 datos espectrales de una muestra.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return float           Indice de eritema.
     */
     float eritema(QVector<float> medicion);
 
     /*
-        Retorna el fototipo de la piel de un paciente segun la escala Fitz Patrick, empleando
-        el uso de un algoritmo en vias de desarrollo.
-
-        @return el fototipo.
+    **  Determina el fototipo de la piel de un paciente segun la escala Fitz Patrick, empleando
+    **  el uso de un algoritmo en vias de desarrollo.
+    **
+    **  @return int             Fototipo cutaneo.
     */
     int fototipo();
+
     ~SpectralOps();
 
 private:
