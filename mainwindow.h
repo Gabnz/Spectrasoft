@@ -7,6 +7,7 @@
 #include <qcustomplot.h>
 ///
 #include <miniscanxe.h>
+#include <dlgestandarizar.h>
 #include <spectralops.h>
 #include <dlggrafica.h>
 #include <dlgfototipo.h>
@@ -56,7 +57,7 @@ private:
     dlgGrafica *ref, *abs;
     dlgDatosAdicionales *dts;
     QVector<float> datosEspectrales;
-    QStandardItemModel *modeloPuntos;
+    QStandardItemModel *modeloDatos;
     int numCurvas;
     bool conectado;
     QString version;

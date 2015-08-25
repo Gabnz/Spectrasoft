@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     miniscanxe.cpp \
     dlgfototipo.cpp \
     dlggrafica.cpp \
-    dlgdatosadicionales.cpp
+    dlgdatosadicionales.cpp \
+    dlgestandarizar.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -28,14 +29,16 @@ HEADERS  += mainwindow.h \
     miniscanxe.h \
     dlgfototipo.h \
     dlggrafica.h \
-    dlgdatosadicionales.h
+    dlgdatosadicionales.h \
+    dlgestandarizar.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
     dlggrafica.ui \
-    dlgdatosadicionales.ui
+    dlgdatosadicionales.ui \
+    dlgestandarizar.ui
 
 RESOURCES += \
     recursos.qrc
 
-RC_ICONS += img/logo_icon.ico
+RC_ICONS += img/logo_icono.ico

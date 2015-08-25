@@ -10,30 +10,30 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     dts = NULL;
     //fototipo = 0;
 
-    modeloPuntos = new QStandardItemModel(2, 31, this);
+    modeloDatos = new QStandardItemModel(2, 31, this);
     QStringList cabeceras;
     cabeceras.push_back("Valor");
     cabeceras.push_back("Longitud");
-    modeloPuntos->setVerticalHeaderLabels(cabeceras);
-    ui->tablaPuntosEspectrales->setModel(modeloPuntos);
-    ui->tablaPuntosEspectrales->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tablaPuntosEspectrales->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    modeloDatos->setVerticalHeaderLabels(cabeceras);
+    ui->tablaDatosEspectrales->setModel(modeloDatos);
+    ui->tablaDatosEspectrales->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tablaDatosEspectrales->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     int alto, ancho;
-    alto = 45;
+    alto = 50;
     ancho = 55;
 
-    ui->tablaPuntosEspectrales->setRowHeight(0, alto);
-    ui->tablaPuntosEspectrales->setRowHeight(1, alto);
+    ui->tablaDatosEspectrales->setRowHeight(0, alto);
+    ui->tablaDatosEspectrales->setRowHeight(1, alto);
 
     int rango = 400;
     QModelIndex indice;
 
     for(int i = 0; i < 31; ++i){
-        ui->tablaPuntosEspectrales->setColumnWidth(i, ancho);
+        ui->tablaDatosEspectrales->setColumnWidth(i, ancho);
 
-        indice = modeloPuntos->index(1, i, QModelIndex());
-        modeloPuntos->setData(indice, rango);
+        indice = modeloDatos->index(1, i, QModelIndex());
+        modeloDatos->setData(indice, rango);
 
         rango+=10;
     }
@@ -51,8 +51,8 @@ void MainWindow::borrarResultados()
     QModelIndex indice;
 
     for(int i = 0; i < 31; ++i){
-        indice = modeloPuntos->index(0, i, QModelIndex());
-        modeloPuntos->setData(indice, "");
+        indice = modeloDatos->index(0, i, QModelIndex());
+        modeloDatos->setData(indice, "");
     }
 
     if(ref != NULL){
@@ -210,8 +210,8 @@ void MainWindow::on_btnMedir_clicked()
     for(int i = 0; i < 31; ++i){
 
         datosEspectrales.push_back(medicion.at(i).toFloat());
-        indice = modeloPuntos->index(0, i, QModelIndex());
-        modeloPuntos->setData(indice, datosEspectrales.at(i));
+        indice = modeloDatos->index(0, i, QModelIndex());
+        modeloDatos->setData(indice, datosEspectrales.at(i));
     }
 
     numCurvas += 1;
@@ -220,10 +220,10 @@ void MainWindow::on_btnMedir_clicked()
 
 void MainWindow::on_actionAcerca_de_triggered()
 {
-    QImage logo(":/img/logo_small.png");
+    QImage logo(":/img/logo_pequeno.png");
     QMessageBox msgBox;
     msgBox.setIconPixmap(QPixmap::fromImage(logo));
-    QString titulo("<html><head/><body><p><span style=' font-size:14pt; font-weight:600; color:#4b4b4b;'>Spectrasoft</span>&nbsp; &nbsp;<span style=' font-size:8pt; font-weight:450; color:#4b4b4b;'>versión " + version + "</span></p>");
+    QString titulo("<html><head><head/><body><p><span style=' font-size:14pt; font-weight:600; color:#4b4b4b;'>Spectrasoft</span>&nbsp; &nbsp;<span style=' font-size:8pt; font-weight:450; color:#4b4b4b;'>versión " + version + "</span></p>");
     QString resumen("<p>Software para el manejo del MiniScan XE Plus.</p>");
     QString desarrollador("<p>Diseñado, desarrollado e implementado por Gabriel Núñez.\nContacto: gabriel.nzn@gmail.com</p></body></html>");
     msgBox.setText(titulo + resumen + desarrollador);
@@ -258,46 +258,57 @@ void MainWindow::on_actionAcerca_de_triggered()
 
 void MainWindow::on_btnReflectancia_clicked()
 {
+    if(ref != NULL && !ref->isMinimized() && !ref->isActiveWindow()){
+        delete ref;
+        ref = NULL;
+    }
+
     if(ref == NULL){
 
-        ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
         QVector<double> aux(31);
 
         for(int i = 0; i < 31; ++i){
             aux[i] = double(datosEspectrales[i]);
         }
 
+        ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
         ref->agregarCurva(aux);
         ref->show();
     }else{
-        if(ref->isMinimized()){
-            ref->showMaximized();
-        }
+        ref->showMaximized();
     }
 }
 
 void MainWindow::on_btnAbsorbancia_clicked()
 {
+    if(abs != NULL && !abs->isMinimized() && !abs->isActiveWindow()){
+        delete abs;
+        abs = NULL;
+    }
+
     if(abs == NULL){
 
-        abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
         QVector<double> aux(31);
 
         for(int i = 0; i < 31; ++i){
             aux[i] = double(100.0 - datosEspectrales[i]);
         }
 
+        abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
         abs->agregarCurva(aux);
         abs->show();
     }else{
-        if(abs->isMinimized()){
-            abs->showMaximized();
-        }
+        abs->showMaximized();
     }
 }
 
 void MainWindow::on_btnDatosAdicionales_clicked()
 {
+    if(dts != NULL && !dts->isMinimized() && !dts->isActiveWindow()){
+        delete dts;
+        dts = NULL;
+    }
+
     if(dts == NULL){
 
         QVector<float> aux(31);
@@ -307,12 +318,9 @@ void MainWindow::on_btnDatosAdicionales_clicked()
         }
 
         dts = new dlgDatosAdicionales(aux);
-
         dts->show();
     }else{
-        if(dts->isMinimized()){
-            dts->showMaximized();
-        }
+        dts->showMaximized();
     }
 }
 
@@ -320,12 +328,14 @@ void MainWindow::on_actionEstandarizar_triggered()
 {
     bool negroListo, blancoListo;
     negroListo = blancoListo = false;
-    QMessageBox::information(this, "Prepare la trampa de luz", "Asegurese de tener lista la trampa de luz");
+    dlgEstandarizar est;
+    est.exec();
     negroListo = miniscan.estNegro();
 
     if(negroListo){
 
-        QMessageBox::information(this, "Prepare la cerámica blanca", "Asegurese de tener lista la cerámica blanca");
+        est.estBlanco();
+        est.exec();
         blancoListo = miniscan.estBlanco();
     }
 

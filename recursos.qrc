@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/logo_small.png</file>
-        <file>img/logo_icon.ico</file>
         <file>img/fototipo_1.png</file>
         <file>img/fototipo_2.png</file>
         <file>img/fototipo_3.png</file>
@@ -15,23 +13,13 @@
         <file>img/fototipo_3_seleccionado.png</file>
         <file>img/fototipo_4_seleccionado.png</file>
         <file>img/fototipo_5_seleccionado.png</file>
-        <file>img/curva_absorbancia.png</file>
-        <file>img/curva_reflectancia.png</file>
-        <file>img/color_blanco.png</file>
         <file>img/color_negro.png</file>
-        <file>img/color_rojo.png</file>
-        <file>img/color_verde.png</file>
-        <file>img/logo_vacio.png</file>
-        <file>img/gris.png</file>
         <file>img/logo_gris.png</file>
         <file>img/base_datos.png</file>
-        <file>img/basura.png</file>
         <file>img/fototipo_0.png</file>
-        <file>img/datos_adicionales.png</file>
         <file>img/usuario.png</file>
         <file>img/historia.png</file>
         <file>img/blanco_negro.png</file>
-        <file>img/lupa.png</file>
         <file>img/usuario_nuevo.png</file>
         <file>img/plus_historia.png</file>
         <file>img/plus_usuario.png</file>
@@ -41,5 +29,16 @@
         <file>img/salir.png</file>
         <file>img/off.png</file>
         <file>img/on.png</file>
+        <file>img/usuario_avanzado.png</file>
+        <file>img/plus.png</file>
+        <file>img/color_blanco.png</file>
+        <file>img/absorbancia.png</file>
+        <file>img/reflectancia.png</file>
+        <file>img/buscar_historia.png</file>
+        <file>img/buscar_muestra.png</file>
+        <file>img/borrar.png</file>
+        <file>img/logo.png</file>
+        <file>img/logo_icono.ico</file>
+        <file>img/logo_pequeno.png</file>
     </qresource>
 </RCC>

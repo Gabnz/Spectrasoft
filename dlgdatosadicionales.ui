@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_small.png</normaloff>:/img/logo_small.png</iconset>
+    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
@@ -86,6 +86,9 @@
            </property>
            <property name="inputMethodHints">
             <set>Qt::ImhNone</set>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
            </property>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
@@ -184,6 +187,9 @@
              <width>167</width>
              <height>60</height>
             </size>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
            </property>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>

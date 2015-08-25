@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icon.ico</normaloff>:/img/logo_icon.ico</iconset>
+    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
@@ -83,11 +83,11 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/logo_small.png</normaloff>:/img/logo_small.png</iconset>
+              <normaloff>:/img/logo.png</normaloff>:/img/logo.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>20</width>
+              <width>25</width>
               <height>20</height>
              </size>
             </property>
@@ -112,7 +112,7 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/basura.png</normaloff>:/img/basura.png</iconset>
+              <normaloff>:/img/borrar.png</normaloff>:/img/borrar.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -184,8 +184,8 @@
             </property>
             <property name="iconSize">
              <size>
-              <width>20</width>
-              <height>20</height>
+              <width>22</width>
+              <height>22</height>
              </size>
             </property>
            </widget>
@@ -339,12 +339,12 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/curva_reflectancia.png</normaloff>:/img/curva_reflectancia.png</iconset>
+              <normaloff>:/img/reflectancia.png</normaloff>:/img/reflectancia.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>30</width>
-              <height>30</height>
+              <width>25</width>
+              <height>25</height>
              </size>
             </property>
            </widget>
@@ -368,12 +368,12 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/curva_absorbancia.png</normaloff>:/img/curva_absorbancia.png</iconset>
+              <normaloff>:/img/absorbancia.png</normaloff>:/img/absorbancia.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>30</width>
-              <height>30</height>
+              <width>25</width>
+              <height>25</height>
              </size>
             </property>
            </widget>
@@ -397,12 +397,12 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/datos_adicionales.png</normaloff>:/img/datos_adicionales.png</iconset>
+              <normaloff>:/img/plus.png</normaloff>:/img/plus.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>17</width>
-              <height>17</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
            </widget>
@@ -488,7 +488,7 @@
        </spacer>
       </item>
       <item row="2" column="1">
-       <widget class="QTableView" name="tablaPuntosEspectrales">
+       <widget class="QTableView" name="tablaDatosEspectrales">
         <property name="minimumSize">
          <size>
           <width>885</width>
@@ -579,9 +579,9 @@
     <property name="title">
      <string>Usuario</string>
     </property>
-    <addaction name="actionNuevo_usuario"/>
     <addaction name="actionIniciar_sesion"/>
     <addaction name="actionVer_usuario"/>
+    <addaction name="actionMas_opciones"/>
     <addaction name="separator"/>
     <addaction name="actionCerrar_sesion"/>
    </widget>
@@ -654,10 +654,10 @@
   <action name="actionAcerca_de">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/logo_small.png</normaloff>:/img/logo_small.png</iconset>
+     <normaloff>:/img/logo.png</normaloff>:/img/logo.png</iconset>
    </property>
    <property name="text">
-    <string>Acerca de</string>
+    <string>Acerca de Spectrasoft...</string>
    </property>
   </action>
   <action name="actionEstandarizar">
@@ -675,7 +675,7 @@
      <normaloff>:/img/padlock.png</normaloff>:/img/padlock.png</iconset>
    </property>
    <property name="text">
-    <string>Iniciar sesion</string>
+    <string>Iniciar sesión</string>
    </property>
   </action>
   <action name="actionCerrar_sesion">
@@ -684,16 +684,7 @@
      <normaloff>:/img/usuario_logout.png</normaloff>:/img/usuario_logout.png</iconset>
    </property>
    <property name="text">
-    <string>Cerrar sesion</string>
-   </property>
-  </action>
-  <action name="actionNuevo_usuario">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/plus_usuario.png</normaloff>:/img/plus_usuario.png</iconset>
-   </property>
-   <property name="text">
-    <string>Nuevo usuario</string>
+    <string>Cerrar sesión</string>
    </property>
   </action>
   <action name="actionRegistrar_historia">
@@ -708,7 +699,7 @@
   <action name="actionAbrir_historia">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/lupa.png</normaloff>:/img/lupa.png</iconset>
+     <normaloff>:/img/buscar_historia.png</normaloff>:/img/buscar_historia.png</iconset>
    </property>
    <property name="text">
     <string>Abrir historia</string>
@@ -741,37 +732,10 @@
     <string>Ver usuario</string>
    </property>
   </action>
-  <action name="actionMedir_muestra">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/fototipos_small.png</normaloff>:/img/fototipos_small.png</iconset>
-   </property>
-   <property name="text">
-    <string>Medir muestra</string>
-   </property>
-  </action>
-  <action name="actionGuardar_muestra">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/base_datos.png</normaloff>:/img/base_datos.png</iconset>
-   </property>
-   <property name="text">
-    <string>Guardar muestra</string>
-   </property>
-  </action>
-  <action name="actionBorrar_muestra">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/basura.png</normaloff>:/img/basura.png</iconset>
-   </property>
-   <property name="text">
-    <string>Borrar muestra</string>
-   </property>
-  </action>
   <action name="actionBuscar_muestra">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/fototipos_small.png</normaloff>:/img/fototipos_small.png</iconset>
+     <normaloff>:/img/buscar_muestra.png</normaloff>:/img/buscar_muestra.png</iconset>
    </property>
    <property name="text">
     <string>Buscar muestra</string>
@@ -780,10 +744,19 @@
   <action name="actionVer_muestra">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/fototipo_2.png</normaloff>:/img/fototipo_2.png</iconset>
+     <normaloff>:/img/fototipo_3.png</normaloff>:/img/fototipo_3.png</iconset>
    </property>
    <property name="text">
     <string>Ver muestra</string>
+   </property>
+  </action>
+  <action name="actionMas_opciones">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/usuario_avanzado.png</normaloff>:/img/usuario_avanzado.png</iconset>
+   </property>
+   <property name="text">
+    <string>Más opciones</string>
    </property>
   </action>
  </widget>

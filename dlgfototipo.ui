@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icon.ico</normaloff>:/img/logo_icon.ico</iconset>
+    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
