@@ -12,6 +12,12 @@
 #include <dlggrafica.h>
 #include <dlgfototipo.h>
 #include <dlgdatosadicionales.h>
+#include <dlginiciosesion.h>
+#include <dlgverusuario.h>
+#include <dlgregusuario.h>
+#include <dlgeliminarusuario.h>
+#include <dlgreghistoria.h>
+#include <QtSql>
 
 namespace Ui {
 class MainWindow;
@@ -50,10 +56,27 @@ private slots:
 
     void on_btnBorrar_clicked();
 
+    void on_actionIniciar_sesion_triggered();
+
+    void on_actionCerrar_sesion_triggered();
+
+    void on_actionVer_usuario_triggered();
+
+    void closeEvent(QCloseEvent *event);
+
+    void on_actionCerrar_historia_triggered();
+
+    void on_actionRegistrar_historia_triggered();
+
+    void on_actionRegistrar_usuario_triggered();
+
+    void on_actionEliminar_usuario_triggered();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
+    QSqlDatabase db;
     dlgGrafica *ref, *abs;
     dlgDatosAdicionales *dts;
     QVector<float> datosEspectrales;
@@ -61,7 +84,7 @@ private:
     int numCurvas;
     bool conectado;
     QString version;
-    void closeEvent(QCloseEvent *event);
+    QHash<QString, QString> infoUsuario, infoHistoria;
 };
 
 #endif // MAINWINDOW_H

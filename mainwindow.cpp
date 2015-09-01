@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     numCurvas = 0;
     ref = abs = NULL;
     dts = NULL;
+    infoUsuario.clear();
+    infoHistoria.clear();
+
     //fototipo = 0;
 
     modeloDatos = new QStandardItemModel(2, 31, this);
@@ -38,7 +41,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         rango+=10;
     }
 
-    version = "08162015";
+    version = "20150828";
+
+    //abriendo la conexion con la base de datos
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("localhost");
+    db.setDatabaseName("CIMBUC");
+    db.setUserName("CIMBUC");
+    db.setPassword("CIMBUC");
+    db.open();
+    //
     revisionBtns();
     this->setFixedSize(this->size());
 }
@@ -84,7 +96,9 @@ void MainWindow::borrarResultados()
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar, btnRef, btnAbs, btnDatosAdicionales;
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar, btnRef, btnAbs, btnDatosAdicionales,
+    iniciarSesion, verUsuario, masOpcionesU, registrarU, eliminarU, cerrarSesion,
+    registrarHistoria, buscarHistoria, verHistoria, cerrarHistoria, masOpcionesH;
 
     if(conectado){
         btnConectar = false;
@@ -94,6 +108,34 @@ void MainWindow::revisionBtns()
         btnConectar = true;
         btnDesconectar = false;
          btnEstandarizar = btnMedir = false;
+    }
+
+    if(!infoUsuario.isEmpty()){
+        iniciarSesion = false;
+        verUsuario = true;
+
+        if(infoUsuario["rol"] == "administrador")
+            masOpcionesU = registrarU = eliminarU = true;
+        else
+            masOpcionesU = registrarU = eliminarU = false;
+
+        cerrarSesion = true;
+
+        if(!infoHistoria.isEmpty()){
+            registrarHistoria = buscarHistoria = false;
+            verHistoria = cerrarHistoria = masOpcionesH = true;
+        }else{
+            registrarHistoria = buscarHistoria = true;
+            verHistoria = cerrarHistoria = masOpcionesH = false;
+        }
+
+    }else{
+        iniciarSesion = true;
+        verUsuario = masOpcionesU = registrarU = eliminarU = cerrarSesion = false;
+        registrarHistoria = buscarHistoria = verHistoria = cerrarHistoria = false;
+
+        registrarHistoria = buscarHistoria = false;
+        verHistoria = cerrarHistoria = masOpcionesH = false;
     }
 
     if(!datosEspectrales.isEmpty()){
@@ -112,6 +154,17 @@ void MainWindow::revisionBtns()
     ui->btnReflectancia->setEnabled(btnRef);
     ui->btnAbsorbancia->setEnabled(btnAbs);
     ui->btnDatosAdicionales->setEnabled(btnDatosAdicionales);
+    ui->actionIniciar_sesion->setEnabled(iniciarSesion);
+    ui->actionVer_usuario->setEnabled(verUsuario);
+    ui->menuMas_opciones_u->setEnabled(masOpcionesU);
+    ui->actionRegistrar_usuario->setEnabled(registrarU);
+    ui->actionEliminar_usuario->setEnabled(eliminarU);
+    ui->actionCerrar_sesion->setEnabled(cerrarSesion);
+    ui->actionRegistrar_historia->setEnabled(registrarHistoria);
+    ui->actionBuscar_historia->setEnabled(buscarHistoria);
+    ui->actionVer_historia->setEnabled(verHistoria);
+    ui->actionCerrar_historia->setEnabled(cerrarHistoria);
+    ui->menuMas_opciones_h->setEnabled(masOpcionesH);
 }
 
 MainWindow::~MainWindow()
@@ -126,9 +179,9 @@ void MainWindow::on_actionConectar_triggered()
     QMessageBox msg;
 
     if(conectado){
-        QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente");
+        QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
     }else{
-        QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar");
+        QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar.");
     }
 
     revisionBtns();
@@ -140,9 +193,9 @@ void MainWindow::on_actionDesconectar_triggered()
     //conectado = miniscan.desconectar();
 
     if(!conectado){
-        QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente");
+        QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
     }else{
-        QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar");
+        QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar.");
     }
 
     borrarResultados();
@@ -170,7 +223,7 @@ void MainWindow::on_btnMedir_clicked()
     }else{
         medicion.clear();
 
-        QMessageBox::critical(this, "Error al medir muestra", "La medicion no se pudo realizar");
+        QMessageBox::critical(this, "Error al medir la muestra", "La medición no se pudo realizar.");
 
         medicion.push_back(float(17.2101 + numCurvas));
         medicion.push_back(float(15.2329 + numCurvas));
@@ -340,9 +393,9 @@ void MainWindow::on_actionEstandarizar_triggered()
     }
 
     if(negroListo && blancoListo){
-        QMessageBox::information(this, "Estandarizado", "El MiniScan se ha estandarizado correctamente");
+        QMessageBox::information(this, "Estandarizado", "El MiniScan se ha estandarizado correctamente.");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el MiniScan");
+        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el MiniScan.");
     }
 
     revisionBtns();
@@ -356,10 +409,66 @@ void MainWindow::on_btnBorrar_clicked()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if(db.isOpen()){
+        db.close();
+    }
+
     if(conectado){
         //miniscan.desconectar();
     }
 
     borrarResultados();
     event->accept();
+}
+
+void MainWindow::on_actionIniciar_sesion_triggered()
+{
+    dlgInicioSesion sesion;
+
+    sesion.exec();
+
+    infoUsuario = sesion.getUsuario();
+    revisionBtns();
+}
+
+void MainWindow::on_actionCerrar_sesion_triggered()
+{
+    infoUsuario.clear();
+    QMessageBox::information(this, "Sesión cerrada", "Se ha cerrado la sesión correctamente.");
+    revisionBtns();
+}
+
+void MainWindow::on_actionVer_usuario_triggered()
+{
+    dlgVerUsuario verUsuario(infoUsuario);
+
+    verUsuario.exec();
+}
+
+void MainWindow::on_actionCerrar_historia_triggered()
+{
+    infoHistoria.clear();
+    QMessageBox::information(this, "Historia cerrada", "Se ha cerrado la historia correctamente.");
+    revisionBtns();
+}
+
+void MainWindow::on_actionRegistrar_historia_triggered()
+{
+    dlgRegHistoria regHistoria;
+
+    regHistoria.exec();
+}
+
+void MainWindow::on_actionRegistrar_usuario_triggered()
+{
+    dlgRegUsuario regU;
+
+    regU.exec();
+}
+
+void MainWindow::on_actionEliminar_usuario_triggered()
+{
+    dlgEliminarUsuario elimU;
+
+    elimU.exec();
 }

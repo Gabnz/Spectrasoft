@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += sql
 QT += axcontainer
 QT += serialport
 
@@ -21,7 +22,12 @@ SOURCES += main.cpp\
     dlgfototipo.cpp \
     dlggrafica.cpp \
     dlgdatosadicionales.cpp \
-    dlgestandarizar.cpp
+    dlgestandarizar.cpp \
+    dlginiciosesion.cpp \
+    dlgverusuario.cpp \
+    dlgreghistoria.cpp \
+    dlgregusuario.cpp \
+    dlgeliminarusuario.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -30,13 +36,23 @@ HEADERS  += mainwindow.h \
     dlgfototipo.h \
     dlggrafica.h \
     dlgdatosadicionales.h \
-    dlgestandarizar.h
+    dlgestandarizar.h \
+    dlginiciosesion.h \
+    dlgverusuario.h \
+    dlgreghistoria.h \
+    dlgregusuario.h \
+    dlgeliminarusuario.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
     dlggrafica.ui \
     dlgdatosadicionales.ui \
-    dlgestandarizar.ui
+    dlgestandarizar.ui \
+    dlginiciosesion.ui \
+    dlgverusuario.ui \
+    dlgreghistoria.ui \
+    dlgregusuario.ui \
+    dlgeliminarusuario.ui
 
 RESOURCES += \
     recursos.qrc

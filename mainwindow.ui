@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>950</width>
-    <height>400</height>
+    <width>952</width>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
    <layout class="QGridLayout" name="gridLayout_5">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
+      <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
@@ -108,7 +108,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Borrar muestra</string>
+             <string>Eliminar muestra</string>
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
@@ -397,12 +397,12 @@
             </property>
             <property name="icon">
              <iconset resource="recursos.qrc">
-              <normaloff>:/img/plus.png</normaloff>:/img/plus.png</iconset>
+              <normaloff>:/img/datos_adicionales.png</normaloff>:/img/datos_adicionales.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>20</width>
-              <height>20</height>
+              <width>16</width>
+              <height>16</height>
              </size>
             </property>
            </widget>
@@ -450,7 +450,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="1">
+      <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="etqDatosEspectrales">
@@ -475,19 +475,6 @@
        </layout>
       </item>
       <item row="2" column="0">
-       <spacer name="horizontalSpacer_6">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>13</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
        <widget class="QTableView" name="tablaDatosEspectrales">
         <property name="minimumSize">
          <size>
@@ -517,13 +504,13 @@
          <enum>Qt::ElideMiddle</enum>
         </property>
         <attribute name="horizontalHeaderVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderMinimumSectionSize">
          <number>35</number>
@@ -532,19 +519,6 @@
          <bool>true</bool>
         </attribute>
        </widget>
-      </item>
-      <item row="2" column="2">
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>13</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </item>
@@ -555,7 +529,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>950</width>
+     <width>952</width>
      <height>21</height>
     </rect>
    </property>
@@ -564,8 +538,9 @@
      <string>MiniScan</string>
     </property>
     <addaction name="actionConectar"/>
-    <addaction name="actionEstandarizar"/>
     <addaction name="actionDesconectar"/>
+    <addaction name="separator"/>
+    <addaction name="actionEstandarizar"/>
     <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
@@ -579,20 +554,45 @@
     <property name="title">
      <string>Usuario</string>
     </property>
+    <widget class="QMenu" name="menuMas_opciones_u">
+     <property name="title">
+      <string>Más opciones</string>
+     </property>
+     <property name="icon">
+      <iconset resource="recursos.qrc">
+       <normaloff>:/img/usuario_avanzado.png</normaloff>:/img/usuario_avanzado.png</iconset>
+     </property>
+     <addaction name="actionRegistrar_usuario"/>
+     <addaction name="actionEliminar_usuario"/>
+    </widget>
     <addaction name="actionIniciar_sesion"/>
     <addaction name="actionVer_usuario"/>
-    <addaction name="actionMas_opciones"/>
+    <addaction name="separator"/>
+    <addaction name="menuMas_opciones_u"/>
     <addaction name="separator"/>
     <addaction name="actionCerrar_sesion"/>
    </widget>
-   <widget class="QMenu" name="menuPaciente">
+   <widget class="QMenu" name="menuHistoria">
     <property name="title">
      <string>Historia</string>
     </property>
+    <widget class="QMenu" name="menuMas_opciones_h">
+     <property name="title">
+      <string>Más opciones</string>
+     </property>
+     <property name="icon">
+      <iconset resource="recursos.qrc">
+       <normaloff>:/img/historia_avanzado.png</normaloff>:/img/historia_avanzado.png</iconset>
+     </property>
+     <addaction name="actionModificar_historia"/>
+     <addaction name="actionEliminar_historia"/>
+    </widget>
     <addaction name="separator"/>
     <addaction name="actionRegistrar_historia"/>
-    <addaction name="actionAbrir_historia"/>
+    <addaction name="actionBuscar_historia"/>
     <addaction name="actionVer_historia"/>
+    <addaction name="separator"/>
+    <addaction name="menuMas_opciones_h"/>
     <addaction name="separator"/>
     <addaction name="actionCerrar_historia"/>
    </widget>
@@ -605,7 +605,7 @@
    </widget>
    <addaction name="menuMiniScanXEPlus"/>
    <addaction name="menuUsuario"/>
-   <addaction name="menuPaciente"/>
+   <addaction name="menuHistoria"/>
    <addaction name="menuMuestra"/>
    <addaction name="menuAyuda"/>
   </widget>
@@ -620,7 +620,10 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionEstandarizar"/>
+   <addaction name="actionIniciar_sesion"/>
    <addaction name="actionVer_usuario"/>
+   <addaction name="actionRegistrar_usuario"/>
+   <addaction name="actionEliminar_usuario"/>
    <addaction name="actionVer_historia"/>
    <addaction name="actionVer_muestra"/>
   </widget>
@@ -696,13 +699,13 @@
     <string>Registrar historia</string>
    </property>
   </action>
-  <action name="actionAbrir_historia">
+  <action name="actionBuscar_historia">
    <property name="icon">
     <iconset resource="recursos.qrc">
      <normaloff>:/img/buscar_historia.png</normaloff>:/img/buscar_historia.png</iconset>
    </property>
    <property name="text">
-    <string>Abrir historia</string>
+    <string>Buscar historia</string>
    </property>
   </action>
   <action name="actionVer_historia">
@@ -750,13 +753,40 @@
     <string>Ver muestra</string>
    </property>
   </action>
-  <action name="actionMas_opciones">
+  <action name="actionRegistrar_usuario">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/usuario_avanzado.png</normaloff>:/img/usuario_avanzado.png</iconset>
+     <normaloff>:/img/plus_usuario.png</normaloff>:/img/plus_usuario.png</iconset>
    </property>
    <property name="text">
-    <string>Más opciones</string>
+    <string>Registrar usuario</string>
+   </property>
+  </action>
+  <action name="actionEliminar_usuario">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/borrar_usuario.png</normaloff>:/img/borrar_usuario.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eliminar usuario</string>
+   </property>
+  </action>
+  <action name="actionEliminar_historia">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/borrar_historia.png</normaloff>:/img/borrar_historia.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eliminar historia</string>
+   </property>
+  </action>
+  <action name="actionModificar_historia">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/editar_historia.png</normaloff>:/img/editar_historia.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modificar historia</string>
    </property>
   </action>
  </widget>
