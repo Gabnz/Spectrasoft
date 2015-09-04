@@ -27,7 +27,11 @@ SOURCES += main.cpp\
     dlgverusuario.cpp \
     dlgreghistoria.cpp \
     dlgregusuario.cpp \
-    dlgeliminarusuario.cpp
+    dlgeliminarusuario.cpp \
+    dlgverhistoria.cpp \
+    dlgbuscarhistoria.cpp \
+    dlgeliminarhistoria.cpp \
+    dlgconfirmarclave.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -41,7 +45,11 @@ HEADERS  += mainwindow.h \
     dlgverusuario.h \
     dlgreghistoria.h \
     dlgregusuario.h \
-    dlgeliminarusuario.h
+    dlgeliminarusuario.h \
+    dlgverhistoria.h \
+    dlgbuscarhistoria.h \
+    dlgeliminarhistoria.h \
+    dlgconfirmarclave.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
@@ -52,7 +60,11 @@ FORMS    += mainwindow.ui \
     dlgverusuario.ui \
     dlgreghistoria.ui \
     dlgregusuario.ui \
-    dlgeliminarusuario.ui
+    dlgeliminarusuario.ui \
+    dlgverhistoria.ui \
+    dlgbuscarhistoria.ui \
+    dlgeliminarhistoria.ui \
+    dlgconfirmarclave.ui
 
 RESOURCES += \
     recursos.qrc

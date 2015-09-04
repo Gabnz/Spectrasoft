@@ -2,7 +2,12 @@
 #define DLGREGHISTORIA_H
 
 #include <QDialog>
-#include <QtSql>
+#include <QRegularExpression>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlError>
+#include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class dlgRegHistoria;
@@ -14,6 +19,8 @@ class dlgRegHistoria : public QDialog
 
 public:
     explicit dlgRegHistoria(QWidget *parent = 0);
+    bool camposListos();
+    QHash<QString, QString> getHistoria();
     ~dlgRegHistoria();
 
 private slots:
@@ -24,8 +31,14 @@ private slots:
 
     void on_lineaApellido_textChanged(const QString &arg1);
 
+    void on_cBoxSexo_currentIndexChanged(int index);
+
+    void on_btnRegistrar_clicked();
+
 private:
     Ui::dlgRegHistoria *ui;
+    bool nombreListo, apellidoListo, cedulaLista, fecha_nacLista, sexoListo;
+    QHash<QString, QString> infoHistoria;
 };
 
 #endif // DLGREGHISTORIA_H

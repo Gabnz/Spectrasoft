@@ -158,7 +158,7 @@
           <widget class="QLineEdit" name="lineaNombre">
            <property name="minimumSize">
             <size>
-             <width>251</width>
+             <width>300</width>
              <height>25</height>
             </size>
            </property>
@@ -191,7 +191,7 @@
           <widget class="QLineEdit" name="lineaApellido">
            <property name="minimumSize">
             <size>
-             <width>251</width>
+             <width>300</width>
              <height>25</height>
             </size>
            </property>

@@ -96,9 +96,9 @@ void MainWindow::borrarResultados()
 
 void MainWindow::revisionBtns()
 {
-    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnBorrar, btnRef, btnAbs, btnDatosAdicionales,
+    bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnEliminar, btnRef, btnAbs, btnDatosAdicionales,
     iniciarSesion, verUsuario, masOpcionesU, registrarU, eliminarU, cerrarSesion,
-    registrarHistoria, buscarHistoria, verHistoria, cerrarHistoria, masOpcionesH;
+    registrarHistoria, buscarHistoria, verHistoria, cerrarHistoria, eliminarHistoria, masOpcionesH;
 
     if(conectado){
         btnConectar = false;
@@ -123,26 +123,23 @@ void MainWindow::revisionBtns()
 
         if(!infoHistoria.isEmpty()){
             registrarHistoria = buscarHistoria = false;
-            verHistoria = cerrarHistoria = masOpcionesH = true;
+            verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = true;
         }else{
             registrarHistoria = buscarHistoria = true;
-            verHistoria = cerrarHistoria = masOpcionesH = false;
+            verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = false;
         }
 
     }else{
         iniciarSesion = true;
         verUsuario = masOpcionesU = registrarU = eliminarU = cerrarSesion = false;
-        registrarHistoria = buscarHistoria = verHistoria = cerrarHistoria = false;
-
-        registrarHistoria = buscarHistoria = false;
-        verHistoria = cerrarHistoria = masOpcionesH = false;
+        registrarHistoria = buscarHistoria = verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = false;
     }
 
     if(!datosEspectrales.isEmpty()){
-        btnGuardar = btnBorrar = btnRef = btnAbs = btnDatosAdicionales = true;
+        btnGuardar = btnEliminar = btnRef = btnAbs = btnDatosAdicionales = true;
 
     }else{
-        btnGuardar = btnBorrar = btnRef = btnAbs = btnDatosAdicionales = false;
+        btnGuardar = btnEliminar = btnRef = btnAbs = btnDatosAdicionales = false;
     }
 
     ui->actionConectar->setEnabled(btnConectar);
@@ -150,7 +147,7 @@ void MainWindow::revisionBtns()
     ui->actionEstandarizar->setEnabled(btnEstandarizar);
     ui->btnMedir->setEnabled(btnMedir);
     ui->btnGuardar->setEnabled(btnGuardar);
-    ui->btnBorrar->setEnabled(btnBorrar);
+    ui->btnEliminar->setEnabled(btnEliminar);
     ui->btnReflectancia->setEnabled(btnRef);
     ui->btnAbsorbancia->setEnabled(btnAbs);
     ui->btnDatosAdicionales->setEnabled(btnDatosAdicionales);
@@ -164,6 +161,7 @@ void MainWindow::revisionBtns()
     ui->actionBuscar_historia->setEnabled(buscarHistoria);
     ui->actionVer_historia->setEnabled(verHistoria);
     ui->actionCerrar_historia->setEnabled(cerrarHistoria);
+    ui->actionEliminar_historia->setEnabled(eliminarHistoria);
     ui->menuMas_opciones_h->setEnabled(masOpcionesH);
 }
 
@@ -401,7 +399,7 @@ void MainWindow::on_actionEstandarizar_triggered()
     revisionBtns();
 }
 
-void MainWindow::on_btnBorrar_clicked()
+void MainWindow::on_btnEliminar_clicked()
 {
     borrarResultados();
     revisionBtns();
@@ -454,9 +452,12 @@ void MainWindow::on_actionCerrar_historia_triggered()
 
 void MainWindow::on_actionRegistrar_historia_triggered()
 {
-    dlgRegHistoria regHistoria;
+    dlgRegHistoria regH;
 
-    regHistoria.exec();
+    regH.exec();
+
+    infoHistoria = regH.getHistoria();
+    revisionBtns();
 }
 
 void MainWindow::on_actionRegistrar_usuario_triggered()
@@ -471,4 +472,33 @@ void MainWindow::on_actionEliminar_usuario_triggered()
     dlgEliminarUsuario elimU;
 
     elimU.exec();
+}
+
+void MainWindow::on_actionVer_historia_triggered()
+{
+    dlgVerHistoria verH(infoHistoria);
+
+    verH.exec();
+}
+
+void MainWindow::on_actionBuscar_historia_triggered()
+{
+    dlgBuscarHistoria buscarH;
+
+    buscarH.exec();
+
+    infoHistoria = buscarH.getHistoria();
+    revisionBtns();
+}
+
+void MainWindow::on_actionEliminar_historia_triggered()
+{
+    dlgEliminarHistoria elimH(infoHistoria["id_historia"], infoUsuario["clave"]);
+
+    elimH.exec();
+
+    if(elimH.getHistoriaEliminada()){
+        infoHistoria.clear();
+    }
+    revisionBtns();
 }

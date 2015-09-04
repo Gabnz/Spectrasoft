@@ -47,5 +47,6 @@
         <file>img/correcto.png</file>
         <file>img/incorrecto.png</file>
         <file>img/verde.png</file>
+        <file>img/password.png</file>
     </qresource>
 </RCC>

@@ -17,6 +17,9 @@
 #include <dlgregusuario.h>
 #include <dlgeliminarusuario.h>
 #include <dlgreghistoria.h>
+#include <dlgverhistoria.h>
+#include <dlgbuscarhistoria.h>
+#include <dlgeliminarhistoria.h>
 #include <QtSql>
 
 namespace Ui {
@@ -54,7 +57,7 @@ private slots:
 
     void on_actionEstandarizar_triggered();
 
-    void on_btnBorrar_clicked();
+    void on_btnEliminar_clicked();
 
     void on_actionIniciar_sesion_triggered();
 
@@ -71,6 +74,12 @@ private slots:
     void on_actionRegistrar_usuario_triggered();
 
     void on_actionEliminar_usuario_triggered();
+
+    void on_actionVer_historia_triggered();
+
+    void on_actionBuscar_historia_triggered();
+
+    void on_actionEliminar_historia_triggered();
 
 private:
     Ui::MainWindow *ui;
