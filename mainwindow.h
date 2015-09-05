@@ -2,10 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtSql>
 #include <QDebug>
-///
 #include <qcustomplot.h>
-///
 #include <miniscanxe.h>
 #include <dlgestandarizar.h>
 #include <spectralops.h>
@@ -20,7 +19,7 @@
 #include <dlgverhistoria.h>
 #include <dlgbuscarhistoria.h>
 #include <dlgeliminarhistoria.h>
-#include <QtSql>
+#include <dlgmodificarhistoria.h>
 
 namespace Ui {
 class MainWindow;
@@ -80,6 +79,8 @@ private slots:
     void on_actionBuscar_historia_triggered();
 
     void on_actionEliminar_historia_triggered();
+
+    void on_actionModificar_historia_triggered();
 
 private:
     Ui::MainWindow *ui;

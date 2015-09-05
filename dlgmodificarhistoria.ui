@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dlgRegHistoria</class>
- <widget class="QDialog" name="dlgRegHistoria">
+ <class>dlgModificarHistoria</class>
+ <widget class="QDialog" name="dlgModificarHistoria">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Registrar historia</string>
+   <string>Modificar historia</string>
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
@@ -38,7 +38,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="etqLogoRegHist">
+          <widget class="QLabel" name="etqLogoModHist">
            <property name="maximumSize">
             <size>
              <width>50</width>
@@ -49,7 +49,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="recursos.qrc">:/img/plus_historia.png</pixmap>
+            <pixmap resource="recursos.qrc">:/img/editar_historia.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -57,7 +57,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="etqRegHistoria">
+          <widget class="QLabel" name="etqModHistoria">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -65,7 +65,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Registrar historia</string>
+            <string>Modificar historia</string>
            </property>
           </widget>
          </item>
@@ -189,7 +189,7 @@
            <item>
             <widget class="QLabel" name="etqCI">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cédula de identidad (opcional)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cédula de identidad&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -344,11 +344,6 @@
              </property>
              <item>
               <property name="text">
-               <string>Seleccionar...</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
                <string>Femenino</string>
               </property>
              </item>
@@ -384,7 +379,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QPushButton" name="btnRegistrar">
+        <widget class="QPushButton" name="btnModificar">
          <property name="minimumSize">
           <size>
            <width>130</width>
@@ -398,7 +393,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Registrar historia</string>
+          <string>Guardar cambios</string>
          </property>
          <property name="iconSize">
           <size>

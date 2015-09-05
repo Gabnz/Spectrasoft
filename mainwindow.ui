@@ -621,13 +621,10 @@
    </attribute>
    <addaction name="actionEstandarizar"/>
    <addaction name="actionIniciar_sesion"/>
-   <addaction name="actionRegistrar_usuario"/>
    <addaction name="actionVer_usuario"/>
-   <addaction name="actionEliminar_usuario"/>
-   <addaction name="actionRegistrar_historia"/>
-   <addaction name="actionBuscar_historia"/>
    <addaction name="actionVer_historia"/>
-   <addaction name="actionEliminar_historia"/>
+   <addaction name="actionBuscar_historia"/>
+   <addaction name="actionModificar_historia"/>
    <addaction name="actionVer_muestra"/>
   </widget>
   <action name="actionConectar">

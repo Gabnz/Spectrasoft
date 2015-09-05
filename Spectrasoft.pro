@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     dlgverhistoria.cpp \
     dlgbuscarhistoria.cpp \
     dlgeliminarhistoria.cpp \
-    dlgconfirmarclave.cpp
+    dlgconfirmarclave.cpp \
+    dlgmodificarhistoria.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     dlgverhistoria.h \
     dlgbuscarhistoria.h \
     dlgeliminarhistoria.h \
-    dlgconfirmarclave.h
+    dlgconfirmarclave.h \
+    dlgmodificarhistoria.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
@@ -64,7 +66,8 @@ FORMS    += mainwindow.ui \
     dlgverhistoria.ui \
     dlgbuscarhistoria.ui \
     dlgeliminarhistoria.ui \
-    dlgconfirmarclave.ui
+    dlgconfirmarclave.ui \
+    dlgmodificarhistoria.ui
 
 RESOURCES += \
     recursos.qrc

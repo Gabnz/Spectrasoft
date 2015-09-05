@@ -20,7 +20,8 @@ dlgVerHistoria::dlgVerHistoria(QHash<QString, QString> infoHistoria, QWidget *pa
     }
 
     if(infoHistoria.contains("cedula")){
-        ui->etqCedula->setText(infoHistoria["cedula"]);
+        if(infoHistoria["cedula"] != "")
+            ui->etqCedula->setText(infoHistoria["cedula"]);
     }
 
     if(infoHistoria.contains("fototipo")){

@@ -4,17 +4,18 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     conectado = false;
     numCurvas = 0;
     ref = abs = NULL;
     dts = NULL;
     infoUsuario.clear();
     infoHistoria.clear();
-
     //fototipo = 0;
-
     modeloDatos = new QStandardItemModel(2, 31, this);
+
     QStringList cabeceras;
+
     cabeceras.push_back("Valor");
     cabeceras.push_back("Longitud");
     modeloDatos->setVerticalHeaderLabels(cabeceras);
@@ -22,22 +23,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tablaDatosEspectrales->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tablaDatosEspectrales->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    int alto, ancho;
+    int alto, ancho, rango;
+
     alto = 50;
     ancho = 55;
-
+    rango = 400;
     ui->tablaDatosEspectrales->setRowHeight(0, alto);
     ui->tablaDatosEspectrales->setRowHeight(1, alto);
 
-    int rango = 400;
     QModelIndex indice;
 
     for(int i = 0; i < 31; ++i){
-        ui->tablaDatosEspectrales->setColumnWidth(i, ancho);
 
+        ui->tablaDatosEspectrales->setColumnWidth(i, ancho);
         indice = modeloDatos->index(1, i, QModelIndex());
         modeloDatos->setData(indice, rango);
-
         rango+=10;
     }
 
@@ -98,7 +98,7 @@ void MainWindow::revisionBtns()
 {
     bool btnConectar, btnDesconectar, btnEstandarizar, btnMedir, btnGuardar, btnEliminar, btnRef, btnAbs, btnDatosAdicionales,
     iniciarSesion, verUsuario, masOpcionesU, registrarU, eliminarU, cerrarSesion,
-    registrarHistoria, buscarHistoria, verHistoria, cerrarHistoria, eliminarHistoria, masOpcionesH;
+    registrarHistoria, buscarHistoria, verHistoria, cerrarHistoria, modificarHistoria, eliminarHistoria, masOpcionesH;
 
     if(conectado){
         btnConectar = false;
@@ -123,16 +123,16 @@ void MainWindow::revisionBtns()
 
         if(!infoHistoria.isEmpty()){
             registrarHistoria = buscarHistoria = false;
-            verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = true;
+            verHistoria = cerrarHistoria = modificarHistoria = eliminarHistoria = masOpcionesH = true;
         }else{
             registrarHistoria = buscarHistoria = true;
-            verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = false;
+            verHistoria = cerrarHistoria = modificarHistoria = eliminarHistoria = masOpcionesH = false;
         }
 
     }else{
         iniciarSesion = true;
         verUsuario = masOpcionesU = registrarU = eliminarU = cerrarSesion = false;
-        registrarHistoria = buscarHistoria = verHistoria = cerrarHistoria = eliminarHistoria = masOpcionesH = false;
+        registrarHistoria = buscarHistoria = verHistoria = cerrarHistoria = modificarHistoria = eliminarHistoria = masOpcionesH = false;
     }
 
     if(!datosEspectrales.isEmpty()){
@@ -161,6 +161,7 @@ void MainWindow::revisionBtns()
     ui->actionBuscar_historia->setEnabled(buscarHistoria);
     ui->actionVer_historia->setEnabled(verHistoria);
     ui->actionCerrar_historia->setEnabled(cerrarHistoria);
+    ui->actionModificar_historia->setEnabled(modificarHistoria);
     ui->actionEliminar_historia->setEnabled(eliminarHistoria);
     ui->menuMas_opciones_h->setEnabled(masOpcionesH);
 }
@@ -431,6 +432,7 @@ void MainWindow::on_actionIniciar_sesion_triggered()
 
 void MainWindow::on_actionCerrar_sesion_triggered()
 {
+    infoHistoria.clear();
     infoUsuario.clear();
     QMessageBox::information(this, "Sesión cerrada", "Se ha cerrado la sesión correctamente.");
     revisionBtns();
@@ -501,4 +503,15 @@ void MainWindow::on_actionEliminar_historia_triggered()
         infoHistoria.clear();
     }
     revisionBtns();
+}
+
+void MainWindow::on_actionModificar_historia_triggered()
+{
+    dlgModificarHistoria modH(infoUsuario["clave"], infoHistoria);
+
+    modH.exec();
+
+    if(modH.historiaModificada()){
+        infoHistoria = modH.getInfoHistoria();
+    }
 }
