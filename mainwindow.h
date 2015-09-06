@@ -38,25 +38,13 @@ public:
 private slots:
     void on_actionConectar_triggered();
 
-    void on_actionDesconectar_triggered();
-
     void on_actionSalir_triggered();
-
-    void on_btnMedir_clicked();
 
     void on_actionAcerca_de_triggered();
 
 //    void on_btnFototipo_clicked();
 
-    void on_btnReflectancia_clicked();
-
-    void on_btnDatosAdicionales_clicked();
-
-    void on_btnAbsorbancia_clicked();
-
     void on_actionEstandarizar_triggered();
-
-    void on_btnEliminar_clicked();
 
     void on_actionIniciar_sesion_triggered();
 
@@ -82,6 +70,18 @@ private slots:
 
     void on_actionModificar_historia_triggered();
 
+    void on_actionMedir_muestra_triggered();
+
+    void on_actionEliminar_muestra_triggered();
+
+    void on_actionVer_reflectancia_triggered();
+
+    void on_actionVer_absorbancia_triggered();
+
+    void on_actionDatos_adicionales_triggered();
+
+    void on_actionBorrar_resultados_triggered();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
@@ -94,7 +94,7 @@ private:
     int numCurvas;
     bool conectado;
     QString version;
-    QHash<QString, QString> infoUsuario, infoHistoria;
+    QHash<QString, QString> infoUsuario, infoHistoria, infoMuestra;
 };
 
 #endif // MAINWINDOW_H

@@ -15,7 +15,6 @@
         <file>img/fototipo_5_seleccionado.png</file>
         <file>img/color_negro.png</file>
         <file>img/logo_gris.png</file>
-        <file>img/base_datos.png</file>
         <file>img/vacio.png</file>
         <file>img/usuario.png</file>
         <file>img/historia.png</file>
@@ -31,11 +30,8 @@
         <file>img/on.png</file>
         <file>img/usuario_avanzado.png</file>
         <file>img/color_blanco.png</file>
-        <file>img/absorbancia.png</file>
-        <file>img/reflectancia.png</file>
         <file>img/buscar_historia.png</file>
         <file>img/buscar_muestra.png</file>
-        <file>img/borrar.png</file>
         <file>img/logo.png</file>
         <file>img/logo_icono.ico</file>
         <file>img/logo_pequeno.png</file>
@@ -46,7 +42,15 @@
         <file>img/datos_adicionales.png</file>
         <file>img/correcto.png</file>
         <file>img/incorrecto.png</file>
-        <file>img/verde.png</file>
         <file>img/password.png</file>
+        <file>img/plus_muestra.png</file>
+        <file>img/borrar_muestra.png</file>
+        <file>img/editar_muestra.png</file>
+        <file>img/muestra_avanzado.png</file>
+        <file>img/muestra_logout.png</file>
+        <file>img/muestra_absorbancia.png</file>
+        <file>img/muestra_reflectancia.png</file>
+        <file>img/muestra_datos_adicionales.png</file>
+        <file>img/borrar_resultados.png</file>
     </qresource>
 </RCC>
