@@ -42,8 +42,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         rango+=10;
     }
 
-    version = "20150828";
-
     //abriendo la conexion con la base de datos
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("localhost");
@@ -226,14 +224,9 @@ void MainWindow::revisionBtns()
 
 void MainWindow::on_actionAcerca_de_triggered()
 {
-    QImage logo(":/img/logo_pequeno.png");
-    QMessageBox msgBox;
-    msgBox.setIconPixmap(QPixmap::fromImage(logo));
-    QString titulo("<html><head><head/><body><p><span style=' font-size:14pt; font-weight:600; color:#4b4b4b;'>Spectrasoft</span>&nbsp; &nbsp;<span style=' font-size:8pt; font-weight:450; color:#4b4b4b;'>versión " + version + "</span></p>");
-    QString resumen("<p>Software para el manejo del MiniScan XE Plus.</p>");
-    QString desarrollador("<p>Diseñado, desarrollado e implementado por Gabriel Núñez.\nContacto: gabriel.nzn@gmail.com</p></body></html>");
-    msgBox.setText(titulo + resumen + desarrollador);
-    msgBox.exec();
+    dlgAcercaDe acercaDe;
+
+    acercaDe.exec();
 }
 
 //void MainWindow::on_btnFototipo_clicked()

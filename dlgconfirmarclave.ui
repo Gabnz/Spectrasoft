@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Confirmar contraseña</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -49,7 +53,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="recursos.qrc">:/img/password.png</pixmap>
+          <pixmap>:/img/password.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -204,8 +208,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

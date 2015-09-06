@@ -14,8 +14,8 @@
    <string>Gráfica</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
+   <iconset>
+    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -82,8 +82,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

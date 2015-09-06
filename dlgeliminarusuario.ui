@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -51,7 +55,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="recursos.qrc">:/img/borrar_usuario.png</pixmap>
+            <pixmap>:/img/borrar_usuario.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -396,8 +400,6 @@
   </layout>
   <zorder></zorder>
  </widget>
- <resources>
-  <include location="recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

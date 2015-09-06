@@ -20,6 +20,7 @@
 #include <dlgbuscarhistoria.h>
 #include <dlgeliminarhistoria.h>
 #include <dlgmodificarhistoria.h>
+#include <dlgacercade.h>
 
 namespace Ui {
 class MainWindow;
@@ -93,7 +94,6 @@ private:
     QStandardItemModel *modeloDatos;
     int numCurvas;
     bool conectado;
-    QString version;
     QHash<QString, QString> infoUsuario, infoHistoria, infoMuestra;
 };
 

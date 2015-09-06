@@ -20,8 +20,8 @@
    <string>Clasificación del fototipo de la piel</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
+   <iconset>
+    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -169,7 +169,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="recursos.qrc">:/img/fototipo_4.png</pixmap>
+              <pixmap>:/img/fototipo_4.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -453,7 +453,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_1.png</normaloff>:/img/fototipo_1.png</iconset>
              </property>
              <property name="iconSize">
@@ -504,7 +504,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_2.png</normaloff>:/img/fototipo_2.png</iconset>
              </property>
              <property name="iconSize">
@@ -552,7 +552,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_3.png</normaloff>:/img/fototipo_3.png</iconset>
              </property>
              <property name="iconSize">
@@ -739,7 +739,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_4.png</normaloff>:/img/fototipo_4.png</iconset>
              </property>
              <property name="iconSize">
@@ -787,7 +787,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_5.png</normaloff>:/img/fototipo_5.png</iconset>
              </property>
              <property name="iconSize">
@@ -835,7 +835,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="recursos.qrc">
+              <iconset>
                <normaloff>:/img/fototipo_6.png</normaloff>:/img/fototipo_6.png</iconset>
              </property>
              <property name="iconSize">
@@ -1026,8 +1026,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

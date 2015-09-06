@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icono.ico</normaloff>:/img/logo_icono.ico</iconset>
+    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -291,7 +291,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionMedir_muestra"/>
    <addaction name="actionBorrar_resultados"/>
@@ -321,7 +321,7 @@
   <action name="actionAcerca_de">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/logo.png</normaloff>:/img/logo.png</iconset>
+     <normaloff>:/img/logo_nuevo.png</normaloff>:/img/logo_nuevo.png</iconset>
    </property>
    <property name="text">
     <string>Acerca de Spectrasoft...</string>
@@ -456,7 +456,7 @@
   <action name="actionMedir_muestra">
    <property name="icon">
     <iconset resource="recursos.qrc">
-     <normaloff>:/img/logo.png</normaloff>:/img/logo.png</iconset>
+     <normaloff>:/img/logo_nuevo.png</normaloff>:/img/logo_nuevo.png</iconset>
    </property>
    <property name="text">
     <string>Medir muestra</string>
