@@ -41,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         modeloDatos->setData(indice, rango);
         rango+=10;
     }
-
     //abriendo la conexion con la base de datos
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("localhost");
@@ -50,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     db.setPassword("CIMBUC");
     db.open();
     //
-
     this->setFixedSize(this->size());
     revisionBtns();
 }
@@ -454,10 +452,6 @@ void MainWindow::on_actionMedir_muestra_triggered()
     revisionBtns();
 }
 
-void MainWindow::on_actionEliminar_muestra_triggered()
-{
-}
-
 void MainWindow::on_actionVer_reflectancia_triggered()
 {
     if(ref != NULL && !ref->isMinimized() && !ref->isActiveWindow()){
@@ -544,7 +538,9 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
     if(tipo == "lesion"){
-        dlgRegLesion regL;
+        dlgRegLesion regL(infoUsuario["cedula"], infoHistoria["id_historia"]);
+
+        connect(&regL, &dlgRegLesion::lesion_registrada, this, &MainWindow::on_muestraRegistrada);
 
         regL.exec();
     }else{
@@ -552,4 +548,27 @@ void MainWindow::on_tipoMuestra(const QString tipo)
 
         regF.exec();
     }
+}
+
+void MainWindow::on_muestraRegistrada(const QHash<QString, QString> info)
+{
+    infoMuestra = info;
+    revisionBtns();
+}
+
+void MainWindow::on_actionVer_muestra_triggered()
+{
+
+}
+
+void MainWindow::on_actionCerrar_muestra_triggered()
+{
+    infoMuestra.clear();
+    QMessageBox::information(this, "Muestra cerrada", "Se ha cerrado la muestra correctamente.");
+    revisionBtns();
+}
+
+void MainWindow::on_actionEliminar_muestra_triggered()
+{
+
 }

@@ -90,6 +90,12 @@ private slots:
 
     void on_tipoMuestra(const QString tipo);
 
+    void on_muestraRegistrada(const QHash<QString, QString> info);
+
+    void on_actionVer_muestra_triggered();
+
+    void on_actionCerrar_muestra_triggered();
+
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;

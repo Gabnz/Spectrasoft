@@ -2,6 +2,11 @@
 #define DLGREGLESION_H
 
 #include <QDialog>
+#include <QDate>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class dlgRegLesion;
@@ -12,8 +17,12 @@ class dlgRegLesion : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgRegLesion(QWidget *parent = 0);
+    explicit dlgRegLesion(QString usuario, QString historia, QWidget *parent = 0);
+    bool camposListos();
     ~dlgRegLesion();
+
+signals:
+    void lesion_registrada(QHash<QString, QString> info);
 
 private slots:
     void on_btnCancelar_clicked();
@@ -22,8 +31,12 @@ private slots:
 
     void on_lineaArea_textChanged(const QString &arg1);
 
+    void on_btnRegistrar_clicked();
+
 private:
     Ui::dlgRegLesion *ui;
+    QString id_usuario, id_historia;
+    QHash<QString, QString> infoMuestra;
 };
 
 #endif // DLGREGLESION_H
