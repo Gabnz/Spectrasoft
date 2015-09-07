@@ -15,9 +15,12 @@ class dlgFototipo : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgFototipo(int fototipoRecomendadoExt, QWidget *parent = 0);
-    int fototipoSeleccionado();
+    explicit dlgFototipo(int fPredeterminado, int fototipoRecomendadoExt, QWidget *parent = 0);
     ~dlgFototipo();
+
+signals:
+    void fototipoSeleccionado(int numero);
+    void resetearFototipo();
 
 private slots:
     void seleccionFototipo(int fototipoSeleccionado);
@@ -30,7 +33,7 @@ private:
     Ui::dlgFototipo *ui;
     QList<QPushButton*> btnsFototipos;
     QSignalMapper fototiposMapper;
-    int fototipo, numFototipos, fototipoRecomendado, aux;
+    int fototipo, numFototipos, fototipoRecomendado;
     QSize tam, tamSeleccionado;
 };
 

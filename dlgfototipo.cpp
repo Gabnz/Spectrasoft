@@ -1,7 +1,7 @@
 #include "dlgfototipo.h"
 #include "ui_dlgfototipo.h"
 
-dlgFototipo::dlgFototipo(int fototipoRecomendadoExt, QWidget *parent) :
+dlgFototipo::dlgFototipo(int fPredeterminado, int fototipoRecomendadoExt, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgFototipo)
 {
@@ -27,18 +27,18 @@ dlgFototipo::dlgFototipo(int fototipoRecomendadoExt, QWidget *parent) :
 
     connect(&fototiposMapper, SIGNAL(mapped(int)), this, SLOT(seleccionFototipo(int)));
 
-    fototipo = aux = 0;
+    fototipo = 0;
     tam.setWidth(125);
     tam.setHeight(125);
     tamSeleccionado.setWidth(145);
     tamSeleccionado.setHeight(145);
     ui->btnListo->setEnabled(false);
-    this->setWindowFlags(Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
-}
 
-int dlgFototipo::fototipoSeleccionado()
-{
-    return fototipo;
+    if(fPredeterminado != 0){
+        seleccionFototipo(fPredeterminado);
+    }
+
+    this->setWindowFlags(Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 }
 
 dlgFototipo::~dlgFototipo()
@@ -59,7 +59,7 @@ void dlgFototipo::seleccionFototipo(int fototipoSeleccionado)
         btnsFototipos.at(fototipoSeleccionado - 1)->setIcon(QIcon(":/img/fototipo_" + QString().setNum(fototipoSeleccionado) + "_seleccionado.png"));
         btnsFototipos.at(fototipoSeleccionado - 1)->setIconSize(tamSeleccionado);
 
-        aux = fototipoSeleccionado;
+        fototipo = fototipoSeleccionado;
         btnListo = true;
     }else{
         btnsFototipos.at(fototipoSeleccionado - 1)->setIcon(QIcon(":/img/fototipo_" + QString().setNum(fototipoSeleccionado) + ".png"));
@@ -74,11 +74,14 @@ void dlgFototipo::seleccionFototipo(int fototipoSeleccionado)
 
 void dlgFototipo::on_btnCancelar_clicked()
 {
+    if(fototipo == 0)
+        emit resetearFototipo();
+
     this->close();
 }
 
 void dlgFototipo::on_btnListo_clicked()
 {
-    fototipo = aux;
+    emit fototipoSeleccionado(fototipo);
     this->close();
 }

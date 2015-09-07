@@ -18,8 +18,11 @@
 #include <dlgreghistoria.h>
 #include <dlgverhistoria.h>
 #include <dlgbuscarhistoria.h>
-#include <dlgeliminarhistoria.h>
 #include <dlgmodificarhistoria.h>
+#include <dlgeliminarhistoria.h>
+#include <dlgtipomuestra.h>
+#include <dlgreglesion.h>
+#include <dlgregfototipo.h>
 #include <dlgacercade.h>
 
 namespace Ui {
@@ -82,6 +85,10 @@ private slots:
     void on_actionDatos_adicionales_triggered();
 
     void on_actionBorrar_resultados_triggered();
+
+    void on_actionRegistrar_muestra_triggered();
+
+    void on_tipoMuestra(const QString tipo);
 
 private:
     Ui::MainWindow *ui;

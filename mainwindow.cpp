@@ -50,8 +50,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     db.setPassword("CIMBUC");
     db.open();
     //
-    revisionBtns();
+
     this->setFixedSize(this->size());
+    revisionBtns();
 }
 
 void MainWindow::on_actionConectar_triggered()
@@ -529,4 +530,26 @@ void MainWindow::on_actionBorrar_resultados_triggered()
 {
     borrarResultados();
     revisionBtns();
+}
+
+void MainWindow::on_actionRegistrar_muestra_triggered()
+{
+    dlgTipoMuestra tipoM;
+
+    connect(&tipoM, &dlgTipoMuestra::tipo_muestra, this, &MainWindow::on_tipoMuestra);
+
+    tipoM.exec();
+}
+
+void MainWindow::on_tipoMuestra(const QString tipo)
+{
+    if(tipo == "lesion"){
+        dlgRegLesion regL;
+
+        regL.exec();
+    }else{
+        dlgRegFototipo regF;
+
+        regF.exec();
+    }
 }
