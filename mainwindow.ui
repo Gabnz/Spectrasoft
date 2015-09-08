@@ -299,6 +299,8 @@
    <addaction name="actionVer_absorbancia"/>
    <addaction name="actionDatos_adicionales"/>
    <addaction name="actionRegistrar_muestra"/>
+   <addaction name="actionVer_muestra"/>
+   <addaction name="actionCerrar_muestra"/>
   </widget>
   <action name="actionConectar">
    <property name="icon">

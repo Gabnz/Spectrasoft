@@ -22,6 +22,7 @@ dlgVerUsuario::dlgVerUsuario(QHash<QString, QString> infoUsuario, QWidget *paren
     ui->etqCedula->setText(infoUsuario["cedula"]);
     ui->etqFechaNac->setText(infoUsuario["fecha_nac"]);
     ui->etqSexo->setText(infoUsuario["sexo"]);
+
     this->adjustSize();
     this->setFixedSize(this->size());
     this->setWindowFlags(Qt::WindowCloseButtonHint);

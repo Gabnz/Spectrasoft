@@ -22,6 +22,7 @@
 #include <dlgeliminarhistoria.h>
 #include <dlgtipomuestra.h>
 #include <dlgreglesion.h>
+#include <dlgverlesion.h>
 #include <dlgregfototipo.h>
 #include <dlgacercade.h>
 
@@ -45,8 +46,6 @@ private slots:
     void on_actionSalir_triggered();
 
     void on_actionAcerca_de_triggered();
-
-//    void on_btnFototipo_clicked();
 
     void on_actionEstandarizar_triggered();
 
@@ -103,7 +102,8 @@ private:
     QSqlDatabase db;
     dlgGrafica *ref, *abs;
     dlgDatosAdicionales *dts;
-    QVector<float> datosEspectrales;
+    QVector<float> datosEspectrales, XYZ, LAB;
+    float absorcion, esparcimiento, eritema;
     QStandardItemModel *modeloDatos;
     int numCurvas;
     bool conectado;

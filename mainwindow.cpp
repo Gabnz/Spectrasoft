@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     infoUsuario.clear();
     infoHistoria.clear();
     infoMuestra.clear();
-    //fototipo = 0;
     modeloDatos = new QStandardItemModel(2, 31, this);
 
     QStringList cabeceras;
@@ -95,7 +94,9 @@ MainWindow::~MainWindow()
 void MainWindow::borrarResultados()
 {
     datosEspectrales.clear();
-    //fototipo = 0;
+    XYZ.clear();
+    LAB.clear();
+    absorcion = esparcimiento = eritema = 0.0;
 
     QModelIndex indice;
 
@@ -118,17 +119,6 @@ void MainWindow::borrarResultados()
         delete dts;
         dts = NULL;
     }
-
-//    QSize tam;
-
-//    tam.setWidth(125);
-//    tam.setHeight(125);
-
-//    QPixmap imgFototipo(":/img/fototipo_0.png");
-
-//    imgFototipo.scaled(tam);
-//    ui->etqNumeroFototipo->setText("-");
-//    ui->etqFototipo->setPixmap(imgFototipo);
 }
 
 void MainWindow::revisionBtns()
@@ -138,9 +128,25 @@ void MainWindow::revisionBtns()
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
     if(conectado){
-        estandarizar = medirM = true;
+        estandarizar = true;
+
+        if(infoMuestra.isEmpty())
+            medirM = true;
+        else
+            medirM = false;
     }else{
          estandarizar = medirM = false;
+    }
+
+    if(!datosEspectrales.isEmpty()){
+        verRefM = verAbsM = datosAdicionalesM = true;
+
+        if(infoMuestra.isEmpty())
+            borrarResultadosM = true;
+        else
+            borrarResultadosM = false;
+    }else{
+        verRefM = verAbsM = datosAdicionalesM = borrarResultadosM = false;
     }
 
     if(!infoUsuario.isEmpty()){
@@ -180,14 +186,8 @@ void MainWindow::revisionBtns()
     }else{
         sesionU = true;
         verU = masOpcionesU = registrarU = eliminarU = cerrarU = false;
-        registrarH = buscarH = verH = cerrarH = modificarH = eliminarH = masOpcionesH = false;
+        registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
         registrarM = buscarM = verM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
-    }
-
-    if(!datosEspectrales.isEmpty()){
-        verRefM = verAbsM = datosAdicionalesM = borrarResultadosM = true;
-    }else{
-        verRefM = verAbsM = datosAdicionalesM = borrarResultadosM = false;
     }
 
     ui->actionEstandarizar->setEnabled(estandarizar);
@@ -227,32 +227,6 @@ void MainWindow::on_actionAcerca_de_triggered()
 
     acercaDe.exec();
 }
-
-//void MainWindow::on_btnFototipo_clicked()
-//{
-//    dlgFototipo dlg(ops.fototipo());
-//    dlg.exec();
-
-//    int aux;
-//    aux = dlg.fototipoSeleccionado();
-
-//    if(aux != 0){
-//        fototipo = aux;
-//        QSize tam;
-
-//        tam.setWidth(125);
-//        tam.setHeight(125);
-
-//        QPixmap imgFototipo(":/img/fototipo_" + QString().setNum(fototipo) + ".png");
-//        imgFototipo.scaled(tam);
-
-//        ui->etqNumeroFototipo->setText(QString().setNum(fototipo));
-
-//        ui->etqFototipo->setPixmap(imgFototipo);
-//    }
-
-    //revisionBtns();
-//}
 
 void MainWindow::on_actionEstandarizar_triggered()
 {
@@ -448,6 +422,18 @@ void MainWindow::on_actionMedir_muestra_triggered()
         modeloDatos->setData(indice, datosEspectrales.at(i));
     }
 
+    QVector<float> aux(31);
+
+    for(int i = 0; i < 31; ++i){
+        aux[i] = datosEspectrales[i]/100.0;
+    }
+
+    XYZ = ops.CIExyz(aux);
+    LAB = ops.CIELAB(aux);
+    absorcion = ops.absorcion(aux);
+    esparcimiento = ops.esparcimiento(aux);
+    eritema = ops.eritema(aux);
+
     numCurvas += 1;
     revisionBtns();
 }
@@ -507,13 +493,7 @@ void MainWindow::on_actionDatos_adicionales_triggered()
 
     if(dts == NULL){
 
-        QVector<float> aux(31);
-
-        for(int i = 0; i < 31; ++i){
-            aux[i] = datosEspectrales[i]/100.0;
-        }
-
-        dts = new dlgDatosAdicionales(aux);
+        dts = new dlgDatosAdicionales(XYZ, LAB, absorcion, esparcimiento, eritema);
         dts->show();
     }else{
         dts->showMaximized();
@@ -538,7 +518,7 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
     if(tipo == "lesion"){
-        dlgRegLesion regL(infoUsuario["cedula"], infoHistoria["id_historia"]);
+        dlgRegLesion regL(infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
 
         connect(&regL, &dlgRegLesion::lesion_registrada, this, &MainWindow::on_muestraRegistrada);
 
@@ -558,12 +538,19 @@ void MainWindow::on_muestraRegistrada(const QHash<QString, QString> info)
 
 void MainWindow::on_actionVer_muestra_triggered()
 {
+    if(infoMuestra["tipo_muestra"] == "lesion"){
+        dlgVerLesion verL(infoMuestra);
 
+        verL.exec();
+    }else{
+
+    }
 }
 
 void MainWindow::on_actionCerrar_muestra_triggered()
 {
     infoMuestra.clear();
+    borrarResultados();
     QMessageBox::information(this, "Muestra cerrada", "Se ha cerrado la muestra correctamente.");
     revisionBtns();
 }

@@ -2,6 +2,7 @@
 #define DLGVERLESION_H
 
 #include <QDialog>
+#include <QDate>
 
 namespace Ui {
 class dlgVerLesion;
@@ -12,7 +13,7 @@ class dlgVerLesion : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgVerLesion(QWidget *parent = 0);
+    explicit dlgVerLesion(QHash<QString, QString> infoLesion, QWidget *parent = 0);
     ~dlgVerLesion();
 
 private slots:

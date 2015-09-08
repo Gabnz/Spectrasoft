@@ -17,7 +17,7 @@ class dlgRegLesion : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgRegLesion(QString usuario, QString historia, QWidget *parent = 0);
+    explicit dlgRegLesion(QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, float absorcionExt, float esparcimientoExt, float eritemaExt, QWidget *parent = 0);
     bool camposListos();
     ~dlgRegLesion();
 
@@ -35,7 +35,9 @@ private slots:
 
 private:
     Ui::dlgRegLesion *ui;
-    QString id_usuario, id_historia;
+    QString id_usuario, id_historia, id_muestra, id_datos_espectrales;
+    QVector<float> datosEspectrales, XYZ, LAB;
+    float absorcion, esparcimiento, eritema;
     QHash<QString, QString> infoMuestra;
 };
 

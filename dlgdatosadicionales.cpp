@@ -1,7 +1,7 @@
 #include "dlgdatosadicionales.h"
 #include "ui_dlgdatosadicionales.h"
 
-dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> datosEspectrales, QWidget *parent) :
+dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB, float absorcion, float esparcimiento, float eritema, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgDatosAdicionales)
 {
@@ -41,13 +41,6 @@ dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> datosEspectrales, QWidge
     ui->tablaLAB->setColumnWidth(2, ancho);
 
     QModelIndex indice;
-    SpectralOps ops;
-
-    QVector<float> XYZ = ops.CIExyz(datosEspectrales);
-    QVector<float> LAB = ops.CIELAB(datosEspectrales);
-    float absorcion = ops.absorcion(datosEspectrales);
-    float esparcimiento = ops.esparcimiento(datosEspectrales);
-    float eritema = ops.eritema(datosEspectrales);
 
     for(int i = 0; i < 3; ++i){
         indice = modeloXYZ->index(0, i, QModelIndex());
