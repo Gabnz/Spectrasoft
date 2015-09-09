@@ -22,9 +22,9 @@
 #include <dlgeliminarhistoria.h>
 #include <dlgtipomuestra.h>
 #include <dlgreglesion.h>
-#include <dlgverlesion.h>
 #include <dlgregfototipo.h>
-#include <dlgmodificarlesion.h>
+#include <dlgvermuestra.h>
+#include <dlgmodificarmuestra.h>
 #include <dlgeliminarmuestra.h>
 #include <dlgacercade.h>
 

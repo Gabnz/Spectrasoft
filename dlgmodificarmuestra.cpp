@@ -1,14 +1,14 @@
-#include "dlgmodificarlesion.h"
-#include "ui_dlgmodificarlesion.h"
+#include "dlgmodificarmuestra.h"
+#include "ui_dlgmodificarmuestra.h"
 
-dlgModificarLesion::dlgModificarLesion(QString claveUsuario, QHash<QString, QString> infoLesion, QWidget *parent) :
+dlgModificarMuestra::dlgModificarMuestra(QString claveUsuario, QHash<QString, QString> infoMuestra, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::dlgModificarLesion)
+    ui(new Ui::dlgModificarMuestra)
 {
     ui->setupUi(this);
 
     clave = claveUsuario;
-    infoOriginal = infoLesion;
+    infoOriginal = infoMuestra;
     infoNueva.clear();
 
     QRegExp rx("^([a-zA-Z]+([ ]?[a-zA-Z]?[a-zA-Z]+)*)$");
@@ -16,28 +16,32 @@ dlgModificarLesion::dlgModificarLesion(QString claveUsuario, QHash<QString, QStr
     ui->lineaNombre->setValidator(soloPalabras);
     ui->lineaArea->setValidator(soloPalabras);
 
-    ui->lineaNombre->setText(infoLesion["nombre_muestra"]);
-    ui->lineaArea->setText(infoLesion["area_muestra"]);
+    ui->lineaNombre->setText(infoMuestra["nombre_muestra"]);
+    ui->lineaArea->setText(infoMuestra["area_muestra"]);
 
-    if(infoLesion.contains("observaciones")){
-        ui->textEditObservaciones->setPlainText(infoLesion["observaciones"]);
+    if(infoMuestra.contains("observaciones")){
+        ui->textEditObservaciones->setPlainText(infoMuestra["observaciones"]);
+    }
+
+    if(infoMuestra["tipo_muestra"] == "fototipo"){
+        ui->lineaNombre->setReadOnly(true);
     }
 
     this->setFixedSize(this->size());
     this->setWindowFlags(Qt::WindowCloseButtonHint);
 }
 
-dlgModificarLesion::~dlgModificarLesion()
+dlgModificarMuestra::~dlgModificarMuestra()
 {
     delete ui;
 }
 
-void dlgModificarLesion::on_btnCancelar_clicked()
+void dlgModificarMuestra::on_btnCancelar_clicked()
 {
     close();
 }
 
-void dlgModificarLesion::on_lineaNombre_textChanged(const QString &arg1)
+void dlgModificarMuestra::on_lineaNombre_textChanged(const QString &arg1)
 {
     ui->lineaNombre->setText(arg1.toUpper());
 
@@ -56,7 +60,7 @@ void dlgModificarLesion::on_lineaNombre_textChanged(const QString &arg1)
     }
 }
 
-void dlgModificarLesion::on_lineaArea_textChanged(const QString &arg1)
+void dlgModificarMuestra::on_lineaArea_textChanged(const QString &arg1)
 {
     ui->lineaArea->setText(arg1.toUpper());
 
@@ -75,7 +79,7 @@ void dlgModificarLesion::on_lineaArea_textChanged(const QString &arg1)
     }
 }
 
-void dlgModificarLesion::on_textEditObservaciones_textChanged()
+void dlgModificarMuestra::on_textEditObservaciones_textChanged()
 {
     if(infoOriginal.contains("observaciones")){
 
@@ -104,16 +108,16 @@ void dlgModificarLesion::on_textEditObservaciones_textChanged()
     }
 }
 
-void dlgModificarLesion::on_btnModificar_clicked()
+void dlgModificarMuestra::on_btnModificar_clicked()
 {
     dlgConfirmarClave confirmar(clave);
 
-    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgModificarLesion::on_claveIntroducida);
+    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgModificarMuestra::on_claveIntroducida);
 
     confirmar.exec();
 }
 
-void dlgModificarLesion::on_claveIntroducida(bool correcta)
+void dlgModificarMuestra::on_claveIntroducida(bool correcta)
 {
     if(correcta){
         QString consulta = "UPDATE spectradb.muestra SET ";
@@ -169,7 +173,7 @@ void dlgModificarLesion::on_claveIntroducida(bool correcta)
                 infoResultante[llaves[i]] = valores[i];
             }
 
-            emit lesionModificada(infoResultante);
+            emit muestraModificada(infoResultante);
         }else{
             qDebug() << query.lastError();
         }

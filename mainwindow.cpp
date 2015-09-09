@@ -551,13 +551,9 @@ void MainWindow::on_muestraRegistrada(const QHash<QString, QString> info)
 
 void MainWindow::on_actionVer_muestra_triggered()
 {
-    if(infoMuestra["tipo_muestra"] == "lesion"){
-        dlgVerLesion verL(infoMuestra);
+    dlgVerMuestra verM(infoMuestra);
 
-        verL.exec();
-    }else{
-
-    }
+    verM.exec();
 }
 
 void MainWindow::on_actionCerrar_muestra_triggered()
@@ -586,15 +582,11 @@ void MainWindow::on_muestraEliminada()
 
 void MainWindow::on_actionModificar_muestra_triggered()
 {
-    if(infoMuestra["tipo_muestra"] == "lesion"){
-        dlgModificarLesion modL(infoUsuario["clave"], infoMuestra);
+    dlgModificarMuestra modM(infoUsuario["clave"], infoMuestra);
 
-        connect(&modL, &dlgModificarLesion::lesionModificada, this, &MainWindow::on_muestraModificada);
+    connect(&modM, &dlgModificarMuestra::muestraModificada, this, &MainWindow::on_muestraModificada);
 
-        modL.exec();
-    }else{
-
-    }
+    modM.exec();
 }
 
 void MainWindow::on_muestraModificada(QHash<QString, QString> infoModificada)

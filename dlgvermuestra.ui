@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dlgVerLesion</class>
- <widget class="QDialog" name="dlgVerLesion">
+ <class>dlgVerMuestra</class>
+ <widget class="QDialog" name="dlgVerMuestra">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -1,5 +1,5 @@
-#ifndef DLGMODIFICARLESION_H
-#define DLGMODIFICARLESION_H
+#ifndef DLGMODIFICARMUESTRA_H
+#define DLGMODIFICARMUESTRA_H
 
 #include <QDialog>
 #include <QMessageBox>
@@ -9,19 +9,19 @@
 #include <dlgconfirmarclave.h>
 
 namespace Ui {
-class dlgModificarLesion;
+class dlgModificarMuestra;
 }
 
-class dlgModificarLesion : public QDialog
+class dlgModificarMuestra : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit dlgModificarLesion(QString claveUsuario, QHash<QString, QString> infoLesion, QWidget *parent = 0);
-    ~dlgModificarLesion();
+    explicit dlgModificarMuestra(QString claveUsuario, QHash<QString, QString> infoMuestra, QWidget *parent = 0);
+    ~dlgModificarMuestra();
 
 signals:
-    void lesionModificada(QHash<QString, QString> infoModificada);
+    void muestraModificada(QHash<QString, QString> infoModificada);
 
 private slots:
     void on_btnCancelar_clicked();
@@ -37,9 +37,9 @@ private slots:
     void on_claveIntroducida(bool correcta);
 
 private:
-    Ui::dlgModificarLesion *ui;
+    Ui::dlgModificarMuestra *ui;
     QHash<QString, QString> infoOriginal, infoNueva;
     QString clave;
 };
 
-#endif // DLGMODIFICARLESION_H
+#endif // DLGMODIFICARMUESTRA_H
