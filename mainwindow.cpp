@@ -583,3 +583,21 @@ void MainWindow::on_muestraEliminada()
     borrarResultados();
     revisionBtns();
 }
+
+void MainWindow::on_actionModificar_muestra_triggered()
+{
+    if(infoMuestra["tipo_muestra"] == "lesion"){
+        dlgModificarLesion modL(infoUsuario["clave"], infoMuestra);
+
+        connect(&modL, &dlgModificarLesion::lesionModificada, this, &MainWindow::on_muestraModificada);
+
+        modL.exec();
+    }else{
+
+    }
+}
+
+void MainWindow::on_muestraModificada(QHash<QString, QString> infoModificada)
+{
+    infoMuestra = infoModificada;
+}

@@ -24,6 +24,7 @@
 #include <dlgreglesion.h>
 #include <dlgverlesion.h>
 #include <dlgregfototipo.h>
+#include <dlgmodificarlesion.h>
 #include <dlgeliminarmuestra.h>
 #include <dlgacercade.h>
 
@@ -101,6 +102,10 @@ private slots:
     void on_actionVer_muestra_triggered();
 
     void on_actionCerrar_muestra_triggered();
+
+    void on_actionModificar_muestra_triggered();
+
+    void on_muestraModificada(QHash<QString, QString> infoModificada);
 
 private:
     Ui::MainWindow *ui;

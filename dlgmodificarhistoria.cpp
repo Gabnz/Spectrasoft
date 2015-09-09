@@ -98,120 +98,6 @@ void dlgModificarHistoria::on_lineaApellido_textChanged(const QString &arg1)
     }
 }
 
-void dlgModificarHistoria::on_btnModificar_clicked()
-{
-    dlgConfirmarClave confirmar(clave);
-
-    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgModificarHistoria::on_claveIntroducida);
-
-    confirmar.exec();
-}
-
-void dlgModificarHistoria::on_claveIntroducida(bool correcta)
-{
-    if(correcta){
-        QString consulta = "UPDATE spectradb.historia SET ";
-        bool varios = false;
-
-        if(infoNueva.contains("nombre")){
-            consulta+= "nombre = '" + infoNueva["nombre"] + "'";
-            varios = true;
-        }
-
-        if(infoNueva.contains("apellido")){
-            if(varios){
-                consulta+= ", ";
-            }
-            consulta+= "apellido = '" + infoNueva["apellido"] + "'";
-            varios = true;
-        }
-
-        if(infoNueva.contains("cedula")){
-            if(varios){
-                consulta+= ", ";
-            }
-            consulta+= "cedula = ";
-
-            if(infoNueva["cedula"] == ""){
-                consulta+= "NULL";
-            }else{
-                consulta+= "'" + infoNueva["cedula"] + "'";
-            }
-
-            varios = true;
-        }
-
-        if(infoNueva.contains("fecha_nac")){
-            if(varios){
-                consulta+= ", ";
-            }
-            consulta+= "fecha_nac = '" + infoNueva["fecha_nac"] + "'";
-            varios = true;
-        }
-
-        if(infoNueva.contains("sexo")){
-            if(varios){
-                consulta+= ", ";
-            }
-            consulta+= "sexo = '" + infoNueva["sexo"] + "'";
-            varios = true;
-        }
-
-        consulta+= " WHERE id_historia = '" + infoOriginal["id_historia"] + "'";
-
-        QSqlQuery query;
-
-        query.prepare(consulta);
-        if(query.exec()){
-
-            QMessageBox::information(this, "Historia modificada", "Se ha modificado la historia correctamente.");
-
-            close();
-
-            QHash<QString, QString> infoResultante;
-            QStringList llaves, valores;
-
-            llaves = infoNueva.keys();
-            valores = infoNueva.values();
-
-            infoResultante = infoOriginal;
-
-            for(int i = 0; i < infoNueva.size(); ++i){
-                infoResultante[llaves[i]] = valores[i];
-            }
-
-            emit historiaModificada(infoResultante);
-
-        }else{
-            if(query.lastError().number() == 23505){
-                QMessageBox::critical(this, "Error al modificar", "La cédula de identidad " + infoNueva["cedula"] + " ya está siendo utilizada.");
-
-                infoNueva.remove("cedula");
-
-                if(infoOriginal.contains("cedula")){
-                    QString aux, aux2;
-                    aux2 = infoOriginal["cedula"];
-
-                    if(infoOriginal["cedula"].contains("V")){
-                        aux = "V";
-                        aux2.remove("V");
-                    }else{
-                        aux = "E";
-                        aux2.remove("E");
-                    }
-                    ui->cBoxCI->setCurrentText(aux);
-                    ui->lineaCI->setText(aux2);
-                }else
-                    ui->lineaCI->clear();
-
-                ui->btnModificar->setEnabled(false);
-            }
-        }
-    }else{
-        QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");
-    }
-}
-
 void dlgModificarHistoria::on_cBoxCI_currentTextChanged(const QString &arg1)
 {
     QString aux = ui->cBoxCI->currentText() + ui->lineaCI->text();
@@ -317,5 +203,118 @@ void dlgModificarHistoria::on_cBoxSexo_currentTextChanged(const QString &arg1)
         ui->btnModificar->setEnabled(true);
     }else{
         ui->btnModificar->setEnabled(false);
+    }
+}
+
+void dlgModificarHistoria::on_btnModificar_clicked()
+{
+    dlgConfirmarClave confirmar(clave);
+
+    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgModificarHistoria::on_claveIntroducida);
+
+    confirmar.exec();
+}
+
+void dlgModificarHistoria::on_claveIntroducida(bool correcta)
+{
+    if(correcta){
+        QString consulta = "UPDATE spectradb.historia SET ";
+        bool varios = false;
+
+        if(infoNueva.contains("nombre")){
+            consulta+= "nombre = '" + infoNueva["nombre"] + "'";
+            varios = true;
+        }
+
+        if(infoNueva.contains("apellido")){
+            if(varios){
+                consulta+= ", ";
+            }
+            consulta+= "apellido = '" + infoNueva["apellido"] + "'";
+            varios = true;
+        }
+
+        if(infoNueva.contains("cedula")){
+            if(varios){
+                consulta+= ", ";
+            }
+            consulta+= "cedula = ";
+
+            if(infoNueva["cedula"] == ""){
+                consulta+= "NULL";
+            }else{
+                consulta+= "'" + infoNueva["cedula"] + "'";
+            }
+
+            varios = true;
+        }
+
+        if(infoNueva.contains("fecha_nac")){
+            if(varios){
+                consulta+= ", ";
+            }
+            consulta+= "fecha_nac = '" + infoNueva["fecha_nac"] + "'";
+            varios = true;
+        }
+
+        if(infoNueva.contains("sexo")){
+            if(varios){
+                consulta+= ", ";
+            }
+            consulta+= "sexo = '" + infoNueva["sexo"] + "'";
+        }
+
+        consulta+= " WHERE id_historia = '" + infoOriginal["id_historia"] + "'";
+
+        QSqlQuery query;
+
+        query.prepare(consulta);
+        if(query.exec()){
+
+            QMessageBox::information(this, "Historia modificada", "Se ha modificado la historia correctamente.");
+
+            close();
+
+            QHash<QString, QString> infoResultante;
+            QStringList llaves, valores;
+
+            llaves = infoNueva.keys();
+            valores = infoNueva.values();
+
+            infoResultante = infoOriginal;
+
+            for(int i = 0; i < infoNueva.size(); ++i){
+                infoResultante[llaves[i]] = valores[i];
+            }
+
+            emit historiaModificada(infoResultante);
+
+        }else{
+            if(query.lastError().number() == 23505){
+                QMessageBox::critical(this, "Error al modificar", "La cédula de identidad " + infoNueva["cedula"] + " ya está siendo utilizada.");
+
+                infoNueva.remove("cedula");
+
+                if(infoOriginal.contains("cedula")){
+                    QString aux, aux2;
+                    aux2 = infoOriginal["cedula"];
+
+                    if(infoOriginal["cedula"].contains("V")){
+                        aux = "V";
+                        aux2.remove("V");
+                    }else{
+                        aux = "E";
+                        aux2.remove("E");
+                    }
+                    ui->cBoxCI->setCurrentText(aux);
+                    ui->lineaCI->setText(aux2);
+                }else
+                    ui->lineaCI->clear();
+
+                ui->btnModificar->setEnabled(false);
+            }
+        }
+    }else{
+        QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");
     }
 }
