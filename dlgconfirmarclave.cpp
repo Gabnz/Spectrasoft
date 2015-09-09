@@ -6,17 +6,12 @@ dlgConfirmarClave::dlgConfirmarClave(QString claveUsuario, QWidget *parent) :
     ui(new Ui::dlgConfirmarClave)
 {
     ui->setupUi(this);
+
     ui->btnContinuar->setEnabled(false);
-    claveCorrecta = false;
     clave = claveUsuario;
 
     this->setFixedSize(this->size());
     this->setWindowFlags(Qt::WindowCloseButtonHint);
-}
-
-bool dlgConfirmarClave::getClaveCorrecta()
-{
-    return claveCorrecta;
 }
 
 dlgConfirmarClave::~dlgConfirmarClave()
@@ -35,10 +30,11 @@ void dlgConfirmarClave::on_lineaClave_textChanged(const QString &arg1)
 
 void dlgConfirmarClave::on_btnContinuar_clicked()
 {
-    if(ui->lineaClave->text() == clave){
-        claveCorrecta = true;
-    }else{
-        claveCorrecta = false;
-    }
     close();
+
+    if(ui->lineaClave->text() == clave){
+        emit claveIntroducida(true);
+    }else{
+        emit claveIntroducida(false);
+    }
 }

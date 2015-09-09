@@ -6,17 +6,12 @@ dlgEliminarHistoria::dlgEliminarHistoria(QString idHistoria, QString claveUsuari
     ui(new Ui::dlgEliminarHistoria)
 {
     ui->setupUi(this);
+
     id = idHistoria;
     clave = claveUsuario;
-    historiaEliminada = false;
 
     this->setFixedSize(this->size());
     this->setWindowFlags(Qt::WindowCloseButtonHint);
-}
-
-bool dlgEliminarHistoria::getHistoriaEliminada()
-{
-    return historiaEliminada;
 }
 
 dlgEliminarHistoria::~dlgEliminarHistoria()
@@ -33,10 +28,14 @@ void dlgEliminarHistoria::on_btnEliminar_clicked()
 {
     dlgConfirmarClave confirmarC(clave);
 
+    connect(&confirmarC, &dlgConfirmarClave::claveIntroducida, this, &dlgEliminarHistoria::on_claveIntroducida);
+
     confirmarC.exec();
+}
 
-    if(confirmarC.getClaveCorrecta()){
-
+void dlgEliminarHistoria::on_claveIntroducida(bool correcta)
+{
+    if(correcta){
         QSqlQuery query;
 
         query.prepare("DELETE FROM spectradb.historia WHERE id_historia = '" + id + "'");
@@ -44,10 +43,11 @@ void dlgEliminarHistoria::on_btnEliminar_clicked()
         query.exec();
 
         QMessageBox::information(this, "Historia eliminada", "Se ha eliminado la historia correctamente.");
-        historiaEliminada = true;
+
         close();
+
+        emit historiaEliminada();
     }else{
         QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");
-        historiaEliminada = false;
     }
 }

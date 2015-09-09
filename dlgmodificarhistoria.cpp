@@ -8,7 +8,6 @@ dlgModificarHistoria::dlgModificarHistoria(QString claveUsuario, QHash<QString, 
     ui->setupUi(this);
 
     clave = claveUsuario;
-    modificada = false;
     infoOriginal = infoHistoria;
     infoNueva.clear();
 
@@ -49,27 +48,6 @@ dlgModificarHistoria::dlgModificarHistoria(QString claveUsuario, QHash<QString, 
 
     this->setFixedSize(this->size());
     this->setWindowFlags(Qt::WindowCloseButtonHint);
-}
-
-bool dlgModificarHistoria::historiaModificada()
-{
-    return !infoNueva.isEmpty() && modificada;
-}
-
-QHash<QString, QString> dlgModificarHistoria::getInfoHistoria()
-{
-    QHash<QString, QString> infoResultante;
-    QStringList llaves, valores;
-
-    llaves = infoNueva.keys();
-    valores = infoNueva.values();
-
-    infoResultante = infoOriginal;
-
-    for(int i = 0; i < infoNueva.size(); ++i){
-        infoResultante[llaves[i]] = valores[i];
-    }
-    return infoResultante;
 }
 
 dlgModificarHistoria::~dlgModificarHistoria()
@@ -124,9 +102,14 @@ void dlgModificarHistoria::on_btnModificar_clicked()
 {
     dlgConfirmarClave confirmar(clave);
 
-    confirmar.exec();
+    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgModificarHistoria::on_claveIntroducida);
 
-    if(confirmar.getClaveCorrecta()){
+    confirmar.exec();
+}
+
+void dlgModificarHistoria::on_claveIntroducida(bool correcta)
+{
+    if(correcta){
         QString consulta = "UPDATE spectradb.historia SET ";
         bool varios = false;
 
@@ -180,9 +163,25 @@ void dlgModificarHistoria::on_btnModificar_clicked()
 
         query.prepare(consulta);
         if(query.exec()){
-            modificada = true;
+
             QMessageBox::information(this, "Historia modificada", "Se ha modificado la historia correctamente.");
+
             close();
+
+            QHash<QString, QString> infoResultante;
+            QStringList llaves, valores;
+
+            llaves = infoNueva.keys();
+            valores = infoNueva.values();
+
+            infoResultante = infoOriginal;
+
+            for(int i = 0; i < infoNueva.size(); ++i){
+                infoResultante[llaves[i]] = valores[i];
+            }
+
+            emit historiaModificada(infoResultante);
+
         }else{
             if(query.lastError().number() == 23505){
                 QMessageBox::critical(this, "Error al modificar", "La cédula de identidad " + infoNueva["cedula"] + " ya está siendo utilizada.");

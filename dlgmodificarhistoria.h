@@ -18,9 +18,10 @@ class dlgModificarHistoria : public QDialog
 
 public:
     explicit dlgModificarHistoria(QString claveUsuario, QHash<QString, QString> infoHistoria, QWidget *parent = 0);
-    bool historiaModificada();
-    QHash<QString, QString> getInfoHistoria();
     ~dlgModificarHistoria();
+
+signals:
+    void historiaModificada(QHash<QString, QString> infoModificada);
 
 private slots:
     void on_btnCancelar_clicked();
@@ -30,6 +31,8 @@ private slots:
     void on_lineaApellido_textChanged(const QString &arg1);
 
     void on_btnModificar_clicked();
+
+    void on_claveIntroducida(bool correcta);
 
     void on_cBoxCI_currentTextChanged(const QString &arg1);
 
@@ -42,7 +45,6 @@ private slots:
 private:
     Ui::dlgModificarHistoria *ui;
     QHash<QString, QString> infoOriginal, infoNueva;
-    bool modificada;
     QString clave;
 };
 

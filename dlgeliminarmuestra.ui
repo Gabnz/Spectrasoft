@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dlgEliminarHistoria</class>
- <widget class="QDialog" name="dlgEliminarHistoria">
+ <class>dlgEliminarMuestra</class>
+ <widget class="QDialog" name="dlgEliminarMuestra">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
+    <width>380</width>
     <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Eliminar historia</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="recursos.qrc">
-    <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
+   <string>Eliminar muestra</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -47,7 +43,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="recursos.qrc">:/img/borrar_historia.png</pixmap>
+          <pixmap resource="recursos.qrc">:/img/borrar_muestra.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -55,7 +51,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="etqElimHistoria">
+        <widget class="QLabel" name="etqElimMuestra">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -63,7 +59,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Eliminar historia</string>
+          <string>Eliminar muestra</string>
          </property>
         </widget>
        </item>
@@ -85,7 +81,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Al eliminar esta historia, se eliminaran todas las muestras asociadas a la misma.</string>
+        <string>Al eliminar esta muestra, se eliminaran los datos asociados a la misma.</string>
        </property>
       </widget>
      </item>

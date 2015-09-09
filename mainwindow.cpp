@@ -343,10 +343,18 @@ void MainWindow::on_actionEliminar_historia_triggered()
 {
     dlgEliminarHistoria elimH(infoHistoria["id_historia"], infoUsuario["clave"]);
 
-    elimH.exec();
+    connect(&elimH, &dlgEliminarHistoria::historiaEliminada, this, &MainWindow::on_historiaEliminada);
 
-    if(elimH.getHistoriaEliminada()){
-        infoHistoria.clear();
+    elimH.exec();
+}
+
+void MainWindow::on_historiaEliminada()
+{
+    infoHistoria.clear();
+
+    if(!infoMuestra.isEmpty()){
+        infoMuestra.clear();
+        borrarResultados();
     }
     revisionBtns();
 }
@@ -355,12 +363,17 @@ void MainWindow::on_actionModificar_historia_triggered()
 {
     dlgModificarHistoria modH(infoUsuario["clave"], infoHistoria);
 
-    modH.exec();
+    connect(&modH, &dlgModificarHistoria::historiaModificada, this, &MainWindow::on_historiaModificada);
 
-    if(modH.historiaModificada()){
-        infoHistoria = modH.getInfoHistoria();
-    }
+    modH.exec();
 }
+
+void MainWindow::on_historiaModificada(QHash<QString, QString> infoModificada)
+{
+    infoHistoria = infoModificada;
+}
+
+
 
 void MainWindow::on_actionMedir_muestra_triggered()
 {
@@ -557,5 +570,16 @@ void MainWindow::on_actionCerrar_muestra_triggered()
 
 void MainWindow::on_actionEliminar_muestra_triggered()
 {
+    dlgEliminarMuestra eliminarM(infoMuestra["id_muestra"], infoUsuario["clave"]);
 
+    connect(&eliminarM, &dlgEliminarMuestra::muestraEliminada, this, &MainWindow::on_muestraEliminada);
+
+    eliminarM.exec();
+}
+
+void MainWindow::on_muestraEliminada()
+{
+    infoMuestra.clear();
+    borrarResultados();
+    revisionBtns();
 }

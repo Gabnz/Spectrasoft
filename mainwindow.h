@@ -24,6 +24,7 @@
 #include <dlgreglesion.h>
 #include <dlgverlesion.h>
 #include <dlgregfototipo.h>
+#include <dlgeliminarmuestra.h>
 #include <dlgacercade.h>
 
 namespace Ui {
@@ -71,11 +72,17 @@ private slots:
 
     void on_actionEliminar_historia_triggered();
 
+    void on_historiaEliminada();
+
     void on_actionModificar_historia_triggered();
+
+    void on_historiaModificada(QHash<QString, QString> infoModificada);
 
     void on_actionMedir_muestra_triggered();
 
     void on_actionEliminar_muestra_triggered();
+
+    void on_muestraEliminada();
 
     void on_actionVer_reflectancia_triggered();
 

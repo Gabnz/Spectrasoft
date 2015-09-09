@@ -13,8 +13,10 @@ class dlgConfirmarClave : public QDialog
 
 public:
     explicit dlgConfirmarClave(QString claveUsuario, QWidget *parent = 0);
-    bool getClaveCorrecta();
     ~dlgConfirmarClave();
+
+signals:
+    void claveIntroducida(bool correcta);
 
 private slots:
     void on_lineaClave_textChanged(const QString &arg1);
@@ -24,7 +26,6 @@ private slots:
 private:
     Ui::dlgConfirmarClave *ui;
     QString clave;
-    bool claveCorrecta;
 };
 
 #endif // DLGCONFIRMARCLAVE_H

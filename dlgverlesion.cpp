@@ -7,6 +7,7 @@ dlgVerLesion::dlgVerLesion(QHash<QString, QString> infoLesion, QWidget *parent) 
 {
     ui->setupUi(this);
 
+    ui->etqIdMuestra->setText(infoLesion["id_muestra"]);
     ui->etqTipoMuestra->setText("Lesión");
     ui->etqNombreMuestra->setText(infoLesion["nombre_muestra"]);
     ui->etqAreaMuestra->setText(infoLesion["area_muestra"]);

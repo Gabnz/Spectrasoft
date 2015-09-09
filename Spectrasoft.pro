@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     dlgtipomuestra.cpp \
     dlgreglesion.cpp \
     dlgregfototipo.cpp \
-    dlgverlesion.cpp
+    dlgverlesion.cpp \
+    dlgeliminarmuestra.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -61,7 +62,8 @@ HEADERS  += mainwindow.h \
     dlgtipomuestra.h \
     dlgreglesion.h \
     dlgregfototipo.h \
-    dlgverlesion.h
+    dlgverlesion.h \
+    dlgeliminarmuestra.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
@@ -82,7 +84,8 @@ FORMS    += mainwindow.ui \
     dlgtipomuestra.ui \
     dlgreglesion.ui \
     dlgregfototipo.ui \
-    dlgverlesion.ui
+    dlgverlesion.ui \
+    dlgeliminarmuestra.ui
 
 RESOURCES += \
     recursos.qrc

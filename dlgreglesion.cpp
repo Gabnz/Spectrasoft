@@ -112,6 +112,7 @@ void dlgRegLesion::on_btnRegistrar_clicked()
     if(query.exec()){
 
         id_muestra = query.lastInsertId().toString();
+        infoMuestra["id_muestra"] = id_muestra;
         query.clear();
         consulta = "INSERT INTO spectradb.datos_espectrales(muestra";
 

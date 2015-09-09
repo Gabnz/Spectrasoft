@@ -16,18 +16,21 @@ class dlgEliminarHistoria : public QDialog
 
 public:
     explicit dlgEliminarHistoria(QString idHistoria, QString claveUsuario, QWidget *parent = 0);
-    bool getHistoriaEliminada();
     ~dlgEliminarHistoria();
+
+signals:
+    void historiaEliminada();
 
 private slots:
     void on_btnCancelar_clicked();
 
     void on_btnEliminar_clicked();
 
+    void on_claveIntroducida(bool correcta);
+
 private:
     Ui::dlgEliminarHistoria *ui;
     QString id, clave;
-    bool historiaEliminada;
 };
 
 #endif // DLGELIMINARHISTORIA_H
