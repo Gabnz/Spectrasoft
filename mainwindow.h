@@ -23,6 +23,7 @@
 #include <dlgtipomuestra.h>
 #include <dlgreglesion.h>
 #include <dlgregfototipo.h>
+#include <dlgbuscarmuestra.h>
 #include <dlgvermuestra.h>
 #include <dlgmodificarmuestra.h>
 #include <dlgeliminarmuestra.h>
@@ -106,6 +107,10 @@ private slots:
     void on_actionModificar_muestra_triggered();
 
     void on_muestraModificada(QHash<QString, QString> infoModificada);
+
+    void on_actionBuscar_muestra_triggered();
+
+    void on_muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float>infoXYZ, QVector<float> infoLAB, QVector<float> adicionales);
 
 private:
     Ui::MainWindow *ui;

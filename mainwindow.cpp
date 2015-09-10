@@ -280,6 +280,10 @@ void MainWindow::on_actionCerrar_sesion_triggered()
 {
     infoHistoria.clear();
     infoUsuario.clear();
+    if(!infoMuestra.isEmpty()){
+        infoMuestra.clear();
+        borrarResultados();
+    }
     QMessageBox::information(this, "Sesión cerrada", "Se ha cerrado la sesión correctamente.");
     revisionBtns();
 }
@@ -294,6 +298,12 @@ void MainWindow::on_actionVer_usuario_triggered()
 void MainWindow::on_actionCerrar_historia_triggered()
 {
     infoHistoria.clear();
+
+    if(!infoMuestra.isEmpty()){
+        infoMuestra.clear();
+        borrarResultados();
+    }
+
     QMessageBox::information(this, "Historia cerrada", "Se ha cerrado la historia correctamente.");
     revisionBtns();
 }
@@ -372,8 +382,6 @@ void MainWindow::on_historiaModificada(QHash<QString, QString> infoModificada)
 {
     infoHistoria = infoModificada;
 }
-
-
 
 void MainWindow::on_actionMedir_muestra_triggered()
 {
@@ -592,4 +600,36 @@ void MainWindow::on_actionModificar_muestra_triggered()
 void MainWindow::on_muestraModificada(QHash<QString, QString> infoModificada)
 {
     infoMuestra = infoModificada;
+}
+
+void MainWindow::on_actionBuscar_muestra_triggered()
+{
+    dlgBuscarMuestra buscarM(infoHistoria["id_historia"]);
+
+    connect(&buscarM, &dlgBuscarMuestra::muestraAbierta, this, &MainWindow::on_muestraAbierta);
+
+    buscarM.exec();
+}
+
+void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float> infoXYZ, QVector<float> infoLAB, QVector<float> adicionales)
+{
+    borrarResultados();
+    infoMuestra = infoM;
+
+    datosEspectrales = infoDatosE;
+    QModelIndex indice;
+
+    for(int i = 0; i < 31; ++i){
+
+        indice = modeloDatos->index(0, i, QModelIndex());
+        modeloDatos->setData(indice, datosEspectrales.at(i));
+    }
+
+    XYZ = infoXYZ;
+    LAB = infoLAB;
+    absorcion = adicionales[0];
+    esparcimiento = adicionales[1];
+    eritema = adicionales[2];
+
+    revisionBtns();
 }

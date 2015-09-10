@@ -46,9 +46,8 @@ void dlgBuscarHistoria::buscar()
     QString consulta, aux;
     QStringList listaHistorias;
     QSqlQuery query;
-    int i;
+    int i = 0;
     bool varios = false;
-    i = 0;
 
     consulta+= "SELECT id_historia FROM spectradb.historia";
 
@@ -123,11 +122,10 @@ void dlgBuscarHistoria::buscar()
 
     while(query.next()){
 
-        listaHistorias.push_back("  Historia " + query.value(0).toString());
+        listaHistorias.push_back("   Historia " + query.value(0).toString());
         idHistorias[i] = query.value(0).toString();
         ++i;
     }
-
     modelo->setStringList(listaHistorias);
     ui->listView->setModel(modelo);
 }
@@ -250,10 +248,10 @@ void dlgBuscarHistoria::on_listView_clicked(const QModelIndex &index)
 
         ui->etqNombre_2->setText(infoHistoria["nombre"]);
         ui->etqApellido_2->setText(infoHistoria["apellido"]);
-    }
 
-    ui->btnVer->setEnabled(true);
-    ui->btnAbrir->setEnabled(true);
+        ui->btnVer->setEnabled(true);
+        ui->btnAbrir->setEnabled(true);
+    }
 }
 
 void dlgBuscarHistoria::on_btnVer_clicked()
