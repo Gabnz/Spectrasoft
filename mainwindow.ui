@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>850</width>
+    <width>903</width>
     <height>325</height>
    </rect>
   </property>
@@ -180,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>850</width>
+     <width>903</width>
      <height>21</height>
     </rect>
    </property>
@@ -269,6 +269,7 @@
     <addaction name="actionRegistrar_muestra"/>
     <addaction name="actionBuscar_muestra"/>
     <addaction name="actionVer_muestra"/>
+    <addaction name="actionExportar_muestra"/>
     <addaction name="separator"/>
     <addaction name="menuMas_opciones_m"/>
     <addaction name="separator"/>
@@ -301,6 +302,7 @@
    <addaction name="actionRegistrar_muestra"/>
    <addaction name="actionBuscar_muestra"/>
    <addaction name="actionVer_muestra"/>
+   <addaction name="actionExportar_muestra"/>
    <addaction name="actionCerrar_muestra"/>
   </widget>
   <action name="actionConectar">
@@ -535,6 +537,15 @@
    </property>
    <property name="text">
     <string>Borrar resultados</string>
+   </property>
+  </action>
+  <action name="actionExportar_muestra">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_exportar.png</normaloff>:/img/muestra_exportar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exportar muestra</string>
    </property>
   </action>
  </widget>

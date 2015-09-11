@@ -25,6 +25,7 @@
 #include <dlgregfototipo.h>
 #include <dlgbuscarmuestra.h>
 #include <dlgvermuestra.h>
+#include <xlsxdocument.h>
 #include <dlgmodificarmuestra.h>
 #include <dlgeliminarmuestra.h>
 #include <dlgacercade.h>
@@ -113,6 +114,8 @@ private slots:
     void on_actionBuscar_muestra_triggered();
 
     void on_muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float>infoXYZ, QVector<float> infoLAB, QVector<float> adicionales);
+
+    void on_actionExportar_muestra_triggered();
 
 private:
     Ui::MainWindow *ui;

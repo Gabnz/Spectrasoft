@@ -123,7 +123,7 @@ void MainWindow::borrarResultados()
 
 void MainWindow::revisionBtns()
 {
-    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, verRefM, verAbsM, datosAdicionalesM, masOpcionesM, modificarM, eliminarM, cerrarM,
+    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRefM, verAbsM, datosAdicionalesM, masOpcionesM, modificarM, eliminarM, cerrarM,
     sesionU, verU, masOpcionesU, registrarU, eliminarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
@@ -164,11 +164,11 @@ void MainWindow::revisionBtns()
 
             if(!infoMuestra.isEmpty()){
                 registrarM = buscarM = false;
-                verM = cerrarM = masOpcionesM = modificarM = eliminarM = true;
+                verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = true;
             }else{
 
                 buscarM = true;
-                verM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
+                verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
 
                 if(!datosEspectrales.isEmpty()){
                     registrarM = true;
@@ -180,14 +180,14 @@ void MainWindow::revisionBtns()
         }else{
             registrarH = buscarH = true;
             verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
-            registrarM = buscarM = verM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
+            registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
         }
 
     }else{
         sesionU = true;
         verU = masOpcionesU = registrarU = eliminarU = cerrarU = false;
         registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
-        registrarM = buscarM = verM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
+        registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
     }
 
     ui->actionEstandarizar->setEnabled(estandarizar);
@@ -212,6 +212,7 @@ void MainWindow::revisionBtns()
     ui->actionRegistrar_muestra->setEnabled(registrarM);
     ui->actionBuscar_muestra->setEnabled(buscarM);
     ui->actionVer_muestra->setEnabled(verM);
+    ui->actionExportar_muestra->setEnabled(exportarM);
     ui->actionVer_reflectancia->setEnabled(verRefM);
     ui->actionVer_absorbancia->setEnabled(verAbsM);
     ui->actionDatos_adicionales->setEnabled(datosAdicionalesM);
@@ -643,4 +644,103 @@ void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, QVector<float>
     eritema = adicionales[2];
 
     revisionBtns();
+}
+
+void MainWindow::on_actionExportar_muestra_triggered()
+{
+    int fila = 1;
+
+    QXlsx::Document xlsx;
+    xlsx.write("A" + QString().setNum(fila), "Información de la historia:");
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Nombre(s): " + infoHistoria["nombre"]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Apellido(s): " + infoHistoria["apellido"]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Fecha de nacimiento: " + QDate().fromString(infoHistoria["fecha_nac"], "yyyy-MM-dd").toString("dd-MM-yyyy"));
+    ++fila;
+
+    if(infoMuestra["sexo"] == "F"){
+        xlsx.write("A" + QString().setNum(fila), "Sexo: Femenino");
+    }else{
+        xlsx.write("A" + QString().setNum(fila), "Sexo: Masculino");
+    }
+
+    ++fila;
+
+    if(infoHistoria.contains("fototipo")){
+        xlsx.write("A" + QString().setNum(fila), "Fototipo: " + infoHistoria["fototipo"]);
+    }
+
+    fila+=2;
+
+    xlsx.write("A" + QString().setNum(fila), "Información de la muestra:");
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Tipo: " + infoMuestra["tipo_muestra"]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Nombre: " + infoMuestra["nombre_muestra"]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Área: " + infoMuestra["area_muestra"]);
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Coordenadas de cromaticidad CIE XYZ");
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "X:");
+    xlsx.write("B" + QString().setNum(fila), XYZ[0]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Y:");
+    xlsx.write("B" + QString().setNum(fila), XYZ[1]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Z:");
+    xlsx.write("B" + QString().setNum(fila), XYZ[2]);
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Coordenadas del espacio CIE LAB");
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "L:");
+    xlsx.write("B" + QString().setNum(fila), LAB[0]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "a:");
+    xlsx.write("B" + QString().setNum(fila), LAB[1]);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "b:");
+    xlsx.write("B" + QString().setNum(fila), LAB[2]);
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Coeficiente de absorción:");
+    xlsx.write("D" + QString().setNum(fila), absorcion);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Coeficiente de esparcimiento:");
+    xlsx.write("D" + QString().setNum(fila), esparcimiento);
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), "Índice de eritema:");
+    xlsx.write("D" + QString().setNum(fila), eritema);
+    fila+=2;
+    xlsx.write("A" + QString().setNum(fila), "Datos espectrales de la muestra:");
+    fila+=2;
+
+    int rango = 400;
+    QString auxS;
+    char letra = 'A';
+    bool bandera = false;
+
+    for(int i = 0; i < 31; ++i){
+
+        if(!bandera){
+            auxS = QString(letra);
+        }else{
+            auxS = "A" + QString(letra);
+        }
+
+        xlsx.write(auxS + QString().setNum(fila), rango);
+        xlsx.write(auxS + QString().setNum(fila + 1), datosEspectrales.at(i));
+
+        if(letra == 'Z'){
+            letra = 'A';
+            letra-=1;
+            bandera = true;
+        }
+        rango+=10;
+        letra+=1;
+    }
+
+    xlsx.saveAs(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "muestra-" + infoMuestra["id_muestra"] + "-fecha-" + QDate::currentDate().toString("dd-MM-yyyy") + ".xlsx");
+    QMessageBox::information(this, "Muestra exportada", "Se ha exportado la muestra correctamente a su escritorio.");
 }

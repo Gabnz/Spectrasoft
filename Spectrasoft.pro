@@ -97,3 +97,5 @@ RESOURCES += \
     recursos.qrc
 
 RC_ICONS += img/logo_icono_nuevo.ico
+
+include(qtxlsx/src/xlsx/qtxlsx.pri)
