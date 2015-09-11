@@ -545,7 +545,10 @@ void MainWindow::on_tipoMuestra(const QString tipo)
 
         regL.exec();
     }else{
-        dlgRegFototipo regF;
+        dlgRegFototipo regF(infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
+
+        connect(&regF, &dlgRegFototipo::fototipo_registrado, this, &MainWindow::on_muestraRegistrada);
+        connect(&regF, &dlgRegFototipo::actualizar_fototipo, this, &MainWindow::on_actualizarFototipo);
 
         regF.exec();
     }
@@ -555,6 +558,11 @@ void MainWindow::on_muestraRegistrada(const QHash<QString, QString> info)
 {
     infoMuestra = info;
     revisionBtns();
+}
+
+void MainWindow::on_actualizarFototipo(int infoF)
+{
+    infoHistoria["fototipo"] = QString().setNum(infoF);
 }
 
 void MainWindow::on_actionVer_muestra_triggered()
@@ -583,6 +591,9 @@ void MainWindow::on_actionEliminar_muestra_triggered()
 
 void MainWindow::on_muestraEliminada()
 {
+    if(infoMuestra["tipo_muestra"] == "fototipo"){
+        infoHistoria.remove("fototipo");
+    }
     infoMuestra.clear();
     borrarResultados();
     revisionBtns();

@@ -2,8 +2,10 @@
 #define DLGELIMINARMUESTRA_H
 
 #include <QDialog>
+#include <QDebug>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <dlgconfirmarclave.h>
 
 namespace Ui {
