@@ -8,6 +8,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
+#include <dlgconfirmarclave.h>
 
 namespace Ui {
 class dlgRegHistoria;
@@ -18,10 +19,12 @@ class dlgRegHistoria : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgRegHistoria(QWidget *parent = 0);
+    explicit dlgRegHistoria(QString claveUsuario, QWidget *parent = 0);
     bool camposListos();
-    QHash<QString, QString> getHistoria();
     ~dlgRegHistoria();
+
+signals:
+    void historia_registrada(QHash<QString, QString> info);
 
 private slots:
 
@@ -35,10 +38,13 @@ private slots:
 
     void on_btnRegistrar_clicked();
 
+    void on_claveIntroducida(bool correcta);
+
 private:
     Ui::dlgRegHistoria *ui;
     bool nombreListo, apellidoListo, cedulaLista, fecha_nacLista, sexoListo;
     QHash<QString, QString> infoHistoria;
+    QString clave;
 };
 
 #endif // DLGREGHISTORIA_H

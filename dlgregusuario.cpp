@@ -1,12 +1,13 @@
 #include "dlgregusuario.h"
 #include "ui_dlgregusuario.h"
 
-dlgRegUsuario::dlgRegUsuario(QWidget *parent) :
+dlgRegUsuario::dlgRegUsuario(QString claveUsuario, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgRegUsuario)
 {
     ui->setupUi(this);
 
+    clave = claveUsuario;
     infoUsuario.clear();
     nombreListo = apellidoListo = cedulaLista = rolListo = claveLista = sexoListo = false;
     fecha_nacLista = true;
@@ -173,51 +174,63 @@ void dlgRegUsuario::on_cBoxSexo_currentIndexChanged(int index)
 
 void dlgRegUsuario::on_btnRegistrar_clicked()
 {
-    infoUsuario["cedula"] = ui->cBoxCI->currentText() + ui->lineaCI->text();
-    infoUsuario["nombre"] = ui->lineaNombre->text();
-    infoUsuario["apellido"] = ui->lineaApellido->text();
-    infoUsuario["fecha_nac"] = ui->editFechaNac->date().toString("yyyy-MM-dd");
-    infoUsuario["clave"] = ui->lineaClave->text();
+    dlgConfirmarClave confirmar(clave);
 
-    if(ui->cBoxRol->currentIndex() == 1)
-        infoUsuario["rol"] = "dermatologo";
-    else if(ui->cBoxRol->currentIndex() == 2)
-        infoUsuario["rol"] = "investigador";
-    else
-        infoUsuario["rol"] = "administrador";
+    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgRegUsuario::on_claveIntroducida);
+    confirmar.exec();
+}
 
-    if(ui->cBoxSexo->currentIndex() == 1)
-        infoUsuario["sexo"] = "F";
-    else
-        infoUsuario["sexo"] = "M";
+void dlgRegUsuario::on_claveIntroducida(bool correcta)
+{
+    if(correcta){
+        infoUsuario["cedula"] = ui->cBoxCI->currentText() + ui->lineaCI->text();
+        infoUsuario["nombre"] = ui->lineaNombre->text();
+        infoUsuario["apellido"] = ui->lineaApellido->text();
+        infoUsuario["fecha_nac"] = ui->editFechaNac->date().toString("yyyy-MM-dd");
+        infoUsuario["clave"] = ui->lineaClave->text();
 
-    QSqlQuery query;
+        if(ui->cBoxRol->currentIndex() == 1)
+            infoUsuario["rol"] = "dermatologo";
+        else if(ui->cBoxRol->currentIndex() == 2)
+            infoUsuario["rol"] = "investigador";
+        else
+            infoUsuario["rol"] = "administrador";
 
-    query.prepare("INSERT INTO spectradb.usuario(cedula, nombre, apellido, fecha_nac, sexo, clave, rol)"
-                  " VALUES(:cedula, :nombre, :apellido, :fecha_nac, :sexo, :clave, :rol)");
+        if(ui->cBoxSexo->currentIndex() == 1)
+            infoUsuario["sexo"] = "F";
+        else
+            infoUsuario["sexo"] = "M";
 
-    query.bindValue(":cedula", infoUsuario["cedula"]);
-    query.bindValue(":nombre", infoUsuario["nombre"]);
-    query.bindValue(":apellido", infoUsuario["apellido"]);
-    query.bindValue(":fecha_nac", infoUsuario["fecha_nac"]);
-    query.bindValue(":sexo", infoUsuario["sexo"]);
-    query.bindValue(":clave", infoUsuario["clave"]);
-    query.bindValue(":rol", infoUsuario["rol"]);
+        QSqlQuery query;
 
-    if(query.exec()){
-        QMessageBox::information(this, "Usuario registrado", "Se ha registrado el usuario correctamente.");
-        close();
-    }else{
-        //el codigo 23505 significa que se intento insertar un valor unico que ya existe
-        if(query.lastError().number() == 23505){
-            QMessageBox::critical(this, "Error al registrar", "La cédula de identidad " + infoUsuario["cedula"] + " ya está siendo utilizada.");
+        query.prepare("INSERT INTO spectradb.usuario(cedula, nombre, apellido, fecha_nac, sexo, clave, rol)"
+                      " VALUES(:cedula, :nombre, :apellido, :fecha_nac, :sexo, :clave, :rol)");
+
+        query.bindValue(":cedula", infoUsuario["cedula"]);
+        query.bindValue(":nombre", infoUsuario["nombre"]);
+        query.bindValue(":apellido", infoUsuario["apellido"]);
+        query.bindValue(":fecha_nac", infoUsuario["fecha_nac"]);
+        query.bindValue(":sexo", infoUsuario["sexo"]);
+        query.bindValue(":clave", infoUsuario["clave"]);
+        query.bindValue(":rol", infoUsuario["rol"]);
+
+        if(query.exec()){
+            QMessageBox::information(this, "Usuario registrado", "Se ha registrado el usuario correctamente.");
+            close();
+        }else{
+            //el codigo 23505 significa que se intento insertar un valor unico que ya existe
+            if(query.lastError().number() == 23505){
+                QMessageBox::critical(this, "Error al registrar", "La cédula de identidad " + infoUsuario["cedula"] + " ya está siendo utilizada.");
+            }
+
+            infoUsuario.clear();
+            ui->lineaClave->clear();
+            ui->lineaRepetirClave->clear();
+            ui->etqClaveValida->setPixmap(QPixmap::fromImage(QImage(":/img/vacio.png")));
+            ui->etqClaveRepetidaValida->setPixmap(QPixmap::fromImage(QImage(":/img/vacio.png")));
+            ui->btnRegistrar->setEnabled(false);
         }
-
-        infoUsuario.clear();
-        ui->lineaClave->clear();
-        ui->lineaRepetirClave->clear();
-        ui->etqClaveValida->setPixmap(QPixmap::fromImage(QImage(":/img/vacio.png")));
-        ui->etqClaveRepetidaValida->setPixmap(QPixmap::fromImage(QImage(":/img/vacio.png")));
-        ui->btnRegistrar->setEnabled(false);
+    }else{
+        QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");
     }
 }

@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
+#include <dlgconfirmarclave.h>
 
 namespace Ui {
 class dlgRegUsuario;
@@ -17,7 +18,7 @@ class dlgRegUsuario : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgRegUsuario(QWidget *parent = 0);
+    explicit dlgRegUsuario(QString claveUsuario, QWidget *parent = 0);
     bool camposListos();
     ~dlgRegUsuario();
 
@@ -40,11 +41,14 @@ private slots:
 
     void on_btnRegistrar_clicked();
 
+    void on_claveIntroducida(bool correcta);
+
 private:
     Ui::dlgRegUsuario *ui;
     bool nombreListo, apellidoListo, cedulaLista, rolListo, claveLista, fecha_nacLista, sexoListo;
     QRegularExpression claveValida;
     QHash<QString, QString> infoUsuario;
+    QString clave;
 };
 
 #endif // DLGREGUSUARIO_H

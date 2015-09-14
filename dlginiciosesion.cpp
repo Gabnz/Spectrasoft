@@ -106,15 +106,11 @@ void dlgInicioSesion::on_btnIngresar_clicked()
 
         QMessageBox::information(this, "Sesión iniciada", "Se ha iniciado la sesión correctamente.");
         close();
+        emit sesion_iniciada(infoUsuario);
     }else{
         infoUsuario.clear();
         QMessageBox::critical(this, "Datos incorrectos", "La cédula de identidad o la contraseña que introdujo es incorrecta.");
         ui->lineaUsuario->clear();
         ui->lineaClave->clear();
     }
-}
-
-QHash<QString, QString> dlgInicioSesion::getUsuario()
-{
-    return infoUsuario;
 }

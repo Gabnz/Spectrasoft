@@ -21,8 +21,10 @@ public:
     explicit dlgBuscarHistoria(QWidget *parent = 0);
     void buscar();
     bool existeCriterio();
-    QHash<QString, QString> getHistoria();
     ~dlgBuscarHistoria();
+
+signals:
+    void historiaAbierta(QHash<QString, QString> info);
 
 private slots:
     void on_btnCancelar_clicked();

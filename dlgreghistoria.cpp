@@ -1,13 +1,14 @@
 #include "dlgreghistoria.h"
 #include "ui_dlgreghistoria.h"
 
-dlgRegHistoria::dlgRegHistoria(QWidget *parent) :
+dlgRegHistoria::dlgRegHistoria(QString claveUsuario, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgRegHistoria)
 {
     ui->setupUi(this);
 
     infoHistoria.clear();
+    clave = claveUsuario;
     nombreListo = apellidoListo = sexoListo = false;
     cedulaLista = fecha_nacLista = true;
     ui->btnRegistrar->setEnabled(false);
@@ -34,11 +35,6 @@ dlgRegHistoria::dlgRegHistoria(QWidget *parent) :
 bool dlgRegHistoria::camposListos()
 {
     return nombreListo && apellidoListo && cedulaLista && fecha_nacLista && sexoListo;
-}
-
-QHash<QString, QString> dlgRegHistoria::getHistoria()
-{
-    return infoHistoria;
 }
 
 dlgRegHistoria::~dlgRegHistoria()
@@ -99,62 +95,76 @@ void dlgRegHistoria::on_cBoxSexo_currentIndexChanged(int index)
 
 void dlgRegHistoria::on_btnRegistrar_clicked()
 {
-    infoHistoria["nombre"] = ui->lineaNombre->text();
-    infoHistoria["apellido"] = ui->lineaApellido->text();
-    infoHistoria["fecha_nac"] = ui->editFechaNac->date().toString("yyyy-MM-dd");
-    infoHistoria["fecha_ingreso"] = QDate::currentDate().toString("yyyy-MM-dd");
+    dlgConfirmarClave confirmar(clave);
 
-    if(ui->cBoxSexo->currentIndex() == 1)
-        infoHistoria["sexo"] = "F";
-    else
-        infoHistoria["sexo"] = "M";
+    connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgRegHistoria::on_claveIntroducida);
 
-    if(!ui->lineaCI->text().isEmpty()){
-        infoHistoria["cedula"] = ui->cBoxCI->currentText() + ui->lineaCI->text();
-    }
+    confirmar.exec();
+}
 
-    QString consulta;
+void dlgRegHistoria::on_claveIntroducida(bool correcta)
+{
+    if(correcta){
+        infoHistoria["nombre"] = ui->lineaNombre->text();
+        infoHistoria["apellido"] = ui->lineaApellido->text();
+        infoHistoria["fecha_nac"] = ui->editFechaNac->date().toString("yyyy-MM-dd");
+        infoHistoria["fecha_ingreso"] = QDate::currentDate().toString("yyyy-MM-dd");
 
-    consulta = "INSERT INTO spectradb.historia(nombre, apellido, fecha_nac, fecha_ingreso, sexo";
+        if(ui->cBoxSexo->currentIndex() == 1)
+            infoHistoria["sexo"] = "F";
+        else
+            infoHistoria["sexo"] = "M";
 
-    if(infoHistoria.contains("cedula")){
-        consulta+= ", cedula";
-    }
-
-    consulta += ") VALUES(:nombre, :apellido, :fecha_nac, :fecha_ingreso, :sexo";
-
-    if(infoHistoria.contains("cedula")){
-        consulta+= ", :cedula";
-    }
-
-    consulta += ")";
-
-    QSqlQuery query;
-
-    query.prepare(consulta);
-
-    query.bindValue(":nombre", infoHistoria["nombre"]);
-    query.bindValue(":apellido", infoHistoria["apellido"]);
-    query.bindValue(":fecha_nac", infoHistoria["fecha_nac"]);
-    query.bindValue(":fecha_ingreso", infoHistoria["fecha_ingreso"]);
-    query.bindValue(":sexo", infoHistoria["sexo"]);
-
-    if(infoHistoria.contains("cedula")){
-        query.bindValue(":cedula", infoHistoria["cedula"]);
-    }
-
-    if(query.exec()){
-        infoHistoria["id_historia"] = query.lastInsertId().toString();
-
-        QMessageBox::information(this, "Historia registrada", "Se ha registrado la historia correctamente.");
-        close();
-    }else{
-        //el codigo 23505 significa que se intento insertar un valor unico que ya existe
-        if(query.lastError().number() == 23505){
-            QMessageBox::critical(this, "Error al registrar", "La cédula de identidad " + infoHistoria["cedula"] + " ya está siendo utilizada.");
+        if(!ui->lineaCI->text().isEmpty()){
+            infoHistoria["cedula"] = ui->cBoxCI->currentText() + ui->lineaCI->text();
         }
 
-        infoHistoria.clear();
-        ui->lineaCI->clear();
+        QString consulta;
+
+        consulta = "INSERT INTO spectradb.historia(nombre, apellido, fecha_nac, fecha_ingreso, sexo";
+
+        if(infoHistoria.contains("cedula")){
+            consulta+= ", cedula";
+        }
+
+        consulta += ") VALUES(:nombre, :apellido, :fecha_nac, :fecha_ingreso, :sexo";
+
+        if(infoHistoria.contains("cedula")){
+            consulta+= ", :cedula";
+        }
+
+        consulta += ")";
+
+        QSqlQuery query;
+
+        query.prepare(consulta);
+
+        query.bindValue(":nombre", infoHistoria["nombre"]);
+        query.bindValue(":apellido", infoHistoria["apellido"]);
+        query.bindValue(":fecha_nac", infoHistoria["fecha_nac"]);
+        query.bindValue(":fecha_ingreso", infoHistoria["fecha_ingreso"]);
+        query.bindValue(":sexo", infoHistoria["sexo"]);
+
+        if(infoHistoria.contains("cedula")){
+            query.bindValue(":cedula", infoHistoria["cedula"]);
+        }
+
+        if(query.exec()){
+            infoHistoria["id_historia"] = query.lastInsertId().toString();
+
+            QMessageBox::information(this, "Historia registrada", "Se ha registrado la historia correctamente.");
+            close();
+            emit historia_registrada(infoHistoria);
+        }else{
+            //el codigo 23505 significa que se intento insertar un valor unico que ya existe
+            if(query.lastError().number() == 23505){
+                QMessageBox::critical(this, "Error al registrar", "La cédula de identidad " + infoHistoria["cedula"] + " ya está siendo utilizada.");
+            }
+
+            infoHistoria.clear();
+            ui->lineaCI->clear();
+        }
+    }else{
+        QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");
     }
 }

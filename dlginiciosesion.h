@@ -19,8 +19,10 @@ class dlgInicioSesion : public QDialog
 
 public:
     explicit dlgInicioSesion(QWidget *parent = 0);
-    QHash<QString, QString> getUsuario();
     ~dlgInicioSesion();
+
+signals:
+    void sesion_iniciada(QHash<QString, QString> info);
 
 private slots:
     void on_lineaUsuario_textChanged(const QString &arg1);

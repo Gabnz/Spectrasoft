@@ -40,8 +40,8 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void borrarResultados();
     void revisionBtns();
+    void borrarResultados();
     ~MainWindow();
 
 private slots:
@@ -52,34 +52,38 @@ private slots:
     void on_actionAcerca_de_triggered();
 
     void on_actionEstandarizar_triggered();
-
+    /*****/
     void on_actionIniciar_sesion_triggered();
 
-    void on_actionCerrar_sesion_triggered();
+    void on_sesionIniciada(QHash<QString, QString> info);
 
     void on_actionVer_usuario_triggered();
-
-    void closeEvent(QCloseEvent *event);
-
-    void on_actionCerrar_historia_triggered();
-
-    void on_actionRegistrar_historia_triggered();
 
     void on_actionRegistrar_usuario_triggered();
 
     void on_actionEliminar_usuario_triggered();
 
+    void on_actionCerrar_sesion_triggered();
+    /*****/
+    void on_actionRegistrar_historia_triggered();
+
+    void on_historiaRegistrada(QHash<QString, QString> info);
+
     void on_actionVer_historia_triggered();
 
     void on_actionBuscar_historia_triggered();
+
+    void on_historiaAbierta(QHash<QString, QString> info);
+
+    void on_actionModificar_historia_triggered();
+
+    void on_historiaModificada(QHash<QString, QString> infoModificada);
 
     void on_actionEliminar_historia_triggered();
 
     void on_historiaEliminada();
 
-    void on_actionModificar_historia_triggered();
-
-    void on_historiaModificada(QHash<QString, QString> infoModificada);
+    void on_actionCerrar_historia_triggered();
 
     void on_actionMedir_muestra_triggered();
 
@@ -116,6 +120,8 @@ private slots:
     void on_muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float>infoXYZ, QVector<float> infoLAB, QVector<float> adicionales);
 
     void on_actionExportar_muestra_triggered();
+
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;

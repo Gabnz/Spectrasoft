@@ -52,73 +52,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     revisionBtns();
 }
 
-void MainWindow::on_actionConectar_triggered()
-{
-    if(!conectado){
-        conectado = true;
-        ui->actionConectar->setText("Desconectar");
-        //conectado = miniscan.conectar();
-
-        if(conectado){
-            QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
-        }else{
-            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar.");
-        }
-        ui->actionConectar->setIcon(QIcon(":img/off.png"));
-    }else{
-        conectado = false;
-        ui->actionConectar->setText("Conectar");
-        //conectado = miniscan.desconectar();
-
-        if(!conectado){
-            QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
-        }else{
-            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar.");
-        }
-         ui->actionConectar->setIcon(QIcon(":img/on.png"));
-    }
-
-    revisionBtns();
-}
-
-void MainWindow::on_actionSalir_triggered()
-{
-    close();
-}
-
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::borrarResultados()
-{
-    datosEspectrales.clear();
-    XYZ.clear();
-    LAB.clear();
-    absorcion = esparcimiento = eritema = 0.0;
-
-    QModelIndex indice;
-
-    for(int i = 0; i < 31; ++i){
-        indice = modeloDatos->index(0, i, QModelIndex());
-        modeloDatos->setData(indice, "");
-    }
-
-    if(ref != NULL){
-        delete ref;
-        ref = NULL;
-    }
-
-    if(abs != NULL){
-        delete abs;
-        abs = NULL;
-    }
-
-    if(dts != NULL){
-        delete dts;
-        dts = NULL;
-    }
 }
 
 void MainWindow::revisionBtns()
@@ -222,10 +158,73 @@ void MainWindow::revisionBtns()
     ui->actionCerrar_muestra->setEnabled(cerrarM);
 }
 
+void MainWindow::borrarResultados()
+{
+    datosEspectrales.clear();
+    XYZ.clear();
+    LAB.clear();
+    absorcion = esparcimiento = eritema = 0.0;
+
+    QModelIndex indice;
+
+    for(int i = 0; i < 31; ++i){
+        indice = modeloDatos->index(0, i, QModelIndex());
+        modeloDatos->setData(indice, "");
+    }
+
+    if(ref != NULL){
+        delete ref;
+        ref = NULL;
+    }
+
+    if(abs != NULL){
+        delete abs;
+        abs = NULL;
+    }
+
+    if(dts != NULL){
+        delete dts;
+        dts = NULL;
+    }
+}
+
+void MainWindow::on_actionConectar_triggered()
+{
+    if(!conectado){
+        conectado = true;
+        ui->actionConectar->setText("Desconectar");
+        //conectado = miniscan.conectar();
+
+        if(conectado){
+            QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
+        }else{
+            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar.");
+        }
+        ui->actionConectar->setIcon(QIcon(":img/off.png"));
+    }else{
+        conectado = false;
+        ui->actionConectar->setText("Conectar");
+        //conectado = miniscan.desconectar();
+
+        if(!conectado){
+            QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
+        }else{
+            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar.");
+        }
+         ui->actionConectar->setIcon(QIcon(":img/on.png"));
+    }
+
+    revisionBtns();
+}
+
+void MainWindow::on_actionSalir_triggered()
+{
+    close();
+}
+
 void MainWindow::on_actionAcerca_de_triggered()
 {
     dlgAcercaDe acercaDe;
-
     acercaDe.exec();
 }
 
@@ -233,6 +232,7 @@ void MainWindow::on_actionEstandarizar_triggered()
 {
     bool negroListo, blancoListo;
     negroListo = blancoListo = false;
+
     dlgEstandarizar est;
     est.exec();
     negroListo = miniscan.estNegro();
@@ -253,101 +253,97 @@ void MainWindow::on_actionEstandarizar_triggered()
     revisionBtns();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    if(db.isOpen()){
-        db.close();
-    }
-
-    if(conectado){
-        //miniscan.desconectar();
-    }
-
-    borrarResultados();
-    event->accept();
-}
-
 void MainWindow::on_actionIniciar_sesion_triggered()
 {
     dlgInicioSesion sesion;
 
+    connect(&sesion, &dlgInicioSesion::sesion_iniciada, this, &MainWindow::on_sesionIniciada);
     sesion.exec();
-
-    infoUsuario = sesion.getUsuario();
-    revisionBtns();
 }
 
-void MainWindow::on_actionCerrar_sesion_triggered()
+void MainWindow::on_sesionIniciada(QHash<QString, QString> info)
 {
-    infoHistoria.clear();
-    infoUsuario.clear();
-    if(!infoMuestra.isEmpty()){
-        infoMuestra.clear();
-        borrarResultados();
-    }
-    QMessageBox::information(this, "Sesión cerrada", "Se ha cerrado la sesión correctamente.");
+    infoUsuario = info;
     revisionBtns();
 }
 
 void MainWindow::on_actionVer_usuario_triggered()
 {
     dlgVerUsuario verU(infoUsuario);
-
     verU.exec();
 }
 
-void MainWindow::on_actionCerrar_historia_triggered()
+void MainWindow::on_actionCerrar_sesion_triggered()
 {
     infoHistoria.clear();
+    infoUsuario.clear();
 
     if(!infoMuestra.isEmpty()){
         infoMuestra.clear();
         borrarResultados();
     }
 
-    QMessageBox::information(this, "Historia cerrada", "Se ha cerrado la historia correctamente.");
-    revisionBtns();
-}
-
-void MainWindow::on_actionRegistrar_historia_triggered()
-{
-    dlgRegHistoria regH;
-
-    regH.exec();
-
-    infoHistoria = regH.getHistoria();
+    QMessageBox::information(this, "Sesión cerrada", "Se ha cerrado la sesión correctamente.");
     revisionBtns();
 }
 
 void MainWindow::on_actionRegistrar_usuario_triggered()
 {
-    dlgRegUsuario regU;
-
+    dlgRegUsuario regU(infoUsuario["clave"]);
     regU.exec();
 }
 
 void MainWindow::on_actionEliminar_usuario_triggered()
 {
     dlgEliminarUsuario elimU;
-
     elimU.exec();
 }
 
-void MainWindow::on_actionVer_historia_triggered()
+void MainWindow::on_actionRegistrar_historia_triggered()
 {
-    dlgVerHistoria verH(infoHistoria);
+    dlgRegHistoria regH(infoUsuario["clave"]);
 
-    verH.exec();
+    connect(&regH, &dlgRegHistoria::historia_registrada, this, &MainWindow::on_historiaRegistrada);
+    regH.exec();
+}
+
+void MainWindow::on_historiaRegistrada(QHash<QString, QString> info)
+{
+    infoHistoria = info;
+    revisionBtns();
 }
 
 void MainWindow::on_actionBuscar_historia_triggered()
 {
     dlgBuscarHistoria buscarH;
 
+    connect(&buscarH, &dlgBuscarHistoria::historiaAbierta, this, &MainWindow::on_historiaAbierta);
     buscarH.exec();
+}
 
-    infoHistoria = buscarH.getHistoria();
+void MainWindow::on_historiaAbierta(QHash<QString, QString> info)
+{
+    infoHistoria = info;
     revisionBtns();
+}
+
+void MainWindow::on_actionVer_historia_triggered()
+{
+    dlgVerHistoria verH(infoHistoria);
+    verH.exec();
+}
+
+void MainWindow::on_actionModificar_historia_triggered()
+{
+    dlgModificarHistoria modH(infoUsuario["clave"], infoHistoria);
+
+    connect(&modH, &dlgModificarHistoria::historiaModificada, this, &MainWindow::on_historiaModificada);
+    modH.exec();
+}
+
+void MainWindow::on_historiaModificada(QHash<QString, QString> infoModificada)
+{
+    infoHistoria = infoModificada;
 }
 
 void MainWindow::on_actionEliminar_historia_triggered()
@@ -370,18 +366,17 @@ void MainWindow::on_historiaEliminada()
     revisionBtns();
 }
 
-void MainWindow::on_actionModificar_historia_triggered()
+void MainWindow::on_actionCerrar_historia_triggered()
 {
-    dlgModificarHistoria modH(infoUsuario["clave"], infoHistoria);
+    infoHistoria.clear();
 
-    connect(&modH, &dlgModificarHistoria::historiaModificada, this, &MainWindow::on_historiaModificada);
+    if(!infoMuestra.isEmpty()){
+        infoMuestra.clear();
+        borrarResultados();
+    }
 
-    modH.exec();
-}
-
-void MainWindow::on_historiaModificada(QHash<QString, QString> infoModificada)
-{
-    infoHistoria = infoModificada;
+    QMessageBox::information(this, "Historia cerrada", "Se ha cerrado la historia correctamente.");
+    revisionBtns();
 }
 
 void MainWindow::on_actionMedir_muestra_triggered()
@@ -533,24 +528,21 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
     dlgTipoMuestra tipoM;
 
     connect(&tipoM, &dlgTipoMuestra::tipo_muestra, this, &MainWindow::on_tipoMuestra);
-
     tipoM.exec();
 }
 
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
     if(tipo == "lesion"){
-        dlgRegLesion regL(infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
+        dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
 
         connect(&regL, &dlgRegLesion::lesion_registrada, this, &MainWindow::on_muestraRegistrada);
-
         regL.exec();
     }else{
-        dlgRegFototipo regF(infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
+        dlgRegFototipo regF(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
 
         connect(&regF, &dlgRegFototipo::fototipo_registrado, this, &MainWindow::on_muestraRegistrada);
         connect(&regF, &dlgRegFototipo::actualizar_fototipo, this, &MainWindow::on_actualizarFototipo);
-
         regF.exec();
     }
 }
@@ -569,7 +561,6 @@ void MainWindow::on_actualizarFototipo(int infoF)
 void MainWindow::on_actionVer_muestra_triggered()
 {
     dlgVerMuestra verM(infoMuestra);
-
     verM.exec();
 }
 
@@ -586,7 +577,6 @@ void MainWindow::on_actionEliminar_muestra_triggered()
     dlgEliminarMuestra eliminarM(infoMuestra["id_muestra"], infoUsuario["clave"]);
 
     connect(&eliminarM, &dlgEliminarMuestra::muestraEliminada, this, &MainWindow::on_muestraEliminada);
-
     eliminarM.exec();
 }
 
@@ -595,6 +585,7 @@ void MainWindow::on_muestraEliminada()
     if(infoMuestra["tipo_muestra"] == "fototipo"){
         infoHistoria.remove("fototipo");
     }
+
     infoMuestra.clear();
     borrarResultados();
     revisionBtns();
@@ -605,7 +596,6 @@ void MainWindow::on_actionModificar_muestra_triggered()
     dlgModificarMuestra modM(infoUsuario["clave"], infoMuestra);
 
     connect(&modM, &dlgModificarMuestra::muestraModificada, this, &MainWindow::on_muestraModificada);
-
     modM.exec();
 }
 
@@ -619,7 +609,6 @@ void MainWindow::on_actionBuscar_muestra_triggered()
     dlgBuscarMuestra buscarM(infoHistoria["id_historia"]);
 
     connect(&buscarM, &dlgBuscarMuestra::muestraAbierta, this, &MainWindow::on_muestraAbierta);
-
     buscarM.exec();
 }
 
@@ -743,4 +732,18 @@ void MainWindow::on_actionExportar_muestra_triggered()
 
     xlsx.saveAs(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "muestra-" + infoMuestra["id_muestra"] + "-fecha-" + QDate::currentDate().toString("dd-MM-yyyy") + ".xlsx");
     QMessageBox::information(this, "Muestra exportada", "Se ha exportado la muestra correctamente a su escritorio.");
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(db.isOpen()){
+        db.close();
+    }
+
+    if(conectado){
+        //miniscan.desconectar();
+    }
+
+    borrarResultados();
+    event->accept();
 }

@@ -136,11 +136,6 @@ bool dlgBuscarHistoria::existeCriterio()
             || ui->checkBoxICI->isChecked() || ui->checkBoxIFechaNac->isChecked() || ui->checkBoxIFototipo->isChecked();
 }
 
-QHash<QString, QString> dlgBuscarHistoria::getHistoria()
-{
-    return infoHistoria;
-}
-
 dlgBuscarHistoria::~dlgBuscarHistoria()
 {
     delete ui;
@@ -280,4 +275,5 @@ void dlgBuscarHistoria::on_btnAbrir_clicked()
 {
     QMessageBox::information(this, "Historia abierta", "Se ha abierto la historia correctamente.");
     close();
+    emit historiaAbierta(infoHistoria);
 }
