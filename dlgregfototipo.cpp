@@ -96,82 +96,51 @@ void dlgRegFototipo::on_btnRegistrar_clicked()
     dlgConfirmarClave confirmar(clave);
 
     connect(&confirmar, &dlgConfirmarClave::claveIntroducida, this, &dlgRegFototipo::on_claveIntroducida);
-
     confirmar.exec();
 }
 
 void dlgRegFototipo::on_claveIntroducida(bool correcta)
 {
     if(correcta){
-        infoMuestra["tipo_muestra"] = "fototipo";
-        infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
-        infoMuestra["nombre_muestra"] = ui->lineaNombre->text();
-        infoMuestra["area_muestra"] = ui->lineaArea->text();
-
-        if(!ui->textEditObservaciones->toPlainText().isEmpty()){
-            infoMuestra["observaciones"] = ui->textEditObservaciones->toPlainText();
-        }
-
-        infoMuestra["usuario"] = id_usuario;
-        infoMuestra["historia"] = id_historia;
-
         QString consulta;
-
-        consulta = "INSERT INTO spectradb.muestra(tipo_muestra, fecha_muestra, nombre_muestra, area_muestra, usuario, historia";
-
-        if(infoMuestra.contains("observaciones")){
-            consulta+= ", observaciones";
-        }
-
-        consulta+= ") VALUES(:tipo_muestra, :fecha_muestra, :nombre_muestra, :area_muestra, :usuario, :historia";
-
-        if(infoMuestra.contains("observaciones")){
-            consulta+= ", :observaciones";
-        }
-
-        consulta+= ")";
-
         QSqlQuery query;
 
+        consulta = "SELECT count(*) FROM spectradb.muestra WHERE historia = '" + id_historia + "' AND tipo_muestra = 'fototipo'";
         query.prepare(consulta);
+        query.exec();
+        query.next();
 
-        query.bindValue(":tipo_muestra", infoMuestra["tipo_muestra"]);
-        query.bindValue(":fecha_muestra", infoMuestra["fecha_muestra"]);
-        query.bindValue(":nombre_muestra", infoMuestra["nombre_muestra"]);
-        query.bindValue(":area_muestra", infoMuestra["area_muestra"]);
-        query.bindValue(":usuario", infoMuestra["usuario"]);
-        query.bindValue(":historia", infoMuestra["historia"]);
-
-        if(infoMuestra.contains("observaciones")){
-            query.bindValue(":observaciones", infoMuestra["observaciones"]);
-        }
-
-        if(query.exec()){
-
-            id_muestra = query.lastInsertId().toString();
-
-            infoMuestra["id_muestra"] = id_muestra;
+        if(query.value(0).toInt() == 0){
             query.clear();
-            consulta = "INSERT INTO spectradb.datos_espectrales(muestra";
+            consulta = "INSERT INTO spectradb.datos_espectrales(";
 
             int rango = 400;
 
             for(int i = 0; i < 31; ++i){
-                consulta+= ", nm_" + QString().setNum(rango);
+
+                if(i > 0){
+                    consulta+=", ";
+                }
+
+                consulta+= "nm_" + QString().setNum(rango);
                 rango+=10;
             }
 
-            consulta+= ") VALUES(:muestra";
+            consulta+= ") VALUES(";
             rango = 400;
 
             for(int i = 0; i < 31; ++i){
-                consulta+= ", :nm_" + QString().setNum(rango);
+
+                if(i > 0){
+                    consulta+=", ";
+                }
+
+                consulta+= ":nm_" + QString().setNum(rango);
                 rango+=10;
             }
 
             consulta+= ")";
             query.prepare(consulta);
-            query.bindValue(":muestra", id_muestra);
             rango = 400;
 
             for(int i = 0; i < 31; ++i){
@@ -200,23 +169,69 @@ void dlgRegFototipo::on_claveIntroducida(bool correcta)
                 query.bindValue(":eritema", eritema);
 
                 if(query.exec()){
-                    QMessageBox::information(this, "Muestra registrada", "Se ha registrado la muestra correctamente.");
-                    close();
-                    emit fototipo_registrado(infoMuestra);
+                    query.clear();
+                    infoMuestra["tipo_muestra"] = "fototipo";
+                    infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
+                    infoMuestra["nombre_muestra"] = ui->lineaNombre->text();
+                    infoMuestra["area_muestra"] = ui->lineaArea->text();
+
+                    if(!ui->textEditObservaciones->toPlainText().isEmpty()){
+                        infoMuestra["observaciones"] = ui->textEditObservaciones->toPlainText();
+                    }
+
+                    infoMuestra["usuario"] = id_usuario;
+                    infoMuestra["historia"] = id_historia;
+                    infoMuestra["datos_espectrales"] = id_datos_espectrales;
+
+                    consulta = "INSERT INTO spectradb.muestra(tipo_muestra, fecha_muestra, nombre_muestra, area_muestra, usuario, historia, datos_espectrales";
+
+                    if(infoMuestra.contains("observaciones")){
+                        consulta+= ", observaciones";
+                    }
+
+                    consulta+= ") VALUES(:tipo_muestra, :fecha_muestra, :nombre_muestra, :area_muestra, :usuario, :historia, :datos_espectrales";
+
+                    if(infoMuestra.contains("observaciones")){
+                        consulta+= ", :observaciones";
+                    }
+
+                    consulta+= ")";
+
+                    query.prepare(consulta);
+
+                    query.bindValue(":tipo_muestra", infoMuestra["tipo_muestra"]);
+                    query.bindValue(":fecha_muestra", infoMuestra["fecha_muestra"]);
+                    query.bindValue(":nombre_muestra", infoMuestra["nombre_muestra"]);
+                    query.bindValue(":area_muestra", infoMuestra["area_muestra"]);
+                    query.bindValue(":usuario", infoMuestra["usuario"]);
+                    query.bindValue(":historia", infoMuestra["historia"]);
+                    query.bindValue(":datos_espectrales", infoMuestra["datos_espectrales"]);
+
+                    if(infoMuestra.contains("observaciones")){
+                        query.bindValue(":observaciones", infoMuestra["observaciones"]);
+                    }
+
+                    if(query.exec()){
+                        query.clear();
+                        consulta = "UPDATE spectradb.historia SET fototipo = '" + QString().setNum(fototipo) + "' WHERE id_historia = '" + id_historia + "'";
+                        query.prepare(consulta);
+                        query.exec();
+                        emit actualizar_fototipo(fototipo);
+
+                        QMessageBox::information(this, "Muestra registrada", "Se ha registrado la muestra correctamente.");
+                        close();
+                        emit fototipo_registrado(infoMuestra);
+                    }else{
+                        qDebug() << query.lastError();
+                    }
                 }else{
                     qDebug() << query.lastError();
                 }
             }else{
                 qDebug() << query.lastError();
             }
-
-            consulta = "UPDATE spectradb.historia SET fototipo = '" + QString().setNum(fototipo) + "' WHERE id_historia = '" + id_historia + "'";
-            query.prepare(consulta);
-            query.exec();
-            emit actualizar_fototipo(fototipo);
         }else{
-            qDebug() << query.lastError();
-            QMessageBox::critical(this, "Error al registrar", "La muestra del fototipo de esta historia ya existe.");
+            QMessageBox::critical(this, "Error al registrar", "Ya existe una muestra de fototipo para esta historia.");
         }
     }else{
         QMessageBox::critical(this, "Contraseña incorrecta", "La contraseña que introdujo es incorrecta.");

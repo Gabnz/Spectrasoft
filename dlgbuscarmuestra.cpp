@@ -139,6 +139,10 @@ void dlgBuscarMuestra::on_listView_clicked(const QModelIndex &index)
         aux = query.value(indice).toString();
         infoMuestra["historia"] = aux;
 
+        indice = query.record().indexOf("datos_espectrales");
+        aux = query.value(indice).toString();
+        infoMuestra["datos_espectrales"] = aux;
+
         indice = query.record().indexOf("tipo_muestra");
         aux = query.value(indice).toString();
         infoMuestra["tipo_muestra"] = aux;
@@ -184,7 +188,7 @@ void dlgBuscarMuestra::on_btnAbrir_clicked()
     QVector<float> datosE, XYZ, LAB, adicionales;
     int i, indice;
 
-    query.exec("SELECT * FROM spectradb.datos_espectrales WHERE muestra = '" + infoMuestra["id_muestra"] + "'");
+    query.exec("SELECT * FROM spectradb.datos_espectrales WHERE id_datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
 
     query.next();
 

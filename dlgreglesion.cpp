@@ -77,100 +77,107 @@ void dlgRegLesion::on_btnRegistrar_clicked()
 void dlgRegLesion::on_claveIntroducida(bool correcta)
 {
     if(correcta){
-        infoMuestra["tipo_muestra"] = "lesion";
-        infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
-        infoMuestra["nombre_muestra"] = ui->lineaNombre->text();
-        infoMuestra["area_muestra"] = ui->lineaArea->text();
-
-        if(!ui->textEditObservaciones->toPlainText().isEmpty()){
-            infoMuestra["observaciones"] = ui->textEditObservaciones->toPlainText();
-        }
-
-        infoMuestra["usuario"] = id_usuario;
-        infoMuestra["historia"] = id_historia;
-
         QString consulta;
+        QSqlQuery query;
 
-        consulta = "INSERT INTO spectradb.muestra(tipo_muestra, fecha_muestra, nombre_muestra, area_muestra, usuario, historia";
+        consulta = "INSERT INTO spectradb.datos_espectrales(";
 
-        if(infoMuestra.contains("observaciones")){
-            consulta+= ", observaciones";
+        int rango = 400;
+
+        for(int i = 0; i < 31; ++i){
+
+            if(i>0){
+                consulta+=", ";
+            }
+
+            consulta+= "nm_" + QString().setNum(rango);
+            rango+=10;
         }
 
-        consulta+= ") VALUES(:tipo_muestra, :fecha_muestra, :nombre_muestra, :area_muestra, :usuario, :historia";
+        consulta+= ") VALUES(";
+        rango = 400;
 
-        if(infoMuestra.contains("observaciones")){
-            consulta+= ", :observaciones";
+        for(int i = 0; i < 31; ++i){
+
+            if(i>0){
+                consulta+=", ";
+            }
+
+            consulta+= ":nm_" + QString().setNum(rango);
+            rango+=10;
         }
 
         consulta+= ")";
-
-        QSqlQuery query;
-
         query.prepare(consulta);
+        rango = 400;
 
-        query.bindValue(":tipo_muestra", infoMuestra["tipo_muestra"]);
-        query.bindValue(":fecha_muestra", infoMuestra["fecha_muestra"]);
-        query.bindValue(":nombre_muestra", infoMuestra["nombre_muestra"]);
-        query.bindValue(":area_muestra", infoMuestra["area_muestra"]);
-        query.bindValue(":usuario", infoMuestra["usuario"]);
-        query.bindValue(":historia", infoMuestra["historia"]);
-
-        if(infoMuestra.contains("observaciones")){
-            query.bindValue(":observaciones", infoMuestra["observaciones"]);
+        for(int i = 0; i < 31; ++i){
+            query.bindValue(":nm_" + QString().setNum(rango), datosEspectrales[i]);
+            rango+=10;
         }
 
         if(query.exec()){
 
-            id_muestra = query.lastInsertId().toString();
-            infoMuestra["id_muestra"] = id_muestra;
+            id_datos_espectrales = query.lastInsertId().toString();
             query.clear();
-            consulta = "INSERT INTO spectradb.datos_espectrales(muestra";
+            consulta = "INSERT INTO spectradb.datos_adicionales(datos_espectrales, cie_x, cie_y, cie_z, cie_l, cie_a, cie_b, "
+                       "coeficiente_absorcion, coeficiente_esparcimiento, indice_eritema) VALUES(:datos_espectrales, :X, :Y, :Z, "
+                       ":L, :A, :B, :absorcion, :esparcimiento, :eritema)";
 
-            int rango = 400;
-
-            for(int i = 0; i < 31; ++i){
-                consulta+= ", nm_" + QString().setNum(rango);
-                rango+=10;
-            }
-
-            consulta+= ") VALUES(:muestra";
-            rango = 400;
-
-            for(int i = 0; i < 31; ++i){
-                consulta+= ", :nm_" + QString().setNum(rango);
-                rango+=10;
-            }
-
-            consulta+= ")";
             query.prepare(consulta);
-            query.bindValue(":muestra", id_muestra);
-            rango = 400;
-
-            for(int i = 0; i < 31; ++i){
-                query.bindValue(":nm_" + QString().setNum(rango), datosEspectrales[i]);
-                rango+=10;
-            }
+            query.bindValue(":datos_espectrales", id_datos_espectrales);
+            query.bindValue(":X", XYZ[0]);
+            query.bindValue(":Y", XYZ[1]);
+            query.bindValue(":Z", XYZ[2]);
+            query.bindValue(":L", LAB[0]);
+            query.bindValue(":A", LAB[1]);
+            query.bindValue(":B", LAB[2]);
+            query.bindValue(":absorcion", absorcion);
+            query.bindValue(":esparcimiento", esparcimiento);
+            query.bindValue(":eritema", eritema);
 
             if(query.exec()){
-
-                id_datos_espectrales = query.lastInsertId().toString();
                 query.clear();
-                consulta = "INSERT INTO spectradb.datos_adicionales(datos_espectrales, cie_x, cie_y, cie_z, cie_l, cie_a, cie_b, "
-                           "coeficiente_absorcion, coeficiente_esparcimiento, indice_eritema) VALUES(:datos_espectrales, :X, :Y, :Z, "
-                           ":L, :A, :B, :absorcion, :esparcimiento, :eritema)";
+                infoMuestra["tipo_muestra"] = "lesion";
+                infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
+                infoMuestra["nombre_muestra"] = ui->lineaNombre->text();
+                infoMuestra["area_muestra"] = ui->lineaArea->text();
+
+                if(!ui->textEditObservaciones->toPlainText().isEmpty()){
+                    infoMuestra["observaciones"] = ui->textEditObservaciones->toPlainText();
+                }
+
+                infoMuestra["usuario"] = id_usuario;
+                infoMuestra["historia"] = id_historia;
+                infoMuestra["datos_espectrales"] = id_datos_espectrales;
+
+                consulta = "INSERT INTO spectradb.muestra(tipo_muestra, fecha_muestra, nombre_muestra, area_muestra, usuario, historia, datos_espectrales";
+
+                if(infoMuestra.contains("observaciones")){
+                    consulta+= ", observaciones";
+                }
+
+                consulta+= ") VALUES(:tipo_muestra, :fecha_muestra, :nombre_muestra, :area_muestra, :usuario, :historia, :datos_espectrales";
+
+                if(infoMuestra.contains("observaciones")){
+                    consulta+= ", :observaciones";
+                }
+
+                consulta+= ")";
 
                 query.prepare(consulta);
-                query.bindValue(":datos_espectrales", id_datos_espectrales);
-                query.bindValue(":X", XYZ[0]);
-                query.bindValue(":Y", XYZ[1]);
-                query.bindValue(":Z", XYZ[2]);
-                query.bindValue(":L", LAB[0]);
-                query.bindValue(":A", LAB[1]);
-                query.bindValue(":B", LAB[2]);
-                query.bindValue(":absorcion", absorcion);
-                query.bindValue(":esparcimiento", esparcimiento);
-                query.bindValue(":eritema", eritema);
+
+                query.bindValue(":tipo_muestra", infoMuestra["tipo_muestra"]);
+                query.bindValue(":fecha_muestra", infoMuestra["fecha_muestra"]);
+                query.bindValue(":nombre_muestra", infoMuestra["nombre_muestra"]);
+                query.bindValue(":area_muestra", infoMuestra["area_muestra"]);
+                query.bindValue(":usuario", infoMuestra["usuario"]);
+                query.bindValue(":historia", infoMuestra["historia"]);
+                query.bindValue(":datos_espectrales", infoMuestra["datos_espectrales"]);
+
+                if(infoMuestra.contains("observaciones")){
+                    query.bindValue(":observaciones", infoMuestra["observaciones"]);
+                }
 
                 if(query.exec()){
                     QMessageBox::information(this, "Muestra registrada", "Se ha registrado la muestra correctamente.");
