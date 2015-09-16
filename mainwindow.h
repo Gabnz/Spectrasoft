@@ -13,6 +13,7 @@
 #include <dlgdatosadicionales.h>
 #include <dlginiciosesion.h>
 #include <dlgverusuario.h>
+#include <dlgmodificarusuario.h>
 #include <dlgregusuario.h>
 #include <dlgeliminarusuario.h>
 #include <dlgreghistoria.h>
@@ -58,6 +59,10 @@ private slots:
     void on_sesionIniciada(QHash<QString, QString> info);
 
     void on_actionVer_usuario_triggered();
+
+    void on_actionModificar_usuario_triggered();
+
+    void on_usuarioModificado(QHash<QString, QString> infoModificada);
 
     void on_actionRegistrar_usuario_triggered();
 

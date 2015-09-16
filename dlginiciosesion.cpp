@@ -83,17 +83,11 @@ void dlgInicioSesion::on_btnIngresar_clicked()
 
         indice = query.record().indexOf("fecha_nac");
         fechaAux = fechaAux.fromString(query.value((indice)).toString(), "yyyy-MM-dd");
-        aux = fechaAux.toString("dd-MM-yyyy");
+        aux = fechaAux.toString("yyyy-MM-dd");
         infoUsuario["fecha_nac"] = aux;
 
         indice = query.record().indexOf("sexo");
         aux = (query.value(indice)).toString();
-
-        if(aux == "F")
-            aux = "Femenino";
-        else
-            aux = "Masculino";
-
         infoUsuario["sexo"] = aux;
 
         indice = query.record().indexOf("clave");

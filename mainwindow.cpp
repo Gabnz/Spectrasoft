@@ -60,7 +60,7 @@ MainWindow::~MainWindow()
 void MainWindow::revisionBtns()
 {
     bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRefM, verAbsM, datosAdicionalesM, masOpcionesM, modificarM, eliminarM, cerrarM,
-    sesionU, verU, masOpcionesU, registrarU, eliminarU, cerrarU,
+    sesionU, verU, modificarU, masOpcionesU, registrarU, eliminarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
     if(conectado){
@@ -87,7 +87,7 @@ void MainWindow::revisionBtns()
 
     if(!infoUsuario.isEmpty()){
         sesionU = false;
-        verU = cerrarU = true;
+        verU = modificarU = cerrarU = true;
 
         if(infoUsuario["rol"] == "administrador")
             masOpcionesU = registrarU = eliminarU = true;
@@ -121,7 +121,7 @@ void MainWindow::revisionBtns()
 
     }else{
         sesionU = true;
-        verU = masOpcionesU = registrarU = eliminarU = cerrarU = false;
+        verU =  modificarU = masOpcionesU = registrarU = eliminarU = cerrarU = false;
         registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
         registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
     }
@@ -130,6 +130,7 @@ void MainWindow::revisionBtns()
 
     ui->actionIniciar_sesion->setEnabled(sesionU);
     ui->actionVer_usuario->setEnabled(verU);
+    ui->actionModificar_usuario->setEnabled(modificarU);
     ui->menuMas_opciones_u->setEnabled(masOpcionesU);
     ui->actionRegistrar_usuario->setEnabled(registrarU);
     ui->actionEliminar_usuario->setEnabled(eliminarU);
@@ -271,6 +272,20 @@ void MainWindow::on_actionVer_usuario_triggered()
 {
     dlgVerUsuario verU(infoUsuario);
     verU.exec();
+}
+
+void MainWindow::on_actionModificar_usuario_triggered()
+{
+    dlgModificarUsuario modU(infoUsuario);
+
+    connect(&modU, &dlgModificarUsuario::usuarioModificado, this, &MainWindow::on_usuarioModificado);
+
+    modU.exec();
+}
+
+void MainWindow::on_usuarioModificado(QHash<QString, QString> infoModificada)
+{
+    infoUsuario = infoModificada;
 }
 
 void MainWindow::on_actionCerrar_sesion_triggered()

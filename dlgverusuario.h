@@ -2,6 +2,7 @@
 #define DLGVERUSUARIO_H
 
 #include <QDialog>
+#include <QDate>
 #include <QHash>
 
 namespace Ui {

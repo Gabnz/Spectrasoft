@@ -216,6 +216,7 @@
     </widget>
     <addaction name="actionIniciar_sesion"/>
     <addaction name="actionVer_usuario"/>
+    <addaction name="actionModificar_usuario"/>
     <addaction name="separator"/>
     <addaction name="menuMas_opciones_u"/>
     <addaction name="separator"/>
@@ -546,6 +547,15 @@
    </property>
    <property name="text">
     <string>Exportar muestra</string>
+   </property>
+  </action>
+  <action name="actionModificar_usuario">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/editar_usuario.png</normaloff>:/img/editar_usuario.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modificar usuario</string>
    </property>
   </action>
  </widget>

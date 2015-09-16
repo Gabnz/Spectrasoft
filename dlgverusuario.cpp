@@ -20,8 +20,13 @@ dlgVerUsuario::dlgVerUsuario(QHash<QString, QString> infoUsuario, QWidget *paren
     ui->etqNombre->setText(infoUsuario["nombre"]);
     ui->etqApellido->setText(infoUsuario["apellido"]);
     ui->etqCedula->setText(infoUsuario["cedula"]);
-    ui->etqFechaNac->setText(infoUsuario["fecha_nac"]);
-    ui->etqSexo->setText(infoUsuario["sexo"]);
+    ui->etqFechaNac->setText(QDate::fromString(infoUsuario["fecha_nac"], "yyyy-MM-dd").toString("dd-MM-yyyy"));
+
+    if(infoUsuario["sexo"] == "F"){
+        ui->etqSexo->setText("Femenino");
+    }else{
+        ui->etqSexo->setText("Masculino");
+    }
 
     this->adjustSize();
     this->setFixedSize(this->size());
