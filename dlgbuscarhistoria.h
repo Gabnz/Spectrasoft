@@ -51,6 +51,10 @@ private slots:
 
     void on_btnAbrir_clicked();
 
+    void on_editFechaNac_dateChanged(const QDate &date);
+
+    void on_cBoxFototipo_currentIndexChanged(int index);
+
 private:
     Ui::dlgBuscarHistoria *ui;
     QStringListModel *modelo;

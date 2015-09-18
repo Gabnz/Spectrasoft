@@ -166,7 +166,6 @@ void dlgModificarUsuario::on_claveIntroducida(bool correcta)
         if(query.exec()){
 
             QMessageBox::information(this, "Usuario modificado", "Se ha modificado el usuario correctamente.");
-
             close();
 
             QHash<QString, QString> infoResultante;

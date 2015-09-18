@@ -51,5 +51,6 @@
         <file>img/logo_icono_nuevo.ico</file>
         <file>img/muestra_exportar.png</file>
         <file>img/editar_usuario.png</file>
+        <file>img/usuario_administrar.png</file>
     </qresource>
 </RCC>

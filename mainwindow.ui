@@ -155,13 +155,13 @@
          <enum>Qt::ElideMiddle</enum>
         </property>
         <attribute name="horizontalHeaderVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderMinimumSectionSize">
          <number>35</number>
@@ -212,11 +212,12 @@
        <normaloff>:/img/usuario_avanzado.png</normaloff>:/img/usuario_avanzado.png</iconset>
      </property>
      <addaction name="actionRegistrar_usuario"/>
-     <addaction name="actionEliminar_usuario"/>
+     <addaction name="actionAdministrar_usuarios"/>
     </widget>
     <addaction name="actionIniciar_sesion"/>
     <addaction name="actionVer_usuario"/>
     <addaction name="actionModificar_usuario"/>
+    <addaction name="actionCambiar_clave"/>
     <addaction name="separator"/>
     <addaction name="menuMas_opciones_u"/>
     <addaction name="separator"/>
@@ -556,6 +557,24 @@
    </property>
    <property name="text">
     <string>Modificar usuario</string>
+   </property>
+  </action>
+  <action name="actionAdministrar_usuarios">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/usuario_administrar.png</normaloff>:/img/usuario_administrar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Administrar usuarios</string>
+   </property>
+  </action>
+  <action name="actionCambiar_clave">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/password.png</normaloff>:/img/password.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cambiar contraseña</string>
    </property>
   </action>
  </widget>

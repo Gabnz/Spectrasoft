@@ -43,6 +43,8 @@ private slots:
 
     void on_btnCancelar_clicked();
 
+    void on_editFechaM_dateChanged(const QDate &date);
+
 private:
     Ui::dlgBuscarMuestra *ui;
     QStringListModel *modelo;

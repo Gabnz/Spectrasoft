@@ -14,7 +14,9 @@
 #include <dlginiciosesion.h>
 #include <dlgverusuario.h>
 #include <dlgmodificarusuario.h>
+#include <dlgcambiarclave.h>
 #include <dlgregusuario.h>
+#include <dlgadministrarusuarios.h>
 #include <dlgeliminarusuario.h>
 #include <dlgreghistoria.h>
 #include <dlgverhistoria.h>
@@ -64,9 +66,9 @@ private slots:
 
     void on_usuarioModificado(QHash<QString, QString> infoModificada);
 
-    void on_actionRegistrar_usuario_triggered();
+    void on_claveCambiada(QString info);
 
-    void on_actionEliminar_usuario_triggered();
+    void on_actionRegistrar_usuario_triggered();
 
     void on_actionCerrar_sesion_triggered();
     /*****/
@@ -127,6 +129,10 @@ private slots:
     void on_actionExportar_muestra_triggered();
 
     void closeEvent(QCloseEvent *event);
+
+    void on_actionAdministrar_usuarios_triggered();
+
+    void on_actionCambiar_clave_triggered();
 
 private:
     Ui::MainWindow *ui;

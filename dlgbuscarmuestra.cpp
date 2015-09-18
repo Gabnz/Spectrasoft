@@ -236,3 +236,8 @@ void dlgBuscarMuestra::on_btnCancelar_clicked()
 {
     close();
 }
+
+void dlgBuscarMuestra::on_editFechaM_dateChanged(const QDate &date)
+{
+    buscar();
+}

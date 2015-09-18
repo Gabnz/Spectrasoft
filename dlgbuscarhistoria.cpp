@@ -277,3 +277,13 @@ void dlgBuscarHistoria::on_btnAbrir_clicked()
     close();
     emit historiaAbierta(infoHistoria);
 }
+
+void dlgBuscarHistoria::on_editFechaNac_dateChanged(const QDate &date)
+{
+    buscar();
+}
+
+void dlgBuscarHistoria::on_cBoxFototipo_currentIndexChanged(int index)
+{
+    buscar();
+}

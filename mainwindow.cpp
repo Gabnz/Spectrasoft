@@ -60,7 +60,7 @@ MainWindow::~MainWindow()
 void MainWindow::revisionBtns()
 {
     bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRefM, verAbsM, datosAdicionalesM, masOpcionesM, modificarM, eliminarM, cerrarM,
-    sesionU, verU, modificarU, masOpcionesU, registrarU, eliminarU, cerrarU,
+    sesionU, verU, modificarU, cambiarC, masOpcionesU, registrarU, administrarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
     if(conectado){
@@ -87,12 +87,12 @@ void MainWindow::revisionBtns()
 
     if(!infoUsuario.isEmpty()){
         sesionU = false;
-        verU = modificarU = cerrarU = true;
+        verU = modificarU = cambiarC = cerrarU = true;
 
         if(infoUsuario["rol"] == "administrador")
-            masOpcionesU = registrarU = eliminarU = true;
+            masOpcionesU = registrarU = administrarU = true;
         else
-            masOpcionesU = registrarU = eliminarU = false;
+            masOpcionesU = registrarU = administrarU = false;
 
         if(!infoHistoria.isEmpty()){
             registrarH = buscarH = false;
@@ -121,7 +121,7 @@ void MainWindow::revisionBtns()
 
     }else{
         sesionU = true;
-        verU =  modificarU = masOpcionesU = registrarU = eliminarU = cerrarU = false;
+        verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
         registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
         registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
     }
@@ -131,9 +131,10 @@ void MainWindow::revisionBtns()
     ui->actionIniciar_sesion->setEnabled(sesionU);
     ui->actionVer_usuario->setEnabled(verU);
     ui->actionModificar_usuario->setEnabled(modificarU);
+    ui->actionCambiar_clave->setEnabled(cambiarC);
     ui->menuMas_opciones_u->setEnabled(masOpcionesU);
     ui->actionRegistrar_usuario->setEnabled(registrarU);
-    ui->actionEliminar_usuario->setEnabled(eliminarU);
+    ui->actionAdministrar_usuarios->setEnabled(administrarU);
     ui->actionCerrar_sesion->setEnabled(cerrarU);
 
     ui->actionRegistrar_historia->setEnabled(registrarH);
@@ -288,6 +289,25 @@ void MainWindow::on_usuarioModificado(QHash<QString, QString> infoModificada)
     infoUsuario = infoModificada;
 }
 
+void MainWindow::on_actionCambiar_clave_triggered()
+{
+    dlgCambiarClave cambiarC(infoUsuario["cedula"], infoUsuario["clave"]);
+
+    connect(&cambiarC, &dlgCambiarClave::claveCambiada, this, &MainWindow::on_claveCambiada);
+    cambiarC.exec();
+}
+
+void MainWindow::on_claveCambiada(QString info)
+{
+    infoUsuario["clave"] = info;
+}
+
+void MainWindow::on_actionAdministrar_usuarios_triggered()
+{
+    dlgAdministrarUsuarios administrarU(infoUsuario["cedula"], infoUsuario["clave"]);
+    administrarU.exec();
+}
+
 void MainWindow::on_actionCerrar_sesion_triggered()
 {
     infoHistoria.clear();
@@ -306,12 +326,6 @@ void MainWindow::on_actionRegistrar_usuario_triggered()
 {
     dlgRegUsuario regU(infoUsuario["clave"]);
     regU.exec();
-}
-
-void MainWindow::on_actionEliminar_usuario_triggered()
-{
-    dlgEliminarUsuario elimU;
-    elimU.exec();
 }
 
 void MainWindow::on_actionRegistrar_historia_triggered()

@@ -7,7 +7,6 @@ dlgEliminarUsuario::dlgEliminarUsuario(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->btnEliminar->setEnabled(false);
     this->setWindowFlags(Qt::WindowCloseButtonHint);
     this->setFixedSize(this->size());
 }
