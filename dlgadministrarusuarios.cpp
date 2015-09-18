@@ -32,12 +32,31 @@ dlgAdministrarUsuarios::dlgAdministrarUsuarios(QString cedulaUsuario, QString cl
     this->setWindowFlags(Qt::WindowCloseButtonHint);
 }
 
+void dlgAdministrarUsuarios::revisionBtns()
+{
+    if(!infoUsuario.isEmpty()){
+
+        ui->btnVer->setEnabled(true);
+        ui->btnRol->setEnabled(true);
+
+        if(infoUsuario["rol"] != "administrador"){
+            ui->btnClave->setEnabled(true);
+            ui->btnEliminar->setEnabled(true);
+        }else{
+            ui->btnClave->setEnabled(false);
+            ui->btnEliminar->setEnabled(false);
+        }
+
+    }else{
+        ui->btnVer->setEnabled(false);
+        ui->btnRol->setEnabled(false);
+        ui->btnClave->setEnabled(false);
+        ui->btnEliminar->setEnabled(false);
+    }
+}
+
 void dlgAdministrarUsuarios::buscar()
 {
-    ui->btnVer->setEnabled(false);
-    ui->btnRol->setEnabled(false);
-    ui->btnClave->setEnabled(false);
-    ui->btnEliminar->setEnabled(false);
     infoUsuario.clear();
     ciUsuarios.clear();
     ui->etqNombre_2->clear();
@@ -140,6 +159,8 @@ void dlgAdministrarUsuarios::buscar()
     }
     modelo->setStringList(listaUsuarios);
     ui->listView->setModel(modelo);
+
+    revisionBtns();
 }
 
 bool dlgAdministrarUsuarios::existeCriterio()
@@ -261,9 +282,20 @@ void dlgAdministrarUsuarios::on_listView_clicked(const QModelIndex &index)
         ui->etqNombre_2->setText(infoUsuario["nombre"]);
         ui->etqApellido_2->setText(infoUsuario["apellido"]);
 
-        ui->btnVer->setEnabled(true);
-        ui->btnRol->setEnabled(true);
-        ui->btnClave->setEnabled(true);
-        ui->btnEliminar->setEnabled(true);
+        revisionBtns();
     }
+}
+
+void dlgAdministrarUsuarios::on_btnRol_clicked()
+{
+    dlgCambiarRol cambiarRol(infoUsuario["cedula"], clave, infoUsuario["rol"]);
+
+    connect(&cambiarRol, &dlgCambiarRol::rolCambiado, this, &dlgAdministrarUsuarios::on_rolCambiado);
+    cambiarRol.exec();
+}
+
+void dlgAdministrarUsuarios::on_rolCambiado(QString rol)
+{
+    infoUsuario["rol"] = rol;
+    revisionBtns();
 }

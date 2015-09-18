@@ -8,6 +8,7 @@
 #include <QStringListModel>
 #include <QDebug>
 #include <dlgverusuario.h>
+#include <dlgcambiarrol.h>
 #include <dlgconfirmarclave.h>
 
 namespace Ui {
@@ -20,6 +21,7 @@ class dlgAdministrarUsuarios : public QDialog
 
 public:
     explicit dlgAdministrarUsuarios(QString cedulaUsuario, QString claveUsuario, QWidget *parent = 0);
+    void revisionBtns();
     void buscar();
     bool existeCriterio();
     ~dlgAdministrarUsuarios();
@@ -48,6 +50,10 @@ private slots:
     void on_btnVer_clicked();
 
     void on_listView_clicked(const QModelIndex &index);
+
+    void on_btnRol_clicked();
+
+    void on_rolCambiado(QString rol);
 
 private:
     Ui::dlgAdministrarUsuarios *ui;

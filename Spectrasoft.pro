@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     dlgbuscarmuestra.cpp \
     dlgmodificarusuario.cpp \
     dlgadministrarusuarios.cpp \
-    dlgcambiarclave.cpp
+    dlgcambiarclave.cpp \
+    dlgcambiarrol.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -73,7 +74,8 @@ HEADERS  += mainwindow.h \
     dlgbuscarmuestra.h \
     dlgmodificarusuario.h \
     dlgadministrarusuarios.h \
-    dlgcambiarclave.h
+    dlgcambiarclave.h \
+    dlgcambiarrol.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
@@ -100,7 +102,8 @@ FORMS    += mainwindow.ui \
     dlgbuscarmuestra.ui \
     dlgmodificarusuario.ui \
     dlgadministrarusuarios.ui \
-    dlgcambiarclave.ui
+    dlgcambiarclave.ui \
+    dlgcambiarrol.ui
 
 RESOURCES += \
     recursos.qrc
