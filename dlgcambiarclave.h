@@ -17,7 +17,7 @@ class dlgCambiarClave : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgCambiarClave(QString cedulaUsuario, QString claveOriginal, QWidget *parent = 0);
+    explicit dlgCambiarClave(QString cedulaUsuario, QString claveOriginal, bool administracionU = false, QWidget *parent = 0);
     void revisionBtn();
     ~dlgCambiarClave();
 
@@ -39,7 +39,7 @@ private:
     Ui::dlgCambiarClave *ui;
     QRegularExpression claveValida;
     QString cedula, clave;
-    bool claveActualLista, claveNuevaLista;
+    bool claveActualLista, claveNuevaLista, dlgAdministrador;
 };
 
 #endif // DLGCAMBIARCLAVE_H

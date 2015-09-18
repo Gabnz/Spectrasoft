@@ -299,3 +299,29 @@ void dlgAdministrarUsuarios::on_rolCambiado(QString rol)
     infoUsuario["rol"] = rol;
     revisionBtns();
 }
+
+void dlgAdministrarUsuarios::on_btnEliminar_clicked()
+{
+    dlgEliminarUsuario elimU(infoUsuario["cedula"], clave);
+
+    connect(&elimU, &dlgEliminarUsuario::usuarioEliminado, this, &dlgAdministrarUsuarios::on_usuarioEliminado);
+    elimU.exec();
+}
+
+void dlgAdministrarUsuarios::on_usuarioEliminado()
+{
+    buscar();
+}
+
+void dlgAdministrarUsuarios::on_btnClave_clicked()
+{
+    dlgCambiarClave cambiarC(infoUsuario["cedula"], clave, true);
+
+    connect(&cambiarC, &dlgCambiarClave::claveCambiada, this, &dlgAdministrarUsuarios::on_claveCambiada);
+    cambiarC.exec();
+}
+
+void dlgAdministrarUsuarios::on_claveCambiada(QString info)
+{
+    infoUsuario["clave"] = info;
+}

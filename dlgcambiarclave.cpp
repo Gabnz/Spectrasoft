@@ -1,11 +1,19 @@
 #include "dlgcambiarclave.h"
 #include "ui_dlgcambiarclave.h"
 
-dlgCambiarClave::dlgCambiarClave(QString cedulaUsuario, QString claveOriginal, QWidget *parent) :
+dlgCambiarClave::dlgCambiarClave(QString cedulaUsuario, QString claveOriginal, bool administracionU, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgCambiarClave)
 {
     ui->setupUi(this);
+
+    dlgAdministrador = administracionU;
+
+    if(dlgAdministrador){
+        ui->etqClaveActual->setText("Contraseña del administrador");
+        ui->etqClave->setText("Contraseña nueva del usuario");
+        ui->etqRepetir->setText("Repetir contraseña nueva del usuario");
+    }
 
     claveActualLista = claveNuevaLista = false;
     cedula = cedulaUsuario;
@@ -104,9 +112,13 @@ void dlgCambiarClave::on_btnCambiar_clicked()
             qDebug() << query.lastError();
         }
 
-
     }else{
-        QMessageBox::critical(this, "Error al cambiar contraseña", "La contraseña actual que introdujo no es la correcta.");
+        if(!dlgAdministrador){
+            QMessageBox::critical(this, "Error al cambiar contraseña", "La contraseña actual que introdujo no es la correcta.");
+        }else{
+            QMessageBox::critical(this, "Error al cambiar contraseña", "La contraseña del administrador no es la correcta.");
+        }
+
         ui->lineaClaveActual->clear();
         ui->lineaClave->clear();
         ui->lineaRepetir->clear();

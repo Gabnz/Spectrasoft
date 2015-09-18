@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
+    <width>402</width>
     <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Eliminar usuario</string>
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">

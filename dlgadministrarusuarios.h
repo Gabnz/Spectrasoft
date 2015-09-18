@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <dlgverusuario.h>
 #include <dlgcambiarrol.h>
+#include <dlgeliminarusuario.h>
+#include <dlgcambiarclave.h>
 #include <dlgconfirmarclave.h>
 
 namespace Ui {
@@ -54,6 +56,14 @@ private slots:
     void on_btnRol_clicked();
 
     void on_rolCambiado(QString rol);
+
+    void on_btnEliminar_clicked();
+
+    void on_usuarioEliminado();
+
+    void on_btnClave_clicked();
+
+    void on_claveCambiada(QString info);
 
 private:
     Ui::dlgAdministrarUsuarios *ui;
