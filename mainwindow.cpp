@@ -100,7 +100,7 @@ void MainWindow::revisionBtns()
             registrarH = buscarH = false;
             verH = cerrarH = true;
 
-            if(infoUsuario["rol"] != "investigador"){
+            if(infoUsuario["rol"] == "dermatologo"){
                 masOpcionesH = modificarH = eliminarH = true;
             }else{
                 masOpcionesH = modificarH = eliminarH = false;
@@ -110,7 +110,7 @@ void MainWindow::revisionBtns()
                 registrarM = buscarM = false;
                 verM = exportarM = cerrarM = true;
 
-                if(infoUsuario["rol"] != "investigador"){
+                if(infoUsuario["rol"] == "dermatologo"){
                     masOpcionesM = modificarM = eliminarM = true;
                 }else{
                     masOpcionesM = modificarM = eliminarM = false;
@@ -120,7 +120,7 @@ void MainWindow::revisionBtns()
                 buscarM = true;
                 verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
 
-                if(!datosEspectrales.isEmpty() && infoUsuario["rol"] != "investigador"){
+                if(!datosEspectrales.isEmpty() && infoUsuario["rol"] == "dermatologo"){
                     registrarM = true;
                 }else{
                     registrarM = false;
@@ -133,7 +133,7 @@ void MainWindow::revisionBtns()
             verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
             registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
 
-            if(infoUsuario["rol"] != "investigador"){
+            if(infoUsuario["rol"] == "dermatologo"){
                 registrarH = true;
             }else{
                 registrarH = false;
