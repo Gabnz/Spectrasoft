@@ -89,24 +89,38 @@ void MainWindow::revisionBtns()
         sesionU = false;
         verU = modificarU = cambiarC = cerrarU = true;
 
-        if(infoUsuario["rol"] == "administrador")
+        if(infoUsuario["rol"] == "administrador"){
             masOpcionesU = registrarU = administrarU = true;
-        else
+        }else{
             masOpcionesU = registrarU = administrarU = false;
+        }
 
         if(!infoHistoria.isEmpty()){
+
             registrarH = buscarH = false;
-            verH = masOpcionesH = modificarH = eliminarH = cerrarH = true;
+            verH = cerrarH = true;
+
+            if(infoUsuario["rol"] != "investigador"){
+                masOpcionesH = modificarH = eliminarH = true;
+            }else{
+                masOpcionesH = modificarH = eliminarH = false;
+            }
 
             if(!infoMuestra.isEmpty()){
                 registrarM = buscarM = false;
-                verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = true;
+                verM = exportarM = cerrarM = true;
+
+                if(infoUsuario["rol"] != "investigador"){
+                    masOpcionesM = modificarM = eliminarM = true;
+                }else{
+                    masOpcionesM = modificarM = eliminarM = false;
+                }
             }else{
 
                 buscarM = true;
                 verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
 
-                if(!datosEspectrales.isEmpty()){
+                if(!datosEspectrales.isEmpty() && infoUsuario["rol"] != "investigador"){
                     registrarM = true;
                 }else{
                     registrarM = false;
@@ -114,9 +128,16 @@ void MainWindow::revisionBtns()
             }
 
         }else{
-            registrarH = buscarH = true;
+
+            buscarH = true;
             verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
             registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
+
+            if(infoUsuario["rol"] != "investigador"){
+                registrarH = true;
+            }else{
+                registrarH = false;
+            }
         }
 
     }else{
