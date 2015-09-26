@@ -192,11 +192,6 @@
     <addaction name="actionEstandarizar"/>
     <addaction name="actionRealizar_medicion"/>
     <addaction name="separator"/>
-    <addaction name="actionVer_reflectancia"/>
-    <addaction name="actionVer_absorbancia"/>
-    <addaction name="actionDatos_adicionales"/>
-    <addaction name="actionBorrar_resultados"/>
-    <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
@@ -278,7 +273,18 @@
     <addaction name="separator"/>
     <addaction name="actionCerrar_muestra"/>
    </widget>
+   <widget class="QMenu" name="menuDatos">
+    <property name="title">
+     <string>Datos</string>
+    </property>
+    <addaction name="actionVer_reflectancia"/>
+    <addaction name="actionVer_absorbancia"/>
+    <addaction name="actionDatos_adicionales"/>
+    <addaction name="separator"/>
+    <addaction name="actionBorrar_resultados"/>
+   </widget>
    <addaction name="menuMiniScanXEPlus"/>
+   <addaction name="menuDatos"/>
    <addaction name="menuUsuario"/>
    <addaction name="menuHistoria"/>
    <addaction name="menuMuestra"/>
