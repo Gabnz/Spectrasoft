@@ -190,6 +190,12 @@
     </property>
     <addaction name="actionConectar"/>
     <addaction name="actionEstandarizar"/>
+    <addaction name="actionRealizar_medicion"/>
+    <addaction name="separator"/>
+    <addaction name="actionVer_reflectancia"/>
+    <addaction name="actionVer_absorbancia"/>
+    <addaction name="actionDatos_adicionales"/>
+    <addaction name="actionBorrar_resultados"/>
     <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
@@ -262,11 +268,6 @@
      <addaction name="actionModificar_muestra"/>
      <addaction name="actionEliminar_muestra"/>
     </widget>
-    <addaction name="actionMedir_muestra"/>
-    <addaction name="actionVer_reflectancia"/>
-    <addaction name="actionVer_absorbancia"/>
-    <addaction name="actionDatos_adicionales"/>
-    <addaction name="actionBorrar_resultados"/>
     <addaction name="separator"/>
     <addaction name="actionRegistrar_muestra"/>
     <addaction name="actionBuscar_muestra"/>
@@ -296,11 +297,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionMedir_muestra"/>
-   <addaction name="actionBorrar_resultados"/>
+   <addaction name="actionRealizar_medicion"/>
    <addaction name="actionVer_reflectancia"/>
    <addaction name="actionVer_absorbancia"/>
-   <addaction name="actionDatos_adicionales"/>
+   <addaction name="actionBorrar_resultados"/>
    <addaction name="actionRegistrar_muestra"/>
    <addaction name="actionBuscar_muestra"/>
    <addaction name="actionVer_muestra"/>
@@ -460,15 +460,6 @@
     <string>Modificar historia</string>
    </property>
   </action>
-  <action name="actionMedir_muestra">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/logo_nuevo.png</normaloff>:/img/logo_nuevo.png</iconset>
-   </property>
-   <property name="text">
-    <string>Medir muestra</string>
-   </property>
-  </action>
   <action name="actionCerrar_muestra">
    <property name="icon">
     <iconset resource="recursos.qrc">
@@ -505,42 +496,6 @@
     <string>Registrar muestra</string>
    </property>
   </action>
-  <action name="actionVer_reflectancia">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/muestra_reflectancia.png</normaloff>:/img/muestra_reflectancia.png</iconset>
-   </property>
-   <property name="text">
-    <string>Ver reflectancia</string>
-   </property>
-  </action>
-  <action name="actionVer_absorbancia">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/muestra_absorbancia.png</normaloff>:/img/muestra_absorbancia.png</iconset>
-   </property>
-   <property name="text">
-    <string>Ver absorbancia</string>
-   </property>
-  </action>
-  <action name="actionDatos_adicionales">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/muestra_datos_adicionales.png</normaloff>:/img/muestra_datos_adicionales.png</iconset>
-   </property>
-   <property name="text">
-    <string>Datos adicionales</string>
-   </property>
-  </action>
-  <action name="actionBorrar_resultados">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/borrar_resultados.png</normaloff>:/img/borrar_resultados.png</iconset>
-   </property>
-   <property name="text">
-    <string>Borrar resultados</string>
-   </property>
-  </action>
   <action name="actionExportar_muestra">
    <property name="icon">
     <iconset resource="recursos.qrc">
@@ -575,6 +530,51 @@
    </property>
    <property name="text">
     <string>Cambiar contraseña</string>
+   </property>
+  </action>
+  <action name="actionRealizar_medicion">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/logo_nuevo.png</normaloff>:/img/logo_nuevo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Realizar medición</string>
+   </property>
+  </action>
+  <action name="actionVer_reflectancia">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_reflectancia.png</normaloff>:/img/muestra_reflectancia.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ver reflectancia</string>
+   </property>
+  </action>
+  <action name="actionVer_absorbancia">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_absorbancia.png</normaloff>:/img/muestra_absorbancia.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ver absorbancia</string>
+   </property>
+  </action>
+  <action name="actionDatos_adicionales">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_datos_adicionales.png</normaloff>:/img/muestra_datos_adicionales.png</iconset>
+   </property>
+   <property name="text">
+    <string>Datos adicionales</string>
+   </property>
+  </action>
+  <action name="actionBorrar_resultados">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/borrar_resultados.png</normaloff>:/img/borrar_resultados.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar resultados</string>
    </property>
   </action>
  </widget>

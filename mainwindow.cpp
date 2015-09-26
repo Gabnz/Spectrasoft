@@ -166,7 +166,7 @@ void MainWindow::revisionBtns()
     ui->actionEliminar_historia->setEnabled(eliminarH);
     ui->actionCerrar_historia->setEnabled(cerrarH);
 
-    ui->actionMedir_muestra->setEnabled(medirM);
+    ui->actionRealizar_medicion->setEnabled(medirM);
     ui->actionBorrar_resultados->setEnabled(borrarResultadosM);
     ui->actionRegistrar_muestra->setEnabled(registrarM);
     ui->actionBuscar_muestra->setEnabled(buscarM);
@@ -429,7 +429,7 @@ void MainWindow::on_actionCerrar_historia_triggered()
     revisionBtns();
 }
 
-void MainWindow::on_actionMedir_muestra_triggered()
+void MainWindow::on_actionRealizar_medicion_triggered()
 {
     borrarResultados();
 

@@ -92,7 +92,7 @@ private slots:
 
     void on_actionCerrar_historia_triggered();
 
-    void on_actionMedir_muestra_triggered();
+    void on_actionRealizar_medicion_triggered();
 
     void on_actionEliminar_muestra_triggered();
 

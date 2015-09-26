@@ -46,11 +46,11 @@
         <file>img/muestra_absorbancia.png</file>
         <file>img/muestra_reflectancia.png</file>
         <file>img/muestra_datos_adicionales.png</file>
-        <file>img/borrar_resultados.png</file>
         <file>img/logo_nuevo.png</file>
         <file>img/logo_icono_nuevo.ico</file>
         <file>img/muestra_exportar.png</file>
         <file>img/editar_usuario.png</file>
         <file>img/usuario_administrar.png</file>
+        <file>img/borrar_resultados.png</file>
     </qresource>
 </RCC>
