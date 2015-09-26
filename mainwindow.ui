@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
+    <width>925</width>
     <height>325</height>
    </rect>
   </property>
@@ -180,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>903</width>
+     <width>925</width>
      <height>21</height>
     </rect>
    </property>
@@ -279,7 +279,6 @@
     </property>
     <addaction name="actionVer_reflectancia"/>
     <addaction name="actionVer_absorbancia"/>
-    <addaction name="actionDatos_adicionales"/>
     <addaction name="separator"/>
     <addaction name="actionBorrar_resultados"/>
    </widget>
@@ -306,6 +305,7 @@
    <addaction name="actionRealizar_medicion"/>
    <addaction name="actionVer_reflectancia"/>
    <addaction name="actionVer_absorbancia"/>
+   <addaction name="actionDatos_adicionales"/>
    <addaction name="actionBorrar_resultados"/>
    <addaction name="actionRegistrar_muestra"/>
    <addaction name="actionBuscar_muestra"/>
