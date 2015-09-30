@@ -46,7 +46,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     db.setDatabaseName("CIMBUC");
     db.setUserName("CIMBUC");
     db.setPassword("CIMBUC");
-    db.open();
+    bool listo = db.open();
+
+    if(!listo){
+        QMessageBox::critical(this, "Error de conexión", "No se pudo establecer una conexión con la base de datos.");
+        close();
+    }
+
     //
     this->setFixedSize(this->size());
     revisionBtns();
