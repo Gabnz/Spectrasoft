@@ -184,52 +184,68 @@ void dlgBuscarMuestra::on_btnVer_clicked()
 void dlgBuscarMuestra::on_btnAbrir_clicked()
 {
     QSqlQuery query;
-    QString id_datos_espectrales;
-    QVector<float> datosE, XYZ, LAB, adicionales;
-    int i, indice;
+    float infoDatos[3][31], infoCoordenadas[2][3], infoEritema;
+    int i, indice, rango;
 
     query.exec("SELECT * FROM spectradb.datos_espectrales WHERE id_datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
-
     query.next();
 
-    int rango = 400;
+    rango = 400;
 
     for(i = 0; i < 31; ++i){
         indice = query.record().indexOf("nm_" + QString().setNum(rango));
-        datosE.push_back(query.value(indice).toFloat());
+        infoDatos[0][i] = query.value(indice).toFloat();
         rango+=10;
     }
-    indice = query.record().indexOf("id_datos_espectrales");
-    id_datos_espectrales = query.value(indice).toString();
 
-    query.exec("SELECT * FROM spectradb.datos_adicionales WHERE datos_espectrales = '" + id_datos_espectrales + "'");
+    query.clear();
+    query.exec("SELECT * FROM spectradb.datos_absorcion WHERE datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
+    query.next();
 
+    rango = 400;
+
+    for(i = 0; i < 31; ++i){
+        indice = query.record().indexOf("nm_" + QString().setNum(rango));
+        infoDatos[1][i] = query.value(indice).toFloat();
+        rango+=10;
+    }
+
+    query.clear();
+    query.exec("SELECT * FROM spectradb.datos_esparcimiento WHERE datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
+    query.next();
+
+    rango = 400;
+
+    for(i = 0; i < 31; ++i){
+        indice = query.record().indexOf("nm_" + QString().setNum(rango));
+        infoDatos[2][i] = query.value(indice).toFloat();
+        rango+=10;
+    }
+
+    query.clear();
+    query.exec("SELECT * FROM spectradb.datos_adicionales WHERE datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
     query.next();
 
     indice = query.record().indexOf("cie_x");
-    XYZ.push_back(query.value(indice).toFloat());
+    infoCoordenadas[0][0] = query.value(indice).toFloat();
     indice = query.record().indexOf("cie_y");
-    XYZ.push_back(query.value(indice).toFloat());
+    infoCoordenadas[0][1] = query.value(indice).toFloat();
     indice = query.record().indexOf("cie_z");
-    XYZ.push_back(query.value(indice).toFloat());
+    infoCoordenadas[0][2] = query.value(indice).toFloat();
 
     indice = query.record().indexOf("cie_l");
-    LAB.push_back(query.value(indice).toFloat());
+    infoCoordenadas[1][0] = query.value(indice).toFloat();
     indice = query.record().indexOf("cie_a");
-    LAB.push_back(query.value(indice).toFloat());
+    infoCoordenadas[1][1] = query.value(indice).toFloat();
     indice = query.record().indexOf("cie_b");
-    LAB.push_back(query.value(indice).toFloat());
+    infoCoordenadas[1][2] = query.value(indice).toFloat();
 
-    indice = query.record().indexOf("coeficiente_absorcion");
-    adicionales.push_back(query.value(indice).toFloat());
-    indice = query.record().indexOf("coeficiente_esparcimiento");
-    adicionales.push_back(query.value(indice).toFloat());
     indice = query.record().indexOf("indice_eritema");
-    adicionales.push_back(query.value(indice).toFloat());
+    infoEritema = query.value(indice).toFloat();
 
     QMessageBox::information(this, "Muestra abierta", "Se ha abierto la muestra correctamente.");
     close();
-    emit muestraAbierta(infoMuestra, datosE, XYZ, LAB, adicionales);
+    emit muestraAbierta(infoMuestra, infoDatos, infoCoordenadas, infoEritema);
 }
 
 void dlgBuscarMuestra::on_btnCancelar_clicked()

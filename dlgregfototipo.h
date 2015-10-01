@@ -20,7 +20,7 @@ class dlgRegFototipo : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgRegFototipo(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, float absorcionExt, float esparcimientoExt, float eritemaExt, QWidget *parent = 0);
+    explicit dlgRegFototipo(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, QVector<float> absorcionExt, QVector<float> esparcimientoExt, float eritemaExt, QWidget *parent = 0);
     bool camposListos();
     ~dlgRegFototipo();
 
@@ -46,8 +46,8 @@ private slots:
 private:
     Ui::dlgRegFototipo *ui;
     QString id_usuario, id_historia, id_muestra, id_datos_espectrales, clave;
-    QVector<float> datosEspectrales, XYZ, LAB;
-    float absorcion, esparcimiento, eritema;
+    QVector<float> datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento;
+    float eritema;
     QHash<QString, QString> infoMuestra;
     int fototipo;
 };

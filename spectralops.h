@@ -175,9 +175,9 @@ public:
     */
     QVector<float> CIELAB(QVector<float> medicion);
 
-    float absorcion(QVector<float> medicion);
+    QVector<float> absorcion(QVector<float> medicion);
 
-    float esparcimiento(QVector<float> medicion);
+    QVector<float> esparcimiento(QVector<float> medicion);
 
     /*
     **  Calcula el indice de eritema asociado a los 31 datos espectrales de una muestra.

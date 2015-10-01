@@ -12,12 +12,7 @@ dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *p
 
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->grafica);
 
-    if(tituloExt == "reflectancia"){
-        titulo->setText("Curva de " + tituloExt + " difusa");
-    }else{
-        titulo->setText("Curva de " + tituloExt + " aparente");
-    }
-
+    titulo->setText(tituloExt);
     titulo->setFont(QFont("sans", 12, QFont::Bold));
 
     QVector<double> ticks;

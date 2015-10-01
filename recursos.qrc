@@ -52,5 +52,7 @@
         <file>img/editar_usuario.png</file>
         <file>img/usuario_administrar.png</file>
         <file>img/borrar_resultados.png</file>
+        <file>img/muestra_absorcion.png</file>
+        <file>img/muestra_esparcimiento.png</file>
     </qresource>
 </RCC>

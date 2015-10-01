@@ -5,9 +5,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
-    conectado = false;
+    conectado = bdConectada = false;
     numCurvas = 0;
-    ref = abs = NULL;
+    ref = abs = absorcion = esparcimiento = NULL;
     dts = NULL;
     infoUsuario.clear();
     infoHistoria.clear();
@@ -46,11 +46,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     db.setDatabaseName("CIMBUC");
     db.setUserName("CIMBUC");
     db.setPassword("CIMBUC");
-    bool listo = db.open();
+    bdConectada = db.open();
 
-    if(!listo){
-        QMessageBox::critical(this, "Error de conexión", "No se pudo establecer una conexión con la base de datos.");
-        close();
+    if(!bdConectada){
+        QMessageBox::critical(this, "Error de conexión", "No se pudo establecer una conexión con la base de datos, muchas operaciones no estarán disponibles.");
     }
 
     //
@@ -65,7 +64,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::revisionBtns()
 {
-    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRefM, verAbsM, datosAdicionalesM, masOpcionesM, modificarM, eliminarM, cerrarM,
+    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRef, verAbs, verAbsorcion, verEsparcimiento, datosA, masOpcionesM, modificarM, eliminarM, cerrarM,
     sesionU, verU, modificarU, cambiarC, masOpcionesU, registrarU, administrarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
@@ -81,79 +80,93 @@ void MainWindow::revisionBtns()
     }
 
     if(!datosEspectrales.isEmpty()){
-        verRefM = verAbsM = datosAdicionalesM = true;
+        verRef = verAbs = verAbsorcion = verEsparcimiento = datosA = true;
 
         if(infoMuestra.isEmpty())
             borrarResultadosM = true;
         else
             borrarResultadosM = false;
     }else{
-        verRefM = verAbsM = datosAdicionalesM = borrarResultadosM = false;
+        verRef = verAbs = verAbsorcion = verEsparcimiento = datosA = borrarResultadosM = false;
     }
 
-    if(!infoUsuario.isEmpty()){
-        sesionU = false;
-        verU = modificarU = cambiarC = cerrarU = true;
+    if(bdConectada){
 
-        if(infoUsuario["rol"] == "administrador"){
-            masOpcionesU = registrarU = administrarU = true;
-        }else{
-            masOpcionesU = registrarU = administrarU = false;
-        }
+        if(!infoUsuario.isEmpty()){
+            sesionU = false;
+            verU = modificarU = cambiarC = cerrarU = true;
 
-        if(!infoHistoria.isEmpty()){
-
-            registrarH = buscarH = false;
-            verH = cerrarH = true;
-
-            if(infoUsuario["rol"] == "dermatologo"){
-                masOpcionesH = modificarH = eliminarH = true;
+            if(infoUsuario["rol"] == "administrador"){
+                masOpcionesU = registrarU = administrarU = true;
             }else{
-                masOpcionesH = modificarH = eliminarH = false;
+                masOpcionesU = registrarU = administrarU = false;
             }
 
-            if(!infoMuestra.isEmpty()){
-                registrarM = buscarM = false;
-                verM = exportarM = cerrarM = true;
+            if(!infoHistoria.isEmpty()){
+
+                registrarH = buscarH = false;
+                verH = cerrarH = true;
 
                 if(infoUsuario["rol"] == "dermatologo"){
-                    masOpcionesM = modificarM = eliminarM = true;
+                    masOpcionesH = modificarH = eliminarH = true;
                 }else{
-                    masOpcionesM = modificarM = eliminarM = false;
+                    masOpcionesH = modificarH = eliminarH = false;
                 }
+
+                if(!infoMuestra.isEmpty()){
+                    registrarM = buscarM = false;
+                    verM = exportarM = cerrarM = true;
+
+                    if(infoUsuario["rol"] == "dermatologo"){
+                        masOpcionesM = modificarM = eliminarM = true;
+                    }else{
+                        masOpcionesM = modificarM = eliminarM = false;
+                    }
+                }else{
+
+                    buscarM = true;
+                    verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
+
+                    if(!datosEspectrales.isEmpty() && infoUsuario["rol"] == "dermatologo"){
+                        registrarM = true;
+                    }else{
+                        registrarM = false;
+                    }
+                }
+
             }else{
 
-                buscarM = true;
-                verM = exportarM = cerrarM = masOpcionesM = modificarM = eliminarM = false;
+                buscarH = true;
+                verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
+                registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
 
-                if(!datosEspectrales.isEmpty() && infoUsuario["rol"] == "dermatologo"){
-                    registrarM = true;
+                if(infoUsuario["rol"] == "dermatologo"){
+                    registrarH = true;
                 }else{
-                    registrarM = false;
+                    registrarH = false;
                 }
             }
 
         }else{
-
-            buscarH = true;
-            verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
+            sesionU = true;
+            verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
+            registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
             registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
-
-            if(infoUsuario["rol"] == "dermatologo"){
-                registrarH = true;
-            }else{
-                registrarH = false;
-            }
         }
 
     }else{
-        sesionU = true;
-        verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
+        sesionU = verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
         registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
         registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
     }
 
     ui->actionEstandarizar->setEnabled(estandarizar);
+
+    ui->actionVer_reflectancia->setEnabled(verRef);
+    ui->actionVer_absorbancia->setEnabled(verAbs);
+    ui->actionVer_absorcion->setEnabled(verAbsorcion);
+    ui->actionVer_esparcimiento->setEnabled(verEsparcimiento);
+    ui->actionDatos_adicionales->setEnabled(datosA);
 
     ui->actionIniciar_sesion->setEnabled(sesionU);
     ui->actionVer_usuario->setEnabled(verU);
@@ -178,9 +191,6 @@ void MainWindow::revisionBtns()
     ui->actionBuscar_muestra->setEnabled(buscarM);
     ui->actionVer_muestra->setEnabled(verM);
     ui->actionExportar_muestra->setEnabled(exportarM);
-    ui->actionVer_reflectancia->setEnabled(verRefM);
-    ui->actionVer_absorbancia->setEnabled(verAbsM);
-    ui->actionDatos_adicionales->setEnabled(datosAdicionalesM);
     ui->menuMas_opciones_m->setEnabled(masOpcionesM);
     ui->actionModificar_muestra->setEnabled(modificarM);
     ui->actionEliminar_muestra->setEnabled(eliminarM);
@@ -190,9 +200,11 @@ void MainWindow::revisionBtns()
 void MainWindow::borrarResultados()
 {
     datosEspectrales.clear();
+    datosAbsorcion.clear();
+    datosEsparcimiento.clear();
     XYZ.clear();
     LAB.clear();
-    absorcion = esparcimiento = eritema = 0.0;
+    eritema = 0.0;
 
     QModelIndex indice;
 
@@ -209,6 +221,16 @@ void MainWindow::borrarResultados()
     if(abs != NULL){
         delete abs;
         abs = NULL;
+    }
+
+    if(absorcion != NULL){
+        delete absorcion;
+        absorcion = NULL;
+    }
+
+    if(esparcimiento != NULL){
+        delete esparcimiento;
+        esparcimiento = NULL;
     }
 
     if(dts != NULL){
@@ -503,8 +525,8 @@ void MainWindow::on_actionRealizar_medicion_triggered()
 
     XYZ = ops.CIExyz(aux);
     LAB = ops.CIELAB(aux);
-    absorcion = ops.absorcion(aux);
-    esparcimiento = ops.esparcimiento(aux);
+    datosAbsorcion = ops.absorcion(aux);
+    datosEsparcimiento = ops.esparcimiento(aux);
     eritema = ops.eritema(aux);
 
     numCurvas += 1;
@@ -526,7 +548,7 @@ void MainWindow::on_actionVer_reflectancia_triggered()
             aux[i] = double(datosEspectrales[i]);
         }
 
-        ref = new dlgGrafica("reflectancia", "Longitud de onda (nm)", "Reflectancia (%)");
+        ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
         ref->agregarCurva(aux);
         ref->show();
     }else{
@@ -549,11 +571,57 @@ void MainWindow::on_actionVer_absorbancia_triggered()
             aux[i] = double(100.0 - datosEspectrales[i]);
         }
 
-        abs = new dlgGrafica("absorbancia", "Longitud de onda (nm)", "Absorbancia (%)");
+        abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
         abs->agregarCurva(aux);
         abs->show();
     }else{
         abs->showMaximized();
+    }
+}
+
+void MainWindow::on_actionVer_absorcion_triggered()
+{
+    if(absorcion != NULL && !absorcion->isMinimized() && !absorcion->isActiveWindow()){
+        delete absorcion;
+        absorcion = NULL;
+    }
+
+    if(absorcion == NULL){
+
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosAbsorcion[i]);
+        }
+
+        absorcion = new dlgGrafica("Curva de absorción", "Longitud de onda (nm)", "Absorción (%)");
+        absorcion->agregarCurva(aux);
+        absorcion->show();
+    }else{
+        absorcion->showMaximized();
+    }
+}
+
+void MainWindow::on_actionVer_esparcimiento_triggered()
+{
+    if(esparcimiento != NULL && !esparcimiento->isMinimized() && !esparcimiento->isActiveWindow()){
+        delete esparcimiento;
+        esparcimiento = NULL;
+    }
+
+    if(esparcimiento == NULL){
+
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosEsparcimiento[i]);
+        }
+
+        esparcimiento = new dlgGrafica("Curva de esparcimiento", "Longitud de onda (nm)", "Esparcimiento (%)");
+        esparcimiento->agregarCurva(aux);
+        esparcimiento->show();
+    }else{
+        esparcimiento->showMaximized();
     }
 }
 
@@ -566,7 +634,7 @@ void MainWindow::on_actionDatos_adicionales_triggered()
 
     if(dts == NULL){
 
-        dts = new dlgDatosAdicionales(XYZ, LAB, absorcion, esparcimiento, eritema);
+        dts = new dlgDatosAdicionales(XYZ, LAB, eritema);
         dts->show();
     }else{
         dts->showMaximized();
@@ -590,12 +658,12 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
     if(tipo == "lesion"){
-        dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
+        dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento, eritema);
 
         connect(&regL, &dlgRegLesion::lesion_registrada, this, &MainWindow::on_muestraRegistrada);
         regL.exec();
     }else{
-        dlgRegFototipo regF(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, absorcion, esparcimiento, eritema);
+        dlgRegFototipo regF(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento, eritema);
 
         connect(&regF, &dlgRegFototipo::fototipo_registrado, this, &MainWindow::on_muestraRegistrada);
         connect(&regF, &dlgRegFototipo::actualizar_fototipo, this, &MainWindow::on_actualizarFototipo);
@@ -668,25 +736,27 @@ void MainWindow::on_actionBuscar_muestra_triggered()
     buscarM.exec();
 }
 
-void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float> infoXYZ, QVector<float> infoLAB, QVector<float> adicionales)
+void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[3][31], float infoCoordenadas[2][3], float infoEritema)
 {
     borrarResultados();
-    infoMuestra = infoM;
 
-    datosEspectrales = infoDatosE;
+    infoMuestra = infoM;
     QModelIndex indice;
 
     for(int i = 0; i < 31; ++i){
-
+        datosEspectrales.push_back(infoDatos[0][i]);
+        datosAbsorcion.push_back(infoDatos[1][i]);
+        datosEsparcimiento.push_back(infoDatos[2][i]);
         indice = modeloDatos->index(0, i, QModelIndex());
-        modeloDatos->setData(indice, datosEspectrales.at(i));
+        modeloDatos->setData(indice, infoDatos[0][i]);
     }
 
-    XYZ = infoXYZ;
-    LAB = infoLAB;
-    absorcion = adicionales[0];
-    esparcimiento = adicionales[1];
-    eritema = adicionales[2];
+    for(int i = 0; i < 3; ++i){
+        XYZ.push_back(infoCoordenadas[0][i]);
+        LAB.push_back(infoCoordenadas[1][i]);
+    }
+
+    eritema = infoEritema;
 
     revisionBtns();
 }
@@ -749,15 +819,6 @@ void MainWindow::on_actionExportar_muestra_triggered()
     xlsx.write("A" + QString().setNum(fila), "b:");
     xlsx.write("B" + QString().setNum(fila), LAB[2]);
     fila+=2;
-    xlsx.write("A" + QString().setNum(fila), "Coeficiente de absorción:");
-    xlsx.write("D" + QString().setNum(fila), absorcion);
-    ++fila;
-    xlsx.write("A" + QString().setNum(fila), "Coeficiente de esparcimiento:");
-    xlsx.write("D" + QString().setNum(fila), esparcimiento);
-    ++fila;
-    xlsx.write("A" + QString().setNum(fila), "Índice de eritema:");
-    xlsx.write("D" + QString().setNum(fila), eritema);
-    fila+=2;
     xlsx.write("A" + QString().setNum(fila), "Datos espectrales de la muestra:");
     fila+=2;
 
@@ -785,6 +846,66 @@ void MainWindow::on_actionExportar_muestra_triggered()
         rango+=10;
         letra+=1;
     }
+    fila+=3;
+    xlsx.write("A" + QString().setNum(fila), "Datos de absorción de la muestra:");
+    fila+=2;
+
+    rango = 400;
+    auxS.clear();
+    letra = 'A';
+    bandera = false;
+
+    for(int i = 0; i < 31; ++i){
+
+        if(!bandera){
+            auxS = QString(letra);
+        }else{
+            auxS = "A" + QString(letra);
+        }
+
+        xlsx.write(auxS + QString().setNum(fila), rango);
+        xlsx.write(auxS + QString().setNum(fila + 1), datosAbsorcion.at(i));
+
+        if(letra == 'Z'){
+            letra = 'A';
+            letra-=1;
+            bandera = true;
+        }
+        rango+=10;
+        letra+=1;
+    }
+    fila+=3;
+    xlsx.write("A" + QString().setNum(fila), "Datos de esparcimiento de la muestra:");
+    fila+=2;
+
+    rango = 400;
+    auxS.clear();
+    letra = 'A';
+    bandera = false;
+
+    for(int i = 0; i < 31; ++i){
+
+        if(!bandera){
+            auxS = QString(letra);
+        }else{
+            auxS = "A" + QString(letra);
+        }
+
+        xlsx.write(auxS + QString().setNum(fila), rango);
+        xlsx.write(auxS + QString().setNum(fila + 1), datosEsparcimiento.at(i));
+
+        if(letra == 'Z'){
+            letra = 'A';
+            letra-=1;
+            bandera = true;
+        }
+        rango+=10;
+        letra+=1;
+    }
+    fila+=3;
+    xlsx.write("A" + QString().setNum(fila), "Índice de eritema:");
+    ++fila;
+    xlsx.write("A" + QString().setNum(fila), eritema);
 
     xlsx.saveAs(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "muestra-" + infoMuestra["id_muestra"] + "-fecha-" + QDate::currentDate().toString("dd-MM-yyyy") + ".xlsx");
     QMessageBox::information(this, "Muestra exportada", "Se ha exportado la muestra correctamente a su escritorio.");

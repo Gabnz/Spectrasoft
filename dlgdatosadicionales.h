@@ -13,7 +13,7 @@ class dlgDatosAdicionales : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB, float absorcion, float esparcimiento, float eritema, QWidget *parent = 0);
+    explicit dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB, float eritema, QWidget *parent = 0);
     ~dlgDatosAdicionales();
 
 private slots:

@@ -82,20 +82,24 @@ QVector<float> SpectralOps::CIELAB(QVector<float> medicion)
     return resultado;
 }
 
-float SpectralOps::absorcion(QVector<float> medicion)
+QVector<float> SpectralOps::absorcion(QVector<float> medicion)
 {
-    float resultado;
+    QVector<float> resultado;
 
-    resultado = 0;
+    for(int i = 0; i < 31; ++i){
+        resultado.push_back(31 - i);
+    }
 
     return resultado;
 }
 
-float SpectralOps::esparcimiento(QVector<float> medicion)
+QVector<float> SpectralOps::esparcimiento(QVector<float> medicion)
 {
-    float resultado;
+    QVector<float> resultado;
 
-    resultado = 0;
+    for(int i = 0; i < 31; ++i){
+        resultado.push_back(i + 1);
+    }
 
     return resultado;
 }

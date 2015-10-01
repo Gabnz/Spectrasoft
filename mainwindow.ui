@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>920</width>
+    <width>850</width>
     <height>325</height>
    </rect>
   </property>
@@ -180,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>920</width>
+     <width>850</width>
      <height>21</height>
     </rect>
    </property>
@@ -273,17 +273,20 @@
     <addaction name="separator"/>
     <addaction name="actionCerrar_muestra"/>
    </widget>
-   <widget class="QMenu" name="menuDatos">
+   <widget class="QMenu" name="menuResultados">
     <property name="title">
-     <string>Datos</string>
+     <string>Resultados</string>
     </property>
     <addaction name="actionVer_reflectancia"/>
     <addaction name="actionVer_absorbancia"/>
+    <addaction name="actionVer_absorcion"/>
+    <addaction name="actionVer_esparcimiento"/>
+    <addaction name="actionDatos_adicionales"/>
     <addaction name="separator"/>
     <addaction name="actionBorrar_resultados"/>
    </widget>
    <addaction name="menuMiniScanXEPlus"/>
-   <addaction name="menuDatos"/>
+   <addaction name="menuResultados"/>
    <addaction name="menuUsuario"/>
    <addaction name="menuHistoria"/>
    <addaction name="menuMuestra"/>
@@ -304,7 +307,6 @@
    </attribute>
    <addaction name="actionRealizar_medicion"/>
    <addaction name="actionVer_reflectancia"/>
-   <addaction name="actionVer_absorbancia"/>
    <addaction name="actionDatos_adicionales"/>
    <addaction name="actionBorrar_resultados"/>
    <addaction name="actionRegistrar_muestra"/>
@@ -581,6 +583,24 @@
    </property>
    <property name="text">
     <string>Borrar resultados</string>
+   </property>
+  </action>
+  <action name="actionVer_absorcion">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_absorcion.png</normaloff>:/img/muestra_absorcion.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ver absorción</string>
+   </property>
+  </action>
+  <action name="actionVer_esparcimiento">
+   <property name="icon">
+    <iconset resource="recursos.qrc">
+     <normaloff>:/img/muestra_esparcimiento.png</normaloff>:/img/muestra_esparcimiento.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ver esparcimiento</string>
    </property>
   </action>
  </widget>

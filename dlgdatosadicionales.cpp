@@ -1,7 +1,7 @@
 #include "dlgdatosadicionales.h"
 #include "ui_dlgdatosadicionales.h"
 
-dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB, float absorcion, float esparcimiento, float eritema, QWidget *parent) :
+dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB, float eritema, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgDatosAdicionales)
 {
@@ -52,12 +52,6 @@ dlgDatosAdicionales::dlgDatosAdicionales(QVector<float> XYZ, QVector<float> LAB,
 
     QString auxR;
 
-    auxR.setNum(absorcion);
-    auxR.replace(".", ",");
-    ui->lineaAbsorcion->setText(auxR);
-    auxR.setNum(esparcimiento);
-    auxR.replace(".", ",");
-    ui->lineaEsparcimiento->setText(auxR);
     auxR.setNum(eritema);
     auxR.replace(".", ",");
     ui->lineaEritema->setText(auxR);

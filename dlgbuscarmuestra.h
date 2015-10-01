@@ -24,7 +24,7 @@ public:
     ~dlgBuscarMuestra();
 
 signals:
-    void muestraAbierta(QHash<QString, QString> infoM, QVector<float> infoDatosE, QVector<float> infoXYZ, QVector<float> infoLAB, QVector<float> adicionales);
+    void muestraAbierta(QHash<QString, QString> infoM, float infoDatos[3][31], float infoCoordenadas[2][3], float infoEritema);
 
 private slots:
     void on_cBoxTipo_currentIndexChanged(int index);
