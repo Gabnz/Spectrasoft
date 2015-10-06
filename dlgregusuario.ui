@@ -14,7 +14,7 @@
    <string>Registrar usuario</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="recursos.qrc">
     <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -49,7 +49,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>:/img/plus_usuario.png</pixmap>
+            <pixmap resource="recursos.qrc">:/img/plus_usuario.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -426,7 +426,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap>:/img/vacio.png</pixmap>
+              <pixmap resource="recursos.qrc">:/img/vacio.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -494,7 +494,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap>:/img/vacio.png</pixmap>
+              <pixmap resource="recursos.qrc">:/img/vacio.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -676,6 +676,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>

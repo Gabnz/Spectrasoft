@@ -145,10 +145,9 @@ private:
     QSqlDatabase db;
     dlgGrafica *ref, *abs, *absorcion, *esparcimiento;
     dlgDatosAdicionales *dts;
-    QVector<float> datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento;
+    QVector<float> datosEspectrales, datosAbsorbancia, XYZ, LAB, datosAbsorcion, datosEsparcimiento;
     float eritema;
     QStandardItemModel *modeloDatos;
-    int numCurvas;
     bool conectado, bdConectada;
     QHash<QString, QString> infoUsuario, infoHistoria, infoMuestra;
 };

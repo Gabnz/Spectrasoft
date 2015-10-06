@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     conectado = bdConectada = false;
-    numCurvas = 0;
     ref = abs = absorcion = esparcimiento = NULL;
     dts = NULL;
     infoUsuario.clear();
@@ -200,10 +199,11 @@ void MainWindow::revisionBtns()
 void MainWindow::borrarResultados()
 {
     datosEspectrales.clear();
-    datosAbsorcion.clear();
-    datosEsparcimiento.clear();
+    datosAbsorbancia.clear();
     XYZ.clear();
     LAB.clear();
+    datosAbsorcion.clear();
+    datosEsparcimiento.clear();
     eritema = 0.0;
 
     QModelIndex indice;
@@ -475,37 +475,37 @@ void MainWindow::on_actionRealizar_medicion_triggered()
 
         QMessageBox::critical(this, "Error al medirM la muestra", "La medición no se pudo realizar.");
 
-        medicion.push_back(float(17.2101 + numCurvas));
-        medicion.push_back(float(15.2329 + numCurvas));
-        medicion.push_back(float(15.13 + numCurvas));
-        medicion.push_back(float(14.2457 + numCurvas));
-        medicion.push_back(float(16.0641 + numCurvas));
-        medicion.push_back(float(18.2752 + numCurvas));
-        medicion.push_back(float(19.687 + numCurvas));
-        medicion.push_back(float(21.0481 + numCurvas));
-        medicion.push_back(float(21.9136 + numCurvas));
-        medicion.push_back(float(23.1382 + numCurvas));
-        medicion.push_back(float(23.9694 + numCurvas));
-        medicion.push_back(float(25.4163 + numCurvas));
-        medicion.push_back(float(25.2229 + numCurvas));
-        medicion.push_back(float(24.8392 + numCurvas));
-        medicion.push_back(float(24.9241 + numCurvas));
-        medicion.push_back(float(25.2234 + numCurvas));
-        medicion.push_back(float(26.2638 + numCurvas));
-        medicion.push_back(float(26.5036 + numCurvas));
-        medicion.push_back(float(27.8098 + numCurvas));
-        medicion.push_back(float(31.5459 + numCurvas));
-        medicion.push_back(float(36.2515 + numCurvas));
-        medicion.push_back(float(39.0012 + numCurvas));
-        medicion.push_back(float(40.6161 + numCurvas));
-        medicion.push_back(float(42.1796 + numCurvas));
-        medicion.push_back(float(43.205 + numCurvas));
-        medicion.push_back(float(44.057 + numCurvas));
-        medicion.push_back(float(45.0165 + numCurvas));
-        medicion.push_back(float(45.779 + numCurvas));
-        medicion.push_back(float(46.4996 + numCurvas));
-        medicion.push_back(float(47.3194 + numCurvas));
-        medicion.push_back(float(47.8099 + numCurvas));
+        medicion.push_back(float(17.2101));
+        medicion.push_back(float(15.2329));
+        medicion.push_back(float(15.13));
+        medicion.push_back(float(14.2457));
+        medicion.push_back(float(16.0641));
+        medicion.push_back(float(18.2752));
+        medicion.push_back(float(19.687));
+        medicion.push_back(float(21.0481));
+        medicion.push_back(float(21.9136));
+        medicion.push_back(float(23.1382));
+        medicion.push_back(float(23.9694));
+        medicion.push_back(float(25.4163));
+        medicion.push_back(float(25.2229));
+        medicion.push_back(float(24.8392));
+        medicion.push_back(float(24.9241));
+        medicion.push_back(float(25.2234));
+        medicion.push_back(float(26.2638));
+        medicion.push_back(float(26.5036));
+        medicion.push_back(float(27.8098));
+        medicion.push_back(float(31.5459));
+        medicion.push_back(float(36.2515));
+        medicion.push_back(float(39.0012));
+        medicion.push_back(float(40.6161));
+        medicion.push_back(float(42.1796));
+        medicion.push_back(float(43.205));
+        medicion.push_back(float(44.057));
+        medicion.push_back(float(45.0165));
+        medicion.push_back(float(45.779));
+        medicion.push_back(float(46.4996));
+        medicion.push_back(float(47.3194));
+        medicion.push_back(float(47.8099));
     }
 
     QModelIndex indice;
@@ -523,13 +523,13 @@ void MainWindow::on_actionRealizar_medicion_triggered()
         aux[i] = datosEspectrales[i]/100.0;
     }
 
+    datosAbsorbancia = ops.absorbancia(datosEspectrales);
     XYZ = ops.CIExyz(aux);
     LAB = ops.CIELAB(aux);
     datosAbsorcion = ops.absorcion(aux);
     datosEsparcimiento = ops.esparcimiento(aux);
     eritema = ops.eritema(aux);
 
-    numCurvas += 1;
     revisionBtns();
 }
 
@@ -568,7 +568,7 @@ void MainWindow::on_actionVer_absorbancia_triggered()
         QVector<double> aux(31);
 
         for(int i = 0; i < 31; ++i){
-            aux[i] = double(100.0 - datosEspectrales[i]);
+            aux[i] = double(datosAbsorbancia[i]);
         }
 
         abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");

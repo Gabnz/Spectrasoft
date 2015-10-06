@@ -152,6 +152,14 @@ public:
     SpectralOps();
 
     /*
+    **   Calcula los datos de absorbancia aparente, a partir de los datos espectrales de reflectancia difusa.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return QVector<float>  Valores de absorbancia aparente.
+    */
+    QVector<float> absorbancia(QVector<float> medicion);
+
+    /*
     **   Calcula los valores triestimulo CIE XYZ, dados los 31 datos espectrales de una muestra.
     **
     **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.

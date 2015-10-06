@@ -5,6 +5,17 @@ SpectralOps::SpectralOps()
 
 }
 
+QVector<float> SpectralOps::absorbancia(QVector<float> medicion)
+{
+    QVector<float> resultado;
+
+    for(int i = 0; i < 31; ++i){
+        resultado.push_back(100.0 - medicion[i]);
+    }
+
+    return resultado;
+}
+
 QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
 {
     QVector<float> resultado;
@@ -12,6 +23,7 @@ QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
 
     auxK = auxX = auxY = auxZ = 0.0;
 
+    //realiza las sumatorias indicadas de las formulas
     for(int i = 0; i < 31; ++i){
 
         auxK+= iluCIED65[i]*yCIE10[i];
@@ -20,8 +32,10 @@ QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
         auxY+= medicion[i]*iluCIED65[i]*zCIE10[i];
     }
 
+    //calcula la constante k
     k = 100.0/auxK;
 
+    //calcula los valores triestimulo XYZ
     X = k*auxX;
     Y = k*auxY;
     Z = k*auxZ;
@@ -39,6 +53,7 @@ QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
     QVector<float> XYZ = CIEXYZ(medicion);
     float x, y, z;
 
+    //calcula las coordenadas tricromaticas xyz
     x = XYZ[0]/(XYZ[0] + XYZ[1] + XYZ[2]);
     y = XYZ[1]/(XYZ[0] + XYZ[1] + XYZ[2]);
     z = XYZ[2]/(XYZ[0] + XYZ[1] + XYZ[2]);
@@ -53,13 +68,14 @@ QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
 QVector<float> SpectralOps::CIELAB(QVector<float> medicion)
 {
     QVector<float> resultado;
+    QVector<float> XYZ = CIEXYZ(medicion);
     float constante, aux, fXfYfZ[3], L, a, b;
 
+    //calcula la constante utilizada en la formula
     constante = 24.0/116.0;
     constante = pow(constante, 3);
 
-    QVector<float> XYZ = CIEXYZ(medicion);
-
+    //calcula las funciones X/Xn, Y/Yn, Z/Zn
     for(int i = 0; i < 3; ++i){
 
         aux = XYZ[i]/XnYnZn[i];
@@ -71,6 +87,7 @@ QVector<float> SpectralOps::CIELAB(QVector<float> medicion)
         }
     }
 
+    //calcula las coordenadas L*a*b*
     L = 116.0*fXfYfZ[1] - 16.0;
     a = 500.0*(fXfYfZ[0] - fXfYfZ[1]);
     b = 200.0*(fXfYfZ[1] - fXfYfZ[2]);
