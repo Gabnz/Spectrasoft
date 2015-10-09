@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     dlgmodificarusuario.cpp \
     dlgadministrarusuarios.cpp \
     dlgcambiarclave.cpp \
-    dlgcambiarrol.cpp
+    dlgcambiarrol.cpp \
+    polyfit.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -75,7 +76,8 @@ HEADERS  += mainwindow.h \
     dlgmodificarusuario.h \
     dlgadministrarusuarios.h \
     dlgcambiarclave.h \
-    dlgcambiarrol.h
+    dlgcambiarrol.h \
+    polyfit.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \

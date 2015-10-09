@@ -12,15 +12,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
-    <height>702</height>
+    <width>508</width>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Clasificación del fototipo de la piel</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="recursos.qrc">
     <normaloff>:/img/logo_icono_nuevo.ico</normaloff>:/img/logo_icono_nuevo.ico</iconset>
   </property>
   <property name="sizeGripEnabled">
@@ -32,6 +32,26 @@
   <layout class="QGridLayout" name="gridLayout_8">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_6">
+     <item row="2" column="0" colspan="3">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>476</width>
+         <height>13</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="0" column="1">
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
@@ -116,25 +136,15 @@
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="etqNumeroRecomendado">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="font">
               <font>
                <pointsize>20</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -169,7 +179,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap>:/img/fototipo_4.png</pixmap>
+              <pixmap resource="recursos.qrc">:/img/fototipo_4.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -208,26 +218,6 @@
        </item>
       </layout>
      </item>
-     <item row="1" column="1">
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>17</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="2" column="0" colspan="3">
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="1">
       <spacer name="verticalSpacer_3">
        <property name="orientation">
@@ -235,8 +225,8 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>20</width>
-         <height>17</height>
+         <width>476</width>
+         <height>13</height>
         </size>
        </property>
       </spacer>
@@ -312,20 +302,8 @@
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="etqNum1">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;I&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -357,20 +335,8 @@
            </item>
            <item row="0" column="5">
             <widget class="QLabel" name="etqNum2">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;II&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -402,20 +368,8 @@
            </item>
            <item row="0" column="9">
             <widget class="QLabel" name="etqNum3">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;III&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -453,7 +407,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_1.png</normaloff>:/img/fototipo_1.png</iconset>
              </property>
              <property name="iconSize">
@@ -504,7 +458,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_2.png</normaloff>:/img/fototipo_2.png</iconset>
              </property>
              <property name="iconSize">
@@ -552,7 +506,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_3.png</normaloff>:/img/fototipo_3.png</iconset>
              </property>
              <property name="iconSize">
@@ -575,58 +529,20 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
-             <height>17</height>
+             <width>472</width>
+             <height>13</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
-            <spacer name="horizontalSpacer_14">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>17</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="0" column="1">
             <widget class="QLabel" name="etqNum4">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;IV&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
-           </item>
-           <item row="0" column="2">
-            <spacer name="horizontalSpacer_9">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>17</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="0" column="4">
             <spacer name="horizontalSpacer_15">
@@ -643,20 +559,8 @@
            </item>
            <item row="0" column="5">
             <widget class="QLabel" name="etqNum5">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;V&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -686,27 +590,28 @@
              </property>
             </spacer>
            </item>
+           <item row="0" column="0">
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="0" column="9">
             <widget class="QLabel" name="etqNum6">
-             <property name="minimumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>21</width>
-               <height>31</height>
-              </size>
-             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;VI&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="10">
-            <spacer name="horizontalSpacer_17">
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_9">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -739,7 +644,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_4.png</normaloff>:/img/fototipo_4.png</iconset>
              </property>
              <property name="iconSize">
@@ -753,8 +658,34 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="10">
+            <spacer name="horizontalSpacer_17">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="1" column="3">
             <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>13</width>
+               <height>138</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="7">
+            <spacer name="horizontalSpacer_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -787,7 +718,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_5.png</normaloff>:/img/fototipo_5.png</iconset>
              </property>
              <property name="iconSize">
@@ -800,19 +731,6 @@
               <bool>true</bool>
              </property>
             </widget>
-           </item>
-           <item row="1" column="7">
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>13</width>
-               <height>138</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="1" column="8" colspan="3">
             <widget class="QPushButton" name="btnFototipo6">
@@ -835,7 +753,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="recursos.qrc">
                <normaloff>:/img/fototipo_6.png</normaloff>:/img/fototipo_6.png</iconset>
              </property>
              <property name="iconSize">
@@ -1026,6 +944,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -548,7 +548,7 @@ void MainWindow::on_actionVer_reflectancia_triggered()
             aux[i] = double(datosEspectrales[i]);
         }
 
-        ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)");
+        ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)", 100);
         ref->agregarCurva(aux);
         ref->show();
     }else{
@@ -571,7 +571,7 @@ void MainWindow::on_actionVer_absorbancia_triggered()
             aux[i] = double(datosAbsorbancia[i]);
         }
 
-        abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)");
+        abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)", 100);
         abs->agregarCurva(aux);
         abs->show();
     }else{
@@ -594,7 +594,7 @@ void MainWindow::on_actionVer_absorcion_triggered()
             aux[i] = double(datosAbsorcion[i]);
         }
 
-        absorcion = new dlgGrafica("Curva de absorción", "Longitud de onda (nm)", "Absorción (%)");
+        absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Absorción (%)", 200);
         absorcion->agregarCurva(aux);
         absorcion->show();
     }else{
@@ -617,7 +617,7 @@ void MainWindow::on_actionVer_esparcimiento_triggered()
             aux[i] = double(datosEsparcimiento[i]);
         }
 
-        esparcimiento = new dlgGrafica("Curva de esparcimiento", "Longitud de onda (nm)", "Esparcimiento (%)");
+        esparcimiento = new dlgGrafica("Coeficiente de esparcimiento", "Longitud de onda (nm)", "Esparcimiento (%)", 200);
         esparcimiento->agregarCurva(aux);
         esparcimiento->show();
     }else{
@@ -784,7 +784,32 @@ void MainWindow::on_actionExportar_muestra_triggered()
     ++fila;
 
     if(infoHistoria.contains("fototipo")){
-        xlsx.write("A" + QString().setNum(fila), "Fototipo: " + infoHistoria["fototipo"]);
+
+        int numFototipo = infoHistoria["fototipo"].toInt();
+        QString aux;
+
+        switch (numFototipo) {
+        case 1:
+            aux = "I";
+            break;
+        case 2:
+            aux = "II";
+            break;
+        case 3:
+            aux = "III";
+            break;
+        case 4:
+            aux = "IV";
+            break;
+        case 5:
+            aux = "V";
+            break;
+        case 6:
+            aux = "VI";
+            break;
+        }
+
+        xlsx.write("A" + QString().setNum(fila), "Fototipo: " + aux);
     }
 
     fila+=2;

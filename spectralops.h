@@ -4,6 +4,7 @@
 #include <QVector>
 #include <QDebug>
 #include <math.h>
+#include <polyfit.h>
 
 /*Distribucion de energia espectral relativa del iluminante estandar CIE D65*/
 const float iluCIED65[31] = {
@@ -183,6 +184,12 @@ public:
     */
     QVector<float> CIELAB(QVector<float> medicion);
 
+    /*
+    **  Calcula el coeficiente de absorcion, dados los 31 datos espectrales de una muestra.
+    **
+    **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
+    **  @return QVector<float>  Datos del coeficiente de absorcion.
+    */
     QVector<float> absorcion(QVector<float> medicion);
 
     QVector<float> esparcimiento(QVector<float> medicion);

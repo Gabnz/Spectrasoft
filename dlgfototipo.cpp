@@ -9,7 +9,31 @@ dlgFototipo::dlgFototipo(int fPredeterminado, int fototipoRecomendadoExt, QWidge
 
     fototipoRecomendado = fototipoRecomendadoExt;
     ui->etqFototipoRecomendado->setPixmap(QPixmap(":/img/fototipo_" + QString().setNum(fototipoRecomendado) + ".png"));
-    ui->etqNumeroRecomendado->setText(QString().setNum(fototipoRecomendado));
+
+    QString aux;
+
+    switch (fototipoRecomendado) {
+    case 1:
+        aux = "I";
+        break;
+    case 2:
+        aux = "II";
+        break;
+    case 3:
+        aux = "III";
+        break;
+    case 4:
+        aux = "IV";
+        break;
+    case 5:
+        aux = "V";
+        break;
+    case 6:
+        aux = "VI";
+        break;
+    }
+
+    ui->etqNumeroRecomendado->setText(aux);
 
     btnsFototipos.push_back(ui->btnFototipo1);
     btnsFototipos.push_back(ui->btnFototipo2);

@@ -1,14 +1,14 @@
 #include "dlggrafica.h"
 #include "ui_dlggrafica.h"
 
-dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, QWidget *parent) :
+dlgGrafica::dlgGrafica(QString tituloExt, QString etqX, QString etqY, int yMaxExt, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgGrafica)
 {
     ui->setupUi(this);
 
     n = 0;
-    yMax = 100;
+    yMax = yMaxExt;
 
     QCPPlotTitle *titulo = new QCPPlotTitle(ui->grafica);
 

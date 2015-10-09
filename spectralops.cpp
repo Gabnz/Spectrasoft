@@ -102,10 +102,51 @@ QVector<float> SpectralOps::CIELAB(QVector<float> medicion)
 QVector<float> SpectralOps::absorcion(QVector<float> medicion)
 {
     QVector<float> resultado;
+    float rango, aux, Z, k, a0;
+    int n, grado;
+    bool op = false; //el sistema de ecuaciones a resolver tiene solucion
 
-    for(int i = 0; i < 31; ++i){
-        resultado.push_back(31 - i);
+    //son 31 datos, y el grado del polinomio de ajuste es 8
+    n = 31; grado = 8;
+
+    double *x = new double[n];
+    double *y = new double[n];
+
+    //cargando los datos en x, y
+    for(int i = 0; i < n; ++i){
+        x[i] = i;
+        y[i] = medicion.at(i);
     }
+
+    double **matriz = new double*[grado + 1];
+
+    for (int i = 0; i < grado + 1; ++i)
+        matriz[i] = new double[grado + 2];
+
+    //realizando el ajuste polinomial y calculando los coeficientes
+    coeficientes(x, y, matriz, grado, n);
+    recorrido(matriz, grado + 1, op);
+
+    //a0 esta en la primera fila de la matriz resultante del ajuste
+    a0 = matriz[0][grado + 1];
+    Z = 0.2796; k = -7.174;
+    rango = 400;
+
+    //calculando el coeficiente de absorcion
+    for(int i = 0; i < n; ++i){
+        aux = Z*exp(k*a0)*6.6*pow(10, 11)*pow(rango, -3.3);
+        resultado.push_back(aux);
+        rango+=10;
+    }
+
+    //liberando la memoria dinamica asiganada
+    delete x;
+    delete y;
+
+    for(int i = 0; i < grado + 1; ++i)
+        delete matriz[i];
+
+    delete matriz;
 
     return resultado;
 }

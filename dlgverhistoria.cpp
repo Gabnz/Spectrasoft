@@ -25,7 +25,32 @@ dlgVerHistoria::dlgVerHistoria(QHash<QString, QString> infoHistoria, QWidget *pa
     }
 
     if(infoHistoria.contains("fototipo")){
-        ui->etqNumFototipo->setText(infoHistoria["fototipo"]);
+
+        int numFototipo = infoHistoria["fototipo"].toInt();
+        QString aux;
+
+        switch (numFototipo) {
+        case 1:
+            aux = "I";
+            break;
+        case 2:
+            aux = "II";
+            break;
+        case 3:
+            aux = "III";
+            break;
+        case 4:
+            aux = "IV";
+            break;
+        case 5:
+            aux = "V";
+            break;
+        case 6:
+            aux = "VI";
+            break;
+        }
+
+        ui->etqNumFototipo->setText(aux);
         ui->etqFototipo->setPixmap(QPixmap::fromImage(QImage(":img/fototipo_" + infoHistoria["fototipo"] + ".png")));
     }
 

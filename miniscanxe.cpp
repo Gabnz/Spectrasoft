@@ -23,8 +23,6 @@ bool MiniScanXE::conectar()
         conectado = miniscan.dynamicCall("abrirPuerto(int)", puertoCOM).toBool();
     }
 
-    qDebug() << puertoCOM;
-
     if(conectado){
         miniscan.dynamicCall("BeepDoble()");
     }
