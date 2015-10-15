@@ -644,6 +644,7 @@ void MainWindow::on_actionDatos_adicionales_triggered()
 void MainWindow::on_actionBorrar_resultados_triggered()
 {
     borrarResultados();
+    QMessageBox::information(this, "Resultados borrados", "Los resultados se han borrado correctamente.");
     revisionBtns();
 }
 

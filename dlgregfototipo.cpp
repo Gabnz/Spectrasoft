@@ -81,7 +81,30 @@ void dlgRegFototipo::on_resetearFototipo()
 void dlgRegFototipo::on_fototipo(int numero)
 {
     fototipo = numero;
-    ui->etqNumeroElegido->setText(QString().setNum(numero));
+    QString aux;
+
+    switch (fototipo) {
+    case 1:
+        aux = "I";
+        break;
+    case 2:
+        aux = "II";
+        break;
+    case 3:
+        aux = "III";
+        break;
+    case 4:
+        aux = "IV";
+        break;
+    case 5:
+        aux = "V";
+        break;
+    case 6:
+        aux = "VI";
+        break;
+    }
+
+    ui->etqNumeroElegido->setText(aux);
     ui->etqFototipoElegido->setPixmap(QPixmap::fromImage(QImage(":/img/fototipo_" + QString().setNum(numero) + ".png")));
 
     if(camposListos()){
