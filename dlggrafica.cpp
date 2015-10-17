@@ -67,17 +67,6 @@ void dlgGrafica::agregarCurva(QVector<double> y)
     ++n;
 }
 
-bool dlgGrafica::numCurvas()
-{
-    return n;
-}
-
-void dlgGrafica::quitarCurva()
-{
-    ui->grafica->removeGraph(n - 1);
-    --n;
-}
-
 void dlgGrafica::ajustarGrafica(QString axis, const QCPRange &newRange, double lower, double upper)
 {
     QCPRange boundedRange = newRange;

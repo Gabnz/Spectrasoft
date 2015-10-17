@@ -15,8 +15,6 @@ class dlgGrafica : public QDialog
 public:
     explicit dlgGrafica(QString tituloExt, QString etqX, QString etqY, int yMaxExt, QWidget *parent = 0);
     void agregarCurva(QVector<double> y);
-    bool numCurvas();
-    void quitarCurva();
     void ajustarGrafica(QString axis, const QCPRange &newRange, double lower,double upper);
     ~dlgGrafica();
 
