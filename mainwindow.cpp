@@ -473,8 +473,8 @@ void MainWindow::on_actionRealizar_medicion_triggered()
     }else{
         medicion.clear();
 
-        QMessageBox::critical(this, "Error al medirM la muestra", "La medición no se pudo realizar.");
-
+        QMessageBox::critical(this, "Error al medir la muestra", "La medición no se pudo realizar.");
+        //medida de piel de Gabriel Nunez
         medicion.push_back(float(17.2101));
         medicion.push_back(float(15.2329));
         medicion.push_back(float(15.13));
@@ -506,6 +506,39 @@ void MainWindow::on_actionRealizar_medicion_triggered()
         medicion.push_back(float(46.4996));
         medicion.push_back(float(47.3194));
         medicion.push_back(float(47.8099));
+
+        //medida de piel oscura
+//        medicion.push_back(float(3.95));
+//        medicion.push_back(float(3.78));
+//        medicion.push_back(float(6.24));
+//        medicion.push_back(float(5.68));
+//        medicion.push_back(float(6.34));
+//        medicion.push_back(float(6.66));
+//        medicion.push_back(float(7.38));
+//        medicion.push_back(float(7.62));
+//        medicion.push_back(float(8.19));
+//        medicion.push_back(float(8.84));
+//        medicion.push_back(float(8.86));
+//        medicion.push_back(float(9.62));
+//        medicion.push_back(float(9.88));
+//        medicion.push_back(float(9.78));
+//        medicion.push_back(float(10.02));
+//        medicion.push_back(float(10.23));
+//        medicion.push_back(float(10.73));
+//        medicion.push_back(float(11.29));
+//        medicion.push_back(float(12.14));
+//        medicion.push_back(float(13.83));
+//        medicion.push_back(float(16.54));
+//        medicion.push_back(float(18.89));
+//        medicion.push_back(float(20.28));
+//        medicion.push_back(float(22.06));
+//        medicion.push_back(float(22.81));
+//        medicion.push_back(float(24.6));
+//        medicion.push_back(float(25.2));
+//        medicion.push_back(float(26.36));
+//        medicion.push_back(float(27.9));
+//        medicion.push_back(float(29.17));
+//        medicion.push_back(float(30.11));
     }
 
     QModelIndex indice;
@@ -589,12 +622,17 @@ void MainWindow::on_actionVer_absorcion_triggered()
     if(absorcion == NULL){
 
         QVector<double> aux(31);
+        double yMax = 0.0;
 
         for(int i = 0; i < 31; ++i){
             aux[i] = double(datosAbsorcion[i]);
+
+            if(yMax < aux[i]){
+                yMax = aux[i];
+            }
         }
 
-        absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Absorción (%)", 200);
+        absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Valor de absorción", yMax + 50);
         absorcion->agregarCurva(aux);
         absorcion->show();
     }else{

@@ -21,7 +21,7 @@ QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
     QVector<float> resultado;
     float auxK, auxX, auxY, auxZ, k, X, Y, Z;
 
-    auxK = auxX = auxY = auxZ = 0.0;
+    k = X = Y = Z = auxK = auxX = auxY = auxZ = 0.0;
 
     //realiza las sumatorias indicadas de las formulas
     for(int i = 0; i < 31; ++i){
@@ -29,7 +29,7 @@ QVector<float> SpectralOps::CIEXYZ(QVector<float> medicion)
         auxK+= iluCIED65[i]*yCIE10[i];
         auxX+= medicion[i]*iluCIED65[i]*xCIE10[i];
         auxY+= medicion[i]*iluCIED65[i]*yCIE10[i];
-        auxY+= medicion[i]*iluCIED65[i]*zCIE10[i];
+        auxZ+= medicion[i]*iluCIED65[i]*zCIE10[i];
     }
 
     //calcula la constante k
@@ -52,6 +52,8 @@ QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
     QVector<float> resultado;
     QVector<float> XYZ = CIEXYZ(medicion);
     float x, y, z;
+
+    x = y = z = 0.0;
 
     //calcula las coordenadas tricromaticas xyz
     x = XYZ[0]/(XYZ[0] + XYZ[1] + XYZ[2]);
