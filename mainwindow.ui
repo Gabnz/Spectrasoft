@@ -280,7 +280,6 @@
     <addaction name="actionVer_reflectancia"/>
     <addaction name="actionVer_absorbancia"/>
     <addaction name="actionVer_absorcion"/>
-    <addaction name="actionVer_esparcimiento"/>
     <addaction name="actionDatos_adicionales"/>
     <addaction name="separator"/>
     <addaction name="actionBorrar_resultados"/>
@@ -441,15 +440,6 @@
     <string>Registrar usuario</string>
    </property>
   </action>
-  <action name="actionEliminar_usuario">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/borrar_usuario.png</normaloff>:/img/borrar_usuario.png</iconset>
-   </property>
-   <property name="text">
-    <string>Eliminar usuario</string>
-   </property>
-  </action>
   <action name="actionEliminar_historia">
    <property name="icon">
     <iconset resource="recursos.qrc">
@@ -592,15 +582,6 @@
    </property>
    <property name="text">
     <string>Ver absorción</string>
-   </property>
-  </action>
-  <action name="actionVer_esparcimiento">
-   <property name="icon">
-    <iconset resource="recursos.qrc">
-     <normaloff>:/img/muestra_esparcimiento.png</normaloff>:/img/muestra_esparcimiento.png</iconset>
-   </property>
-   <property name="text">
-    <string>Ver esparcimiento</string>
    </property>
   </action>
  </widget>

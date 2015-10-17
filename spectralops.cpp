@@ -153,17 +153,6 @@ QVector<float> SpectralOps::absorcion(QVector<float> medicion)
     return resultado;
 }
 
-QVector<float> SpectralOps::esparcimiento(QVector<float> medicion)
-{
-    QVector<float> resultado;
-
-    for(int i = 0; i < 31; ++i){
-        resultado.push_back(i + 1);
-    }
-
-    return resultado;
-}
-
 float SpectralOps::eritema(QVector<float> medicion)
 {
     /*promRojo: contiene el promedio ponderado del rango de longitud de onda que produce

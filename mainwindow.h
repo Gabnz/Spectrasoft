@@ -124,7 +124,7 @@ private slots:
 
     void on_actionBuscar_muestra_triggered();
 
-    void on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[3][31], float infoCoordenadas[2][3], float infoEritema);
+    void on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[2][31], float infoCoordenadas[2][3], float infoEritema);
 
     void on_actionExportar_muestra_triggered();
 
@@ -136,16 +136,14 @@ private slots:
 
     void on_actionVer_absorcion_triggered();
 
-    void on_actionVer_esparcimiento_triggered();
-
 private:
     Ui::MainWindow *ui;
     MiniScanXE miniscan;
     SpectralOps ops;
     QSqlDatabase db;
-    dlgGrafica *ref, *abs, *absorcion, *esparcimiento;
+    dlgGrafica *ref, *abs, *absorcion;
     dlgDatosAdicionales *dts;
-    QVector<float> datosEspectrales, datosAbsorbancia, XYZ, LAB, datosAbsorcion, datosEsparcimiento;
+    QVector<float> datosEspectrales, datosAbsorbancia, XYZ, LAB, datosAbsorcion;
     float eritema;
     QStandardItemModel *modeloDatos;
     bool conectado, bdConectada;

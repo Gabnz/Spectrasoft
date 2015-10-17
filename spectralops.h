@@ -192,8 +192,6 @@ public:
     */
     QVector<float> absorcion(QVector<float> medicion);
 
-    QVector<float> esparcimiento(QVector<float> medicion);
-
     /*
     **  Calcula el indice de eritema asociado a los 31 datos espectrales de una muestra.
     **

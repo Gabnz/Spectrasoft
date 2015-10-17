@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     conectado = bdConectada = false;
-    ref = abs = absorcion = esparcimiento = NULL;
+    ref = abs = absorcion = NULL;
     dts = NULL;
     infoUsuario.clear();
     infoHistoria.clear();
@@ -61,9 +61,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(db.isOpen()){
+        db.close();
+    }
+
+    if(conectado){
+        //miniscan.desconectar();
+    }
+
+    borrarResultados();
+    event->accept();
+}
+
 void MainWindow::revisionBtns()
 {
-    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRef, verAbs, verAbsorcion, verEsparcimiento, datosA, masOpcionesM, modificarM, eliminarM, cerrarM,
+    bool estandarizar, medirM, borrarResultadosM, registrarM, buscarM, verM, exportarM, verRef, verAbs, verAbsorcion, datosA, masOpcionesM, modificarM, eliminarM, cerrarM,
     sesionU, verU, modificarU, cambiarC, masOpcionesU, registrarU, administrarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
@@ -79,14 +93,14 @@ void MainWindow::revisionBtns()
     }
 
     if(!datosEspectrales.isEmpty()){
-        verRef = verAbs = verAbsorcion = verEsparcimiento = datosA = true;
+        verRef = verAbs = verAbsorcion = datosA = true;
 
         if(infoMuestra.isEmpty())
             borrarResultadosM = true;
         else
             borrarResultadosM = false;
     }else{
-        verRef = verAbs = verAbsorcion = verEsparcimiento = datosA = borrarResultadosM = false;
+        verRef = verAbs = verAbsorcion = datosA = borrarResultadosM = false;
     }
 
     if(bdConectada){
@@ -164,7 +178,6 @@ void MainWindow::revisionBtns()
     ui->actionVer_reflectancia->setEnabled(verRef);
     ui->actionVer_absorbancia->setEnabled(verAbs);
     ui->actionVer_absorcion->setEnabled(verAbsorcion);
-    ui->actionVer_esparcimiento->setEnabled(verEsparcimiento);
     ui->actionDatos_adicionales->setEnabled(datosA);
 
     ui->actionIniciar_sesion->setEnabled(sesionU);
@@ -203,7 +216,6 @@ void MainWindow::borrarResultados()
     XYZ.clear();
     LAB.clear();
     datosAbsorcion.clear();
-    datosEsparcimiento.clear();
     eritema = 0.0;
 
     QModelIndex indice;
@@ -226,11 +238,6 @@ void MainWindow::borrarResultados()
     if(absorcion != NULL){
         delete absorcion;
         absorcion = NULL;
-    }
-
-    if(esparcimiento != NULL){
-        delete esparcimiento;
-        esparcimiento = NULL;
     }
 
     if(dts != NULL){
@@ -560,7 +567,6 @@ void MainWindow::on_actionRealizar_medicion_triggered()
     XYZ = ops.CIExyz(aux);
     LAB = ops.CIELAB(aux);
     datosAbsorcion = ops.absorcion(aux);
-    datosEsparcimiento = ops.esparcimiento(aux);
     eritema = ops.eritema(aux);
 
     revisionBtns();
@@ -640,29 +646,6 @@ void MainWindow::on_actionVer_absorcion_triggered()
     }
 }
 
-void MainWindow::on_actionVer_esparcimiento_triggered()
-{
-    if(esparcimiento != NULL && !esparcimiento->isMinimized() && !esparcimiento->isActiveWindow()){
-        delete esparcimiento;
-        esparcimiento = NULL;
-    }
-
-    if(esparcimiento == NULL){
-
-        QVector<double> aux(31);
-
-        for(int i = 0; i < 31; ++i){
-            aux[i] = double(datosEsparcimiento[i]);
-        }
-
-        esparcimiento = new dlgGrafica("Coeficiente de esparcimiento", "Longitud de onda (nm)", "Esparcimiento (%)", 200);
-        esparcimiento->agregarCurva(aux);
-        esparcimiento->show();
-    }else{
-        esparcimiento->showMaximized();
-    }
-}
-
 void MainWindow::on_actionDatos_adicionales_triggered()
 {
     if(dts != NULL && !dts->isMinimized() && !dts->isActiveWindow()){
@@ -697,12 +680,12 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
     if(tipo == "lesion"){
-        dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento, eritema);
+        dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, eritema);
 
         connect(&regL, &dlgRegLesion::lesion_registrada, this, &MainWindow::on_muestraRegistrada);
         regL.exec();
     }else{
-        dlgRegFototipo regF(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, datosEsparcimiento, eritema);
+        dlgRegFototipo regF(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, eritema);
 
         connect(&regF, &dlgRegFototipo::fototipo_registrado, this, &MainWindow::on_muestraRegistrada);
         connect(&regF, &dlgRegFototipo::actualizar_fototipo, this, &MainWindow::on_actualizarFototipo);
@@ -775,7 +758,7 @@ void MainWindow::on_actionBuscar_muestra_triggered()
     buscarM.exec();
 }
 
-void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[3][31], float infoCoordenadas[2][3], float infoEritema)
+void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[2][31], float infoCoordenadas[2][3], float infoEritema)
 {
     borrarResultados();
 
@@ -785,7 +768,6 @@ void MainWindow::on_muestraAbierta(QHash<QString, QString> infoM, float infoDato
     for(int i = 0; i < 31; ++i){
         datosEspectrales.push_back(infoDatos[0][i]);
         datosAbsorcion.push_back(infoDatos[1][i]);
-        datosEsparcimiento.push_back(infoDatos[2][i]);
         indice = modeloDatos->index(0, i, QModelIndex());
         modeloDatos->setData(indice, infoDatos[0][i]);
     }
@@ -939,52 +921,10 @@ void MainWindow::on_actionExportar_muestra_triggered()
         letra+=1;
     }
     fila+=3;
-    xlsx.write("A" + QString().setNum(fila), "Datos de esparcimiento de la muestra:");
-    fila+=2;
-
-    rango = 400;
-    auxS.clear();
-    letra = 'A';
-    bandera = false;
-
-    for(int i = 0; i < 31; ++i){
-
-        if(!bandera){
-            auxS = QString(letra);
-        }else{
-            auxS = "A" + QString(letra);
-        }
-
-        xlsx.write(auxS + QString().setNum(fila), rango);
-        xlsx.write(auxS + QString().setNum(fila + 1), datosEsparcimiento.at(i));
-
-        if(letra == 'Z'){
-            letra = 'A';
-            letra-=1;
-            bandera = true;
-        }
-        rango+=10;
-        letra+=1;
-    }
-    fila+=3;
     xlsx.write("A" + QString().setNum(fila), "Índice de eritema:");
     ++fila;
     xlsx.write("A" + QString().setNum(fila), eritema);
 
     xlsx.saveAs(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "muestra-" + infoMuestra["id_muestra"] + "-fecha-" + QDate::currentDate().toString("dd-MM-yyyy") + ".xlsx");
     QMessageBox::information(this, "Muestra exportada", "Se ha exportado la muestra correctamente a su escritorio.");
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    if(db.isOpen()){
-        db.close();
-    }
-
-    if(conectado){
-        //miniscan.desconectar();
-    }
-
-    borrarResultados();
-    event->accept();
 }

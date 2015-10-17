@@ -1,7 +1,7 @@
 #include "dlgreglesion.h"
 #include "ui_dlgreglesion.h"
 
-dlgRegLesion::dlgRegLesion(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, QVector<float> absorcionExt, QVector<float> esparcimientoExt, float eritemaExt, QWidget *parent) :
+dlgRegLesion::dlgRegLesion(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, QVector<float> absorcionExt, float eritemaExt, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgRegLesion)
 {
@@ -15,7 +15,6 @@ dlgRegLesion::dlgRegLesion(QString claveUsuario, QString usuario, QString histor
     XYZ = XYZExt;
     LAB = LABExt;
     datosAbsorcion = absorcionExt;
-    datosEsparcimiento = esparcimientoExt;
     eritema = eritemaExt;
     ui->btnRegistrar->setEnabled(false);
 
@@ -155,51 +154,12 @@ void dlgRegLesion::on_claveIntroducida(bool correcta)
                 query.bindValue(":nm_" + QString().setNum(rango), datosEspectrales[i]);
                 rango+=10;
             }
-
             query.exec();
             query.clear();
-            consulta = "INSERT INTO spectradb.datos_esparcimiento(datos_espectrales, ";
-            rango = 400;
 
-            for(int i = 0; i < 31; ++i){
-
-                if(i>0){
-                    consulta+=", ";
-                }
-
-                consulta+= "nm_" + QString().setNum(rango);
-                rango+=10;
-            }
-
-            consulta+= ") VALUES(:datos_espectrales, ";
-            rango = 400;
-
-            for(int i = 0; i < 31; ++i){
-
-                if(i>0){
-                    consulta+=", ";
-                }
-
-                consulta+= ":nm_" + QString().setNum(rango);
-                rango+=10;
-            }
-
-            consulta+= ")";
-            query.prepare(consulta);
-            rango = 400;
-
-            query.bindValue(":datos_espectrales", id_datos_espectrales);
-
-            for(int i = 0; i < 31; ++i){
-                query.bindValue(":nm_" + QString().setNum(rango), datosEspectrales[i]);
-                rango+=10;
-            }
-
-            query.exec();
-            query.clear();
             consulta = "INSERT INTO spectradb.datos_adicionales(datos_espectrales, cie_x, cie_y, cie_z, cie_l, cie_a, cie_b, "
-                       "coeficiente_absorcion, coeficiente_esparcimiento, indice_eritema) VALUES(:datos_espectrales, :X, :Y, :Z, "
-                       ":L, :A, :B, :absorcion, :esparcimiento, :eritema)";
+                       "indice_eritema) VALUES(:datos_espectrales, :X, :Y, :Z, "
+                       ":L, :A, :B, :eritema)";
 
             query.prepare(consulta);
             query.bindValue(":datos_espectrales", id_datos_espectrales);
@@ -211,7 +171,11 @@ void dlgRegLesion::on_claveIntroducida(bool correcta)
             query.bindValue(":B", LAB[2]);
             query.bindValue(":eritema", eritema);
 
-            query.exec();
+            if(!query.exec()){
+                qDebug() << "Problema al registrar lesion";
+                qDebug() << query.lastError().number();
+            }
+
             query.clear();
             infoMuestra["tipo_muestra"] = "lesion";
             infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
@@ -255,6 +219,7 @@ void dlgRegLesion::on_claveIntroducida(bool correcta)
             }
 
             if(query.exec()){
+                infoMuestra["id_muestra"] = query.lastInsertId().toString();
                 QMessageBox::information(this, "Muestra registrada", "Se ha registrado la muestra correctamente.");
                 close();
                 emit lesion_registrada(infoMuestra);

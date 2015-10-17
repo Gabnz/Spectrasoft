@@ -184,7 +184,7 @@ void dlgBuscarMuestra::on_btnVer_clicked()
 void dlgBuscarMuestra::on_btnAbrir_clicked()
 {
     QSqlQuery query;
-    float infoDatos[3][31], infoCoordenadas[2][3], infoEritema;
+    float infoDatos[2][31], infoCoordenadas[2][3], infoEritema;
     int i, indice, rango;
 
     query.exec("SELECT * FROM spectradb.datos_espectrales WHERE id_datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
@@ -207,18 +207,6 @@ void dlgBuscarMuestra::on_btnAbrir_clicked()
     for(i = 0; i < 31; ++i){
         indice = query.record().indexOf("nm_" + QString().setNum(rango));
         infoDatos[1][i] = query.value(indice).toFloat();
-        rango+=10;
-    }
-
-    query.clear();
-    query.exec("SELECT * FROM spectradb.datos_esparcimiento WHERE datos_espectrales = '" + infoMuestra["datos_espectrales"] + "'");
-    query.next();
-
-    rango = 400;
-
-    for(i = 0; i < 31; ++i){
-        indice = query.record().indexOf("nm_" + QString().setNum(rango));
-        infoDatos[2][i] = query.value(indice).toFloat();
         rango+=10;
     }
 

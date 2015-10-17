@@ -1,7 +1,7 @@
 #include "dlgregfototipo.h"
 #include "ui_dlgregfototipo.h"
 
-dlgRegFototipo::dlgRegFototipo(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, QVector<float> absorcionExt, QVector<float> esparcimientoExt, float eritemaExt, QWidget *parent) :
+dlgRegFototipo::dlgRegFototipo(QString claveUsuario, QString usuario, QString historia, QVector<float> datosEspectralesExt, QVector<float> XYZExt, QVector<float> LABExt, QVector<float> absorcionExt, float eritemaExt, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgRegFototipo)
 {
@@ -15,7 +15,6 @@ dlgRegFototipo::dlgRegFototipo(QString claveUsuario, QString usuario, QString hi
     XYZ = XYZExt;
     LAB = LABExt;
     datosAbsorcion = absorcionExt;
-    datosEsparcimiento = esparcimientoExt;
     eritema = eritemaExt;
     fototipo = 0;
     ui->lineaNombre->setText("FOTOTIPO");
@@ -212,49 +211,9 @@ void dlgRegFototipo::on_claveIntroducida(bool correcta)
                     query.bindValue(":nm_" + QString().setNum(rango), datosAbsorcion[i]);
                     rango+=10;
                 }
-                /////////////
                 query.exec();
                 query.clear();
 
-                consulta = "INSERT INTO spectradb.datos_esparcimiento(datos_espectrales, ";
-                rango = 400;
-
-                for(int i = 0; i < 31; ++i){
-
-                    if(i > 0){
-                        consulta+=", ";
-                    }
-
-                    consulta+= "nm_" + QString().setNum(rango);
-                    rango+=10;
-                }
-
-                consulta+= ") VALUES(:datos_espectrales, ";
-                rango = 400;
-
-                for(int i = 0; i < 31; ++i){
-
-                    if(i > 0){
-                        consulta+=", ";
-                    }
-
-                    consulta+= ":nm_" + QString().setNum(rango);
-                    rango+=10;
-                }
-
-                consulta+= ")";
-                query.prepare(consulta);
-                rango = 400;
-
-                query.bindValue(":datos_espectrales", id_datos_espectrales);
-
-                for(int i = 0; i < 31; ++i){
-                    query.bindValue(":nm_" + QString().setNum(rango), datosEsparcimiento[i]);
-                    rango+=10;
-                }
-                /////////////
-                query.exec();
-                query.clear();
                 consulta = "INSERT INTO spectradb.datos_adicionales(datos_espectrales, cie_x, cie_y, cie_z, cie_l, cie_a, cie_b, "
                            "indice_eritema) VALUES(:datos_espectrales, :X, :Y, :Z, "
                            ":L, :A, :B, :eritema)";
@@ -268,8 +227,12 @@ void dlgRegFototipo::on_claveIntroducida(bool correcta)
                 query.bindValue(":A", LAB[1]);
                 query.bindValue(":B", LAB[2]);
                 query.bindValue(":eritema", eritema);
-                ////////////////
-                query.exec();
+
+                if(!query.exec()){
+                    qDebug() << "Problema al registrar fototipo";
+                    qDebug() << query.lastError().number();
+                }
+
                 query.clear();
                 infoMuestra["tipo_muestra"] = "fototipo";
                 infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
@@ -313,7 +276,9 @@ void dlgRegFototipo::on_claveIntroducida(bool correcta)
                 }
 
                 query.exec();
+                infoMuestra["id_muestra"] = query.lastInsertId().toString();
                 query.clear();
+
                 consulta = "UPDATE spectradb.historia SET fototipo = '" + QString().setNum(fototipo) + "' WHERE id_historia = '" + id_historia + "'";
                 query.prepare(consulta);
                 query.exec();
