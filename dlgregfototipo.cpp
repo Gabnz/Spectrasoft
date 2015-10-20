@@ -59,7 +59,7 @@ void dlgRegFototipo::on_btnFototipo_clicked()
 {
     SpectralOps ops;
 
-    int recomendacion = ops.fototipo();
+    int recomendacion = ops.fototipo(LAB);
 
     dlgFototipo f(fototipo, recomendacion);
 

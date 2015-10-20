@@ -53,6 +53,7 @@
         <file>img/usuario_administrar.png</file>
         <file>img/borrar_resultados.png</file>
         <file>img/muestra_absorcion.png</file>
-        <file>docs/manual.pdf</file>
+        <file>clasificador/DatosPrueba.xlsx</file>
+        <file>clasificador/out.model</file>
     </qresource>
 </RCC>

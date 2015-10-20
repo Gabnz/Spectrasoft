@@ -169,11 +169,15 @@ float SpectralOps::eritema(QVector<float> medicion)
     return resultado;
 }
 
-int SpectralOps::fototipo()
+int SpectralOps::fototipo(QVector<float> LAB)
 {
-    int resultado = rand() % 6 + 1;
+    msv aux;
 
-    return resultado;
+    aux.ExtraccionDatos();
+    aux.Entrada(LAB);
+    aux.UsuarioMedico();
+
+    return aux.UsuarioMedico();
 }
 
 SpectralOps::~SpectralOps()

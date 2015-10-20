@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <math.h>
 #include <polyfit.h>
+#include <clasificador/msv.h>
 
 /*Distribución de energía espectral relativa del iluminante estándar CIE D65*/
 const float iluCIED65[31] = {
@@ -206,7 +207,7 @@ public:
     **
     **  @return int             Fototipo cutáneo.
     */
-    int fototipo();
+    int fototipo(QVector<float> LAB);
 
     ~SpectralOps();
 

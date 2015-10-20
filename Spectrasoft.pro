@@ -45,7 +45,9 @@ SOURCES += main.cpp\
     dlgadministrarusuarios.cpp \
     dlgcambiarclave.cpp \
     dlgcambiarrol.cpp \
-    polyfit.cpp
+    polyfit.cpp \
+    clasificador/msv.cpp \
+    clasificador/svm.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -77,7 +79,9 @@ HEADERS  += mainwindow.h \
     dlgadministrarusuarios.h \
     dlgcambiarclave.h \
     dlgcambiarrol.h \
-    polyfit.h
+    polyfit.h \
+    clasificador/msv.h \
+    clasificador/svm.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \

@@ -513,7 +513,7 @@ void MainWindow::on_actionRealizar_medicion_triggered()
         medicion.push_back(float(47.3194));
         medicion.push_back(float(47.8099));
 
-        //medida de piel oscura
+//        //medida de piel oscura
 //        medicion.push_back(float(3.95));
 //        medicion.push_back(float(3.78));
 //        medicion.push_back(float(6.24));
