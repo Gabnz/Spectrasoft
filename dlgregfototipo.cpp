@@ -228,12 +228,9 @@ void dlgRegFototipo::on_claveIntroducida(bool correcta)
                 query.bindValue(":B", LAB[2]);
                 query.bindValue(":eritema", eritema);
 
-                if(!query.exec()){
-                    qDebug() << "Problema al registrar fototipo";
-                    qDebug() << query.lastError().number();
-                }
-
+                query.exec();
                 query.clear();
+
                 infoMuestra["tipo_muestra"] = "fototipo";
                 infoMuestra["fecha_muestra"] = QDate::currentDate().toString("yyyy-MM-dd");
                 infoMuestra["nombre_muestra"] = ui->lineaNombre->text();

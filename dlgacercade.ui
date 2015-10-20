@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>397</width>
+    <width>667</width>
     <height>185</height>
    </rect>
   </property>
@@ -100,7 +100,7 @@
            <item>
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Software para el manejo del MiniScan XE Plus.&lt;/p&gt;&lt;p&gt;Desarrollado por Gabriel Núñez.&lt;/p&gt;&lt;p&gt;Contacto: gabriel.nzn@gmail.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Software para el  MiniScan XE Plus, usado en el diagnóstico de patologías dermatológicas en pacientes.&lt;/p&gt;&lt;p&gt;Desarrollado por Gabriel Núñez.&lt;/p&gt;&lt;p&gt;Contacto: gabriel.nzn@gmail.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>

@@ -53,5 +53,6 @@
         <file>img/usuario_administrar.png</file>
         <file>img/borrar_resultados.png</file>
         <file>img/muestra_absorcion.png</file>
+        <file>docs/manual.pdf</file>
     </qresource>
 </RCC>

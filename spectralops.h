@@ -6,7 +6,7 @@
 #include <math.h>
 #include <polyfit.h>
 
-/*Distribucion de energia espectral relativa del iluminante estandar CIE D65*/
+/*Distribución de energía espectral relativa del iluminante estándar CIE D65*/
 const float iluCIED65[31] = {
 /*400nm*/82.7549,
 /*410nm*/91.4860,
@@ -40,7 +40,7 @@ const float iluCIED65[31] = {
 /*690nm*/69.7213,
 /*700nm*/71.6091};
 
-/*Funciones de correspondencia del color, dado el observador estandar CIE de 10 grados*/
+/*Funciones de correspondencia del color, dado el observador estándar CIE de 10 grados*/
 const float xCIE10[31] = {
 /*400nm*/0.019110,
 /*410nm*/0.084736,
@@ -140,7 +140,7 @@ const float zCIE10[31] = {
 /*690nm*/0.000000,
 /*700nm*/0.000000};
 
-/*Valores triestimulo del iluminante estandar CIE D65, tomando en cuenta el observador estandar CIE de 10 grados*/
+/*Valores triestímulo del iluminante estándar CIE D65, tomando en cuenta el observador estándar CIE de 10 grados*/
 const float XnYnZn[3] = {
 /*Xn*/94.81,
 /*Yn*/100.00,
@@ -161,10 +161,10 @@ public:
     QVector<float> absorbancia(QVector<float> medicion);
 
     /*
-    **   Calcula los valores triestimulo CIE XYZ, dados los 31 datos espectrales de una muestra.
+    **   Calcula los valores triestímulo CIE XYZ, dados los 31 datos espectrales de una muestra.
     **
     **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
-    **  @return QVector<float>  Valores triestimulo CIE XYZ.
+    **  @return QVector<float>  Valores triestímulo CIE XYZ.
     */
     QVector<float> CIEXYZ(QVector<float> medicion);
 
@@ -185,26 +185,26 @@ public:
     QVector<float> CIELAB(QVector<float> medicion);
 
     /*
-    **  Calcula el coeficiente de absorcion, dados los 31 datos espectrales de una muestra.
+    **  Calcula el coeficiente de absorción, dados los 31 datos espectrales de una muestra.
     **
     **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
-    **  @return QVector<float>  Datos del coeficiente de absorcion.
+    **  @return QVector<float>  Datos del coeficiente de absorción.
     */
     QVector<float> absorcion(QVector<float> medicion);
 
     /*
-    **  Calcula el indice de eritema asociado a los 31 datos espectrales de una muestra.
+    **  Calcula el índice de eritema asociado a los 31 datos espectrales de una muestra.
     **
     **  @param medicion         Vector que contiene los 31 datos espectrales de la muestra.
-    **  @return float           Indice de eritema.
+    **  @return float           Índice de eritema.
     */
     float eritema(QVector<float> medicion);
 
     /*
-    **  Determina el fototipo de la piel de un paciente segun la escala Fitz Patrick, empleando
-    **  el uso de un algoritmo en vias de desarrollo.
+    **  Determina el fototipo de la piel de un paciente según la escala Fitz Patrick, empleando
+    **  el uso de un algoritmo clasificación.
     **
-    **  @return int             Fototipo cutaneo.
+    **  @return int             Fototipo cutáneo.
     */
     int fototipo();
 

@@ -51,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         QMessageBox::critical(this, "Error de conexión", "No se pudo establecer una conexión con la base de datos, muchas operaciones no estarán disponibles.");
     }
 
-    //
     this->setFixedSize(this->size());
     revisionBtns();
 }
@@ -256,7 +255,7 @@ void MainWindow::on_actionConectar_triggered()
         if(conectado){
             QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
         }else{
-            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar.");
+            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar, verifique el cable de comunicaci\'{o}n.");
         }
         ui->actionConectar->setIcon(QIcon(":img/off.png"));
     }else{
@@ -267,7 +266,7 @@ void MainWindow::on_actionConectar_triggered()
         if(!conectado){
             QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
         }else{
-            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar.");
+            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar, verifique el cable de comunicaci\'{o}n.");
         }
          ui->actionConectar->setIcon(QIcon(":img/on.png"));
     }
@@ -305,7 +304,7 @@ void MainWindow::on_actionEstandarizar_triggered()
     if(negroListo && blancoListo){
         QMessageBox::information(this, "Estandarizado", "El MiniScan se ha estandarizado correctamente.");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar", "No se pudo estandarizar el MiniScan.");
+        QMessageBox::critical(this, "Error al estandarizar", "El MiniScan no se pudo estandarizar, verifique el cable de comunicaci\'{o}n.");
     }
 
     revisionBtns();

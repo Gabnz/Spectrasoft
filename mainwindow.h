@@ -43,19 +43,48 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+
+    /*
+     * Habilita o deshabilita los botones y acciones disponibles en la interfaz, dependiendo del caso.
+     */
     void revisionBtns();
+
+    /*
+     * Borra los resultados de una medicion realizada.
+     */
     void borrarResultados();
+
     ~MainWindow();
 
 private slots:
+    /*
+     * Operaciones básicas de gestión del MiniScan, gestión de las mediciones y del software.
+     */
     void on_actionConectar_triggered();
+
+    void on_actionEstandarizar_triggered();
+
+    void on_actionRealizar_medicion_triggered();
+
+    void on_actionVer_reflectancia_triggered();
+
+    void on_actionVer_absorbancia_triggered();
+
+    void on_actionVer_absorcion_triggered();
+
+    void on_actionDatos_adicionales_triggered();
+
+    void on_actionBorrar_resultados_triggered();
 
     void on_actionSalir_triggered();
 
+    void closeEvent(QCloseEvent *event);
+
     void on_actionAcerca_de_triggered();
 
-    void on_actionEstandarizar_triggered();
-    /*****/
+    /*
+     * Operaciones de gestión de usuario.
+     */
     void on_actionIniciar_sesion_triggered();
 
     void on_sesionIniciada(QHash<QString, QString> info);
@@ -70,8 +99,15 @@ private slots:
 
     void on_actionRegistrar_usuario_triggered();
 
+    void on_actionAdministrar_usuarios_triggered();
+
+    void on_actionCambiar_clave_triggered();
+
     void on_actionCerrar_sesion_triggered();
-    /*****/
+
+    /*
+     * Operaciones de gestión de historia.
+     */
     void on_actionRegistrar_historia_triggered();
 
     void on_historiaRegistrada(QHash<QString, QString> info);
@@ -92,49 +128,34 @@ private slots:
 
     void on_actionCerrar_historia_triggered();
 
-    void on_actionRealizar_medicion_triggered();
-
-    void on_actionEliminar_muestra_triggered();
-
-    void on_muestraEliminada();
-
-    void on_actionVer_reflectancia_triggered();
-
-    void on_actionVer_absorbancia_triggered();
-
-    void on_actionDatos_adicionales_triggered();
-
-    void on_actionBorrar_resultados_triggered();
+    /*
+     * Operaciones de gestión de muestra.
+     */
+    void on_tipoMuestra(const QString tipo);
 
     void on_actionRegistrar_muestra_triggered();
-
-    void on_tipoMuestra(const QString tipo);
 
     void on_muestraRegistrada(const QHash<QString, QString> info);
 
     void on_actualizarFototipo(int infoF);
 
-    void on_actionVer_muestra_triggered();
+    void on_actionBuscar_muestra_triggered();
 
-    void on_actionCerrar_muestra_triggered();
+    void on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[2][31], float infoCoordenadas[2][3], float infoEritema);
+
+    void on_actionVer_muestra_triggered();
 
     void on_actionModificar_muestra_triggered();
 
     void on_muestraModificada(QHash<QString, QString> infoModificada);
 
-    void on_actionBuscar_muestra_triggered();
-
-    void on_muestraAbierta(QHash<QString, QString> infoM, float infoDatos[2][31], float infoCoordenadas[2][3], float infoEritema);
-
     void on_actionExportar_muestra_triggered();
 
-    void closeEvent(QCloseEvent *event);
+    void on_actionEliminar_muestra_triggered();
 
-    void on_actionAdministrar_usuarios_triggered();
+    void on_muestraEliminada();
 
-    void on_actionCambiar_clave_triggered();
-
-    void on_actionVer_absorcion_triggered();
+    void on_actionCerrar_muestra_triggered();
 
 private:
     Ui::MainWindow *ui;
