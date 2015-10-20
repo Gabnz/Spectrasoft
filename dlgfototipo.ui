@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>508</width>
-    <height>847</height>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,15 +32,21 @@
   <layout class="QGridLayout" name="gridLayout_8">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_6">
-     <item row="2" column="0" colspan="3">
-      <widget class="Line" name="line">
+     <item row="4" column="0">
+      <spacer name="horizontalSpacer_30">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-      </widget>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
-     <item row="1" column="1">
-      <spacer name="verticalSpacer_2">
+     <item row="3" column="1">
+      <spacer name="verticalSpacer_3">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -218,8 +224,15 @@
        </item>
       </layout>
      </item>
-     <item row="3" column="1">
-      <spacer name="verticalSpacer_3">
+     <item row="2" column="0" colspan="3">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <spacer name="verticalSpacer_2">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -227,19 +240,6 @@
         <size>
          <width>476</width>
          <height>13</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="4" column="0">
-      <spacer name="horizontalSpacer_30">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
         </size>
        </property>
       </spacer>
@@ -264,7 +264,7 @@
          <item>
           <widget class="QLabel" name="etqTituloElegir">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Clasificar el fototipo:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Seleccionar el fototipo:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
