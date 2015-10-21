@@ -201,14 +201,6 @@ public:
     */
     float eritema(QVector<float> medicion);
 
-    /*
-    **  Determina el fototipo de la piel de un paciente según la escala Fitz Patrick, empleando
-    **  el uso de un algoritmo clasificación.
-    **
-    **  @return int             Fototipo cutáneo.
-    */
-    int fototipo(QVector<float> LAB);
-
     ~SpectralOps();
 
 private:

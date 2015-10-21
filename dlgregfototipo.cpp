@@ -57,11 +57,7 @@ void dlgRegFototipo::on_lineaArea_textChanged(const QString &arg1)
 
 void dlgRegFototipo::on_btnFototipo_clicked()
 {
-    SpectralOps ops;
-
-    int recomendacion = ops.fototipo(LAB);
-
-    dlgFototipo f(fototipo, recomendacion);
+    dlgFototipo f(fototipo, LAB);
 
     connect(&f, &dlgFototipo::fototipoSeleccionado, this, &dlgRegFototipo::on_fototipo);
     connect(&f, &dlgFototipo::resetearFototipo, this, &dlgRegFototipo::on_resetearFototipo);

@@ -8,7 +8,6 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <dlgfototipo.h>
-#include <spectralops.h>
 #include <dlgconfirmarclave.h>
 
 namespace Ui {

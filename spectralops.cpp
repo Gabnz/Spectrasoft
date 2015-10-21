@@ -169,17 +169,6 @@ float SpectralOps::eritema(QVector<float> medicion)
     return resultado;
 }
 
-int SpectralOps::fototipo(QVector<float> LAB)
-{
-    msv aux;
-
-    aux.ExtraccionDatos();
-    aux.Entrada(LAB);
-    aux.UsuarioMedico();
-
-    return aux.UsuarioMedico();
-}
-
 SpectralOps::~SpectralOps()
 {
 

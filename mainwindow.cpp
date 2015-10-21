@@ -255,7 +255,7 @@ void MainWindow::on_actionConectar_triggered()
         if(conectado){
             QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
         }else{
-            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar, verifique el cable de comunicaci\'{o}n.");
+            QMessageBox::critical(this, "Error al conectar", "El MiniScan no se pudo conectar, verifique el cable de comunicación.");
         }
         ui->actionConectar->setIcon(QIcon(":img/off.png"));
     }else{
@@ -266,7 +266,7 @@ void MainWindow::on_actionConectar_triggered()
         if(!conectado){
             QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
         }else{
-            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar, verifique el cable de comunicaci\'{o}n.");
+            QMessageBox::critical(this, "Error al desconectar", "El MiniScan no se pudo desconectar, verifique el cable de comunicación.");
         }
          ui->actionConectar->setIcon(QIcon(":img/on.png"));
     }
@@ -304,7 +304,7 @@ void MainWindow::on_actionEstandarizar_triggered()
     if(negroListo && blancoListo){
         QMessageBox::information(this, "Estandarizado", "El MiniScan se ha estandarizado correctamente.");
     }else{
-        QMessageBox::critical(this, "Error al estandarizar", "El MiniScan no se pudo estandarizar, verifique el cable de comunicaci\'{o}n.");
+        QMessageBox::critical(this, "Error al estandarizar", "El MiniScan no se pudo estandarizar, verifique el cable de comunicación.");
     }
 
     revisionBtns();

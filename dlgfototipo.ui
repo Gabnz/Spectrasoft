@@ -92,8 +92,14 @@
            </item>
            <item>
             <widget class="QLabel" name="etqTituloRecomendado">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Fototipo recomendado:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Calculando el fototipo a recomendar...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -150,7 +156,7 @@
               </font>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -185,7 +191,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="recursos.qrc">:/img/fototipo_4.png</pixmap>
+              <pixmap resource="recursos.qrc">:/img/vacio.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>

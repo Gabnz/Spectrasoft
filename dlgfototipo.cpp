@@ -1,39 +1,16 @@
 #include "dlgfototipo.h"
 #include "ui_dlgfototipo.h"
 
-dlgFototipo::dlgFototipo(int fPredeterminado, int fototipoRecomendadoExt, QWidget *parent) :
+dlgFototipo::dlgFototipo(int fPredeterminado, QVector<float> LABext, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlgFototipo)
 {
     ui->setupUi(this);
 
-    fototipoRecomendado = fototipoRecomendadoExt;
-    ui->etqFototipoRecomendado->setPixmap(QPixmap(":/img/fototipo_" + QString().setNum(fototipoRecomendado) + ".png"));
-
-    QString aux;
-
-    switch (fototipoRecomendado) {
-    case 1:
-        aux = "I";
-        break;
-    case 2:
-        aux = "II";
-        break;
-    case 3:
-        aux = "III";
-        break;
-    case 4:
-        aux = "IV";
-        break;
-    case 5:
-        aux = "V";
-        break;
-    case 6:
-        aux = "VI";
-        break;
-    }
-
-    ui->etqNumeroRecomendado->setText(aux);
+    LAB = LABext;
+    //conectando y creando un hilo de ejecucion para correr el algoritomo de clasificacion del fototipo
+    connect(&clasificador, &objMsv::fototipo_recomendado, this, &dlgFototipo::on_fototipoRecomendado);
+    QFuture<void> hiloClasificacion = QtConcurrent::run(&this->clasificador, &objMsv::start, LAB);
 
     btnsFototipos.push_back(ui->btnFototipo1);
     btnsFototipos.push_back(ui->btnFototipo2);
@@ -108,4 +85,36 @@ void dlgFototipo::on_btnListo_clicked()
 {
     emit fototipoSeleccionado(fototipo);
     this->close();
+}
+
+void dlgFototipo::on_fototipoRecomendado(int resultado)
+{
+    fototipoRecomendado = resultado;
+    ui->etqFototipoRecomendado->setPixmap(QPixmap(":/img/fototipo_" + QString().setNum(fototipoRecomendado) + ".png"));
+
+    QString aux;
+
+    switch (fototipoRecomendado) {
+    case 1:
+        aux = "I";
+        break;
+    case 2:
+        aux = "II";
+        break;
+    case 3:
+        aux = "III";
+        break;
+    case 4:
+        aux = "IV";
+        break;
+    case 5:
+        aux = "V";
+        break;
+    case 6:
+        aux = "VI";
+        break;
+    }
+
+    ui->etqTituloRecomendado->setText("Fototipo recomendado:");
+    ui->etqNumeroRecomendado->setText(aux);
 }

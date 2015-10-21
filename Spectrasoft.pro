@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     dlgcambiarrol.cpp \
     polyfit.cpp \
     clasificador/msv.cpp \
-    clasificador/svm.cpp
+    clasificador/svm.cpp \
+    clasificador/objmsv.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
     dlgcambiarrol.h \
     polyfit.h \
     clasificador/msv.h \
-    clasificador/svm.h
+    clasificador/svm.h \
+    clasificador/objmsv.h
 
 FORMS    += mainwindow.ui \
     dlgfototipo.ui \
