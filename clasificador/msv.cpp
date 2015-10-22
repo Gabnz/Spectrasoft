@@ -1,31 +1,24 @@
 #include "msv.h"
 
 using namespace std;
-
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
-svm_problem prob;
-svm_parameter parametro;
-svm_model *model;
-svm_node *x_space;
-int nr_fold= 98;//Numero de fold para Cross-Validation
 static int max_line_len;
-static char *line = NULL;
-char model_file_name[1024];
-svm_node *x;
-int max_nr_attr = 64;
-int predict_probability=0;
-double dataD[colum+1][fil];
-int nColum=0;
-int nFilas=0;
+static char *line=NULL;
 
 
 msv::msv()
 {
     QDir dir;
-    dir.setPath(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "prueba");
+    dir.setPath(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "msv_temp");
 
     if(!dir.exists())
-        dir.mkdir(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "prueba");
+        dir.mkdir(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "msv_temp");
+
+    nr_fold= 98;//Numero de fold para Cross-Validation
+    max_nr_attr = 64;
+    predict_probability=0;
+    nColum=0;
+    nFilas=0;
 }
 
 static char* readline(QFile *input)
@@ -54,12 +47,12 @@ void msv::DefParametros(){
     /*Parametros Kernel RBF*/
     parametro.svm_type = C_SVC;
     parametro.kernel_type = RBF;
-    parametro.degree = 3;//3;
-    parametro.gamma = pow(2,-11);
-    parametro.coef0 = 1;
+    parametro.degree = 0;
+    parametro.gamma = pow(2,-15);
+    parametro.coef0 = 0;
     parametro.nu = 0.5;
     parametro.cache_size = 100.0;
-    parametro.C = pow(2,-1);
+    parametro.C = pow(2,-5);
     parametro.eps = 0.001;
     parametro.p = 0.1;
     parametro.shrinking = 0;
@@ -76,20 +69,22 @@ void msv::msv_train(QFile *Datos){
         exit(1);
 
     const char *error_msg;
-    string str = "out.model";
+    string str="out.model";
     strcpy(model_file_name,str.c_str());
 
-    //DefParametros();
-
+    DefParametros();
     read_problem(Datos);
-    /*
+
     error_msg = svm_check_parameter(&prob,&parametro);
     if(error_msg){
        qDebug()<<"Error";
        return;
-    }*/
-    OptimizacionParametros();
-    //do_cross_validation();
+    }
+
+    /*Funcion Optimizacion de parametros
+        OptimizacionParametros();
+    /************************************/
+    float accurracy = do_cross_validation();
 
     model = svm_train(&prob,&parametro);
     svm_save_model(model_file_name,model);
@@ -170,8 +165,8 @@ void msv::predict(QFile *input, QFile *output){
 
     int correct = 0;
     int total = 0;
-    double error = 0;
-    double sump = 0, sumt = 0, sumpp = 0, sumtt = 0, sumpt = 0;
+    float error = 0;
+    float sump = 0, sumt = 0, sumpp = 0, sumtt = 0, sumpt = 0;
 
     int svm_type=svm_get_svm_type(model);
     int nr_class=svm_get_nr_class(model);
@@ -386,25 +381,25 @@ void msv::Print_Medidas(int matrixConf[7][7], QVector<int> Inst_Correct, QVector
 
     res <<"===Resumen===\n\n";
 
-    res<<"Fototipos Clasificados Correctamente:     "<<correct<<"    "<<(double)correct/total*100<<"%"<<"\n";
+    res<<"Fototipos Clasificados Correctamente:     "<<correct<<"    "<<(float)correct/total*100<<"%"<<"\n";
     res<<"Fototipos Clasificados Incorrectamente:     "<<total-correct<<"    "<<100.0*(total-correct)/total<<"%"<<"\n";
     res<<"Numero Total de Fototipos:     "<<total<<"\n";
     float media = total/6;
-    double desvEst = ( ( pow((data[0]-media),2) + pow((data[1]-media),2) + pow((data[2]-media),2) + pow((data[3]-media),2) + pow((data[4]-media),2) + pow((data[5]-media),2) ) / (correct-1) );
+    float desvEst = ( ( pow((data[0]-media),2) + pow((data[1]-media),2) + pow((data[2]-media),2) + pow((data[3]-media),2) + pow((data[4]-media),2) + pow((data[5]-media),2) ) / (correct-1) );
     desvEst = sqrt(desvEst);
-    double cv = (desvEst/media)*100;
-    res<<"Coeficiente de Variación:     "<< (double)cv<<"%"<<"\n\n";
+    float cv = (desvEst/media)*100;
+    res<<"Coeficiente de Variación:     "<< (float)cv<<"%"<<"\n\n";
 
     res<<"==Presicion Detallada por cada Fototipo==\n\n";
 
     res<<"Fototipos\tSensibilidad"<<"\tEspecificidad\t Precisión\n";
     res<<"\n";
-    res<<"\t1:\t"<<(double)data[0]/7 <<"\t\t" <<(double)(7-data[0])/7<< "\t\t" << ((double)data[0]/(data[0]+inst_inc[0])) <<"\n";
-    res<<"\t2:\t"<<(double)data[1]/53<<"\t\t" <<(double)(53-data[1])/53<< "\t\t" << ((double)data[1]/(data[1]+inst_inc[1])) <<"\n";
-    res<<"\t3:\t"<<(double)data[2]/182<<"\t\t" <<(double)(182-data[2])/182<< "\t\t" << ((double)data[2]/(data[2]+inst_inc[2])) <<"\n";
-    res<<"\t4:\t"<<(double)data[3]/254<<"\t\t" <<(double)(254-data[3])/254<< "\t\t" << ((double)data[3]/(data[3]+inst_inc[3])) <<"\n";
-    res<<"\t5:\t"<<(double)data[4]/68<<"\t\t" <<(double)(68-data[4])/68<< "\t\t" << ((double)data[4]/(data[4]+inst_inc[4])) <<"\n";
-    res<<"\t6:\t"<<(double)data[5]/23<<"\t\t" <<(double)(23-data[5])/23<< "\t\t" << ((double)data[5]/(data[5]+inst_inc[5])) <<"\n";
+    res<<"\t1:\t"<<(float)data[0]/7 <<"\t\t" <<(float)(7-data[0])/7<< "\t\t" << ((float)data[0]/(data[0]+inst_inc[0])) <<"\n";
+    res<<"\t2:\t"<<(float)data[1]/53<<"\t\t" <<(float)(53-data[1])/53<< "\t\t" << ((float)data[1]/(data[1]+inst_inc[1])) <<"\n";
+    res<<"\t3:\t"<<(float)data[2]/182<<"\t\t" <<(float)(182-data[2])/182<< "\t\t" << ((float)data[2]/(data[2]+inst_inc[2])) <<"\n";
+    res<<"\t4:\t"<<(float)data[3]/254<<"\t\t" <<(float)(254-data[3])/254<< "\t\t" << ((float)data[3]/(data[3]+inst_inc[3])) <<"\n";
+    res<<"\t5:\t"<<(float)data[4]/68<<"\t\t" <<(float)(68-data[4])/68<< "\t\t" << ((float)data[4]/(data[4]+inst_inc[4])) <<"\n";
+    res<<"\t6:\t"<<(float)data[5]/23<<"\t\t" <<(float)(23-data[5])/23<< "\t\t" << ((float)data[5]/(data[5]+inst_inc[5])) <<"\n";
 
     res<<"\n \n";
     res<<"===Matriz de Confusión===";
@@ -438,15 +433,12 @@ void msv::Print_Medidas(int matrixConf[7][7], QVector<int> Inst_Correct, QVector
 Para posteriormente ser procesador para la discretizacion*/
 void msv::ExtraccionDatos(){
 
-    //QDir::setCurrent("C:/Users/Paola/Documents/prueba");
-    //QDir::currentPath();
     int row=1, col=1;
 
-    //QXlsx::Document *docIN= new QXlsx::Document("DatosPrueba.xlsx");
     QXlsx::Document *docIN= new QXlsx::Document(":/clasificador/DatosPrueba.xlsx");
     nColum=docIN->dimension().lastColumn();
     nFilas=docIN->dimension().lastRow();
-    double matrix[nFilas+1][nColum];
+    float matrix[nFilas+1][nColum];
 
     for(col=0;col<nColum+1;col++){
         dataD[col][0]=col+1;
@@ -456,20 +448,20 @@ void msv::ExtraccionDatos(){
         for(row=1;row<=nFilas;row++){
             QVariant v;
             v.setValue(docIN->read(row,col));
-            double val = v.toFloat();
+            float val = v.toFloat();
             matrix[row][col] = val;
             dataD[col-1][row]=matrix[row][col];
         }
     }
 }
 
-void msv::Discretizacion(double dataD[colum+1][fil]){
+void msv::Discretizacion(float dataD[colum+1][fil]){
 
-    double globalcaim,caim,v;
-    double candidatecutpoint[N],cutpoint[N],temp,tempdataD[N][A+2];
+    float globalcaim,caim,v;
+    float candidatecutpoint[N],cutpoint[N],temp,tempdataD[N][A+2];
     int i,j,l,n,ll,x,y,k,b,c,w;
     int cai[N];
-    double caivalue[N];
+    float caivalue[N];
 
     for(i=0;i<N;i++)
     {
@@ -491,7 +483,7 @@ void msv::Discretizacion(double dataD[colum+1][fil]){
       w=1;
       globalcaim=0.0;
       caim=0.0;
-      sort(i);
+      Ordenamiento(i);
       cutpoint[0]=-100000;
       cutpoint[1]=100000;
       temp=dataD[0][i];
@@ -503,7 +495,7 @@ void msv::Discretizacion(double dataD[colum+1][fil]){
              j++;
          else
          {
-             candidatecutpoint[l]=(double)((temp+dataD[j][i])/2);
+             candidatecutpoint[l]=(float)((temp+dataD[j][i])/2);
              temp=dataD[j][i];
              l++;
          }
@@ -515,7 +507,7 @@ void msv::Discretizacion(double dataD[colum+1][fil]){
             x=0;
             for(j=1;j<l;j++)
             {
-                caim=CAIM(i,n,candidatecutpoint[j],cutpoint,candidatecutpoint,l);
+                caim=ValorCAIM(i,n,candidatecutpoint[j],cutpoint);
                 findsort(cai,caivalue,j,caim);
                  if((caim>globalcaim))
                 {
@@ -553,15 +545,15 @@ void msv::Discretizacion(double dataD[colum+1][fil]){
                 }
             }
       }
-      replace(i,cutpoint,ll);
+      reemplazar(i,cutpoint,ll);
       if(inconsistency()>0)
       {
 
           do{
-              sort(0);
+              Ordenamiento(0);
               for(k=0;k<N;k++)
                   dataD[k][i]=tempdataD[k][i];
-              sort(i);
+              Ordenamiento(i);
 
               {
                   cutpoint[ll]=candidatecutpoint[cai[w]];
@@ -570,19 +562,19 @@ void msv::Discretizacion(double dataD[colum+1][fil]){
               ll++;
               w++;
 
-              replace(i,cutpoint,ll);
+              reemplazar(i,cutpoint,ll);
           }while(inconsistency()>0);
       }
 
    }
-    sort(0);
+    Ordenamiento(0);
     out();
 }
 
-void msv::sort(int n){
+void msv::Ordenamiento(int n){
 
     int i=0,j=0,k=0;
-    double a;
+    float a;
 
 
     k=0;
@@ -621,7 +613,7 @@ void msv::sort(int n){
 
 void msv::out(){
 
-    QDir::setCurrent(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "prueba");
+    QDir::setCurrent(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/" + "msv_temp");
     QDir::currentPath();
 
     QFile file("DatosEspectrales");
@@ -690,7 +682,7 @@ void msv::out(){
     inp.close();
 }
 
-double msv::inconsistency(){
+float msv::inconsistency(){
 
     int a[N];
     int i=0,j=0,n=0,k=0,num=0;
@@ -720,18 +712,18 @@ double msv::inconsistency(){
     {
         if(a[i]==1) num++;
     }
-    return((double)num/N);
+    return((float)num/N);
 }
 
 /* Funcion CAIM, arma la "Quanda Matrix" y retorna el Valor CAIM*/
-double msv::CAIM(int i,int n,double selectvalue,double point[N],double canpoint[N],int l){
+float msv::ValorCAIM(int i,int n,float selectvalue,float point[N]){
 
     int r,m,cc,j,M[N+1],q[N+1][S+1],C[S+1],upper[S+1],a[N+1],qq[N+1],aa;
-      double t=0.0,caim=0.0;
+      float t=0.0,caim=0.0;
       int flag=0;
       a[0]=0;
 
-      sort(i);
+      Ordenamiento(i);
       for(r=1;r<=n;r++)
       { M[r]=0;
         qq[r]=0;
@@ -892,8 +884,8 @@ double msv::CAIM(int i,int n,double selectvalue,double point[N],double canpoint[
           }
       }
       for(r=1;r<=n;r++)
-          t+=(((double)qq[r])*((double)qq[r]))/M[r];
-      caim=(double)t/(double)n;
+          t+=(((float)qq[r])*((float)qq[r]))/M[r];
+      caim=(float)t/(float)n;
       }
       else
       {caim=-100;}
@@ -901,7 +893,7 @@ double msv::CAIM(int i,int n,double selectvalue,double point[N],double canpoint[
 }
 
 
-void msv::findsort(int cai[N],double caivalue[N],int j,double caim){
+void msv::findsort(int cai[N],float caivalue[N],int j,float caim){
 
     int m,k;
     for(m=j-1;m>0;m--)
@@ -918,11 +910,11 @@ void msv::findsort(int cai[N],double caivalue[N],int j,double caim){
     caivalue[m+1]=caim;
 }
 
-void msv::replace(int i,double cutpoint[N],int ll){
+void msv::reemplazar(int i,float cutpoint[N],int ll){
 
-    sort(i);
+    Ordenamiento(i);
     int j,m,p,q;
-    double z,plus=1.0;
+    float z,plus=1.0;
     for(p=1;p<ll-1;p++)
     {    for(q=p+1;q<ll;q++)
         {
@@ -967,7 +959,7 @@ void msv::read_problem(QFile *Datos){
 
     while (readline(Datos)!=NULL && !Datos->atEnd()) {
 
-       char *p = strtok(line," \t"); // label
+       char *p = strtok(line," \t");
        while (1) {
            p = strtok(NULL," \t");
            if(p == NULL || *p == '\n'){break;}
@@ -989,11 +981,11 @@ void msv::read_problem(QFile *Datos){
 
     for(i=0;i<prob.l;i++)
     {
-        inst_max_index = -1; // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
+        inst_max_index = -1;
         readline(Datos);
         prob.x[i] = &x_space[j];
         label = strtok(line," \t\n");
-        if(label == NULL) // empty line
+        if(label == NULL)
             exit_input_error(i+1);
 
         prob.y[i] = strtod(label,&endptr);
@@ -1128,7 +1120,7 @@ float msv::do_cross_validation(){
                 }
                 if(target[i] == 6)
                 {
-                    int Clases = prob.y[i]; //svm_predict(model,x);
+                    int Clases = prob.y[i];
                     if(6 == prob.y[i])
                     {
                         matrixConf[Clases][6] = matrixConf[Clases][6]+1;
@@ -1152,9 +1144,6 @@ float msv::do_cross_validation(){
 
 void msv::OptimizacionParametros(){
 
-    QDir::setCurrent("C:/Users/Paola/Documents/prueba");
-    QDir::currentPath();
-
     int cont=1;
     float i=0.0,j=0.0, accurracy1=0.0,accurracy=0.1, gammaOpt=0.0,cOpt=0.0,gamma,c;
     i=-5; // 2^-5 Parametro C
@@ -1169,11 +1158,11 @@ void msv::OptimizacionParametros(){
         parametro.svm_type = C_SVC;
         parametro.kernel_type = RBF;
         parametro.degree = 0;
-        parametro.gamma = pow(2,-15);
+        parametro.gamma = pow(2,-15); //Para optimizar parametro gamma: pow(2,-j)
         parametro.coef0 = 0;
         parametro.nu = 0.5;
         parametro.cache_size = 100.0;
-        parametro.C = pow(2,-5);
+        parametro.C = pow(2,-5); //Para optimizar parametro C: pow(2,-i)
         parametro.eps = 1.0e-12;
         parametro.p = 0.1;
         parametro.shrinking = 1;
@@ -1245,31 +1234,26 @@ void msv::Administrador(){
 de una muestra dada*/
 int msv::UsuarioMedico(){
 
-    qDebug() << "entra en usuariomedico";
-
     QDir::currentPath();
-    QFile archivo(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/prueba/" + "muestra");
-    QFile output(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/prueba/" + "output_file");
-    QFile::copy(":/clasificador/out.model", QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/prueba/" + "out.model");
-    QString modelo(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/prueba/" + "out.model");
+    QFile archivo(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/msv_temp/" + "muestra");
+    QFile output(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/msv_temp/" + "output_file");
+    QFile::copy(":/clasificador/out.model", QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/msv_temp/" + "out.model");
+    QString modelo(QDir::homePath() + "/" + QStandardPaths::displayName( QStandardPaths::DesktopLocation ) + "/msv_temp/" + "out.model");
 
     string str = modelo.toStdString();
     strcpy(model_file_name,str.c_str());
 
     if(!archivo.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "se sale en 1";
         exit(1);
     }
 
     if(!output.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug() << "se sale en 2";
         exit(1);
     }
 
     predict_probability = 1;
 
     if((model=svm_load_model(model_file_name))==0){
-        qDebug() << "se sale en 2.5";
         exit(1);
     }
 
@@ -1278,7 +1262,6 @@ int msv::UsuarioMedico(){
     {
 
         if(svm_check_probability_model(model)==0){
-            qDebug() << "se sale en 3";
             exit(1);
         }
     }
@@ -1295,8 +1278,6 @@ int msv::UsuarioMedico(){
 
     archivo.close();
     output.close();
-
-    qDebug() << "sale de usuariomedico";
 
     return fototipo;
 }
@@ -1327,11 +1308,11 @@ int msv::Clasificacion(QFile *input){
         int i = 0;
         double target_label, predict_label;
         char *idx, *val, *label, *endptr;
-        int inst_max_index = -1; // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
+        int inst_max_index = -1;
 
         label = strtok(line," \t\n");
 
-        if(label == NULL) // empty line
+        if(label == NULL)
             exit_input_error(total+1);
 
         target_label = strtod(label,&endptr);
@@ -1340,7 +1321,7 @@ int msv::Clasificacion(QFile *input){
 
         while(1)
         {
-            if(i>=max_nr_attr-1)	// need one more for index = -1
+            if(i>=max_nr_attr-1)
             {
                 max_nr_attr *= 2;
                 x = (struct svm_node *) realloc(x,max_nr_attr*sizeof(struct svm_node));
