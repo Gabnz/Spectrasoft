@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     modeloDatos = new QStandardItemModel(2, 31, this);
 
     QStringList cabeceras;
-
+    //dando formato a la tabla de datos espectrales de la vista principal
     cabeceras.push_back("Valor");
     cabeceras.push_back("Longitud");
     modeloDatos->setVerticalHeaderLabels(cabeceras);
@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         modeloDatos->setData(indice, rango);
         rango+=10;
     }
+
     //abriendo la conexion con la base de datos
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("localhost");
@@ -80,6 +81,8 @@ void MainWindow::revisionBtns()
     sesionU, verU, modificarU, cambiarC, masOpcionesU, registrarU, administrarU, cerrarU,
     registrarH, buscarH, verH, cerrarH, modificarH, eliminarH, masOpcionesH;
 
+    //revisa los botones relacionados con las funciones del MiniScan,
+    //y los habilita/deshabilita dependiendo de si el MiniScan esta conectado o no
     if(conectado){
         estandarizar = true;
 
@@ -91,6 +94,8 @@ void MainWindow::revisionBtns()
          estandarizar = medirM = false;
     }
 
+    //revisa los botones relacionados con los resultados de una medicion,
+    //y los habilita/deshabilita dependiendo de si hay una medicion cargada o no
     if(!datosEspectrales.isEmpty()){
         verRef = verAbs = verAbsorcion = datosA = true;
 
@@ -102,8 +107,11 @@ void MainWindow::revisionBtns()
         verRef = verAbs = verAbsorcion = datosA = borrarResultadosM = false;
     }
 
+    //revisa todos los botones que realicen operaciones relacionadas con la base de datos
     if(bdConectada){
 
+        //revisa los botones relacionados con las funciones del usuario,
+        //y los habilita/deshabilita dependiendo de cual sea el caso
         if(!infoUsuario.isEmpty()){
             sesionU = false;
             verU = modificarU = cambiarC = cerrarU = true;
@@ -114,6 +122,8 @@ void MainWindow::revisionBtns()
                 masOpcionesU = registrarU = administrarU = false;
             }
 
+            //revisa los botones relacionados con las funciones de la historia,
+            //y los habilita/deshabilita dependiendo de cual sea el caso
             if(!infoHistoria.isEmpty()){
 
                 registrarH = buscarH = false;
@@ -125,6 +135,8 @@ void MainWindow::revisionBtns()
                     masOpcionesH = modificarH = eliminarH = false;
                 }
 
+                //revisa los botones relacionados con las funciones de la muestra,
+                //y los habilita/deshabilita dependiendo de cual sea el caso
                 if(!infoMuestra.isEmpty()){
                     registrarM = buscarM = false;
                     verM = exportarM = cerrarM = true;
@@ -159,6 +171,8 @@ void MainWindow::revisionBtns()
                 }
             }
 
+        //si no hay un usuario cargado, deshabilita todos los botones de las funciones de usuario,
+        //y los botones de las funciones dependiente del mismo
         }else{
             sesionU = true;
             verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
@@ -166,19 +180,24 @@ void MainWindow::revisionBtns()
             registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
         }
 
+    //si la base de datos esta desconectada de software,
+    //deshabilita todos los botones que realicen operaciones con la misma
     }else{
         sesionU = verU =  modificarU = cambiarC = masOpcionesU = registrarU = administrarU = cerrarU = false;
         registrarH = buscarH = verH = masOpcionesH = modificarH = eliminarH = cerrarH = false;
         registrarM = buscarM = verM = exportarM = masOpcionesM = modificarM = eliminarM = cerrarM = false;
     }
 
+    //habilita/deshabilita el boton para estandarizar
     ui->actionEstandarizar->setEnabled(estandarizar);
 
+    //habilita/deshabilita los botones de las funciones de los resultados
     ui->actionVer_reflectancia->setEnabled(verRef);
     ui->actionVer_absorbancia->setEnabled(verAbs);
     ui->actionVer_absorcion->setEnabled(verAbsorcion);
     ui->actionDatos_adicionales->setEnabled(datosA);
 
+    //habilita/deshabilita los botones de las funciones del usuario
     ui->actionIniciar_sesion->setEnabled(sesionU);
     ui->actionVer_usuario->setEnabled(verU);
     ui->actionModificar_usuario->setEnabled(modificarU);
@@ -188,6 +207,7 @@ void MainWindow::revisionBtns()
     ui->actionAdministrar_usuarios->setEnabled(administrarU);
     ui->actionCerrar_sesion->setEnabled(cerrarU);
 
+    //habilita/deshabilita los botones de las funciones de la historia
     ui->actionRegistrar_historia->setEnabled(registrarH);
     ui->actionBuscar_historia->setEnabled(buscarH);
     ui->actionVer_historia->setEnabled(verH);
@@ -196,6 +216,7 @@ void MainWindow::revisionBtns()
     ui->actionEliminar_historia->setEnabled(eliminarH);
     ui->actionCerrar_historia->setEnabled(cerrarH);
 
+    //habilita/deshabilita los botones de las funciones de la muestra
     ui->actionRealizar_medicion->setEnabled(medirM);
     ui->actionBorrar_resultados->setEnabled(borrarResultadosM);
     ui->actionRegistrar_muestra->setEnabled(registrarM);
@@ -210,6 +231,8 @@ void MainWindow::revisionBtns()
 
 void MainWindow::borrarResultados()
 {
+    //Limpia las variables y libera la memoria asignada dinamicamente
+    //relacionada con los resultados de una medicion
     datosEspectrales.clear();
     datosAbsorbancia.clear();
     XYZ.clear();
@@ -274,17 +297,6 @@ void MainWindow::on_actionConectar_triggered()
     revisionBtns();
 }
 
-void MainWindow::on_actionSalir_triggered()
-{
-    close();
-}
-
-void MainWindow::on_actionAcerca_de_triggered()
-{
-    dlgAcercaDe acercaDe;
-    acercaDe.exec();
-}
-
 void MainWindow::on_actionEstandarizar_triggered()
 {
     bool negroListo, blancoListo;
@@ -308,6 +320,17 @@ void MainWindow::on_actionEstandarizar_triggered()
     }
 
     revisionBtns();
+}
+
+void MainWindow::on_actionSalir_triggered()
+{
+    close();
+}
+
+void MainWindow::on_actionAcerca_de_triggered()
+{
+    dlgAcercaDe acercaDe;
+    acercaDe.exec();
 }
 
 void MainWindow::on_actionIniciar_sesion_triggered()
@@ -335,7 +358,6 @@ void MainWindow::on_actionModificar_usuario_triggered()
     dlgModificarUsuario modU(infoUsuario);
 
     connect(&modU, &dlgModificarUsuario::usuarioModificado, this, &MainWindow::on_usuarioModificado);
-
     modU.exec();
 }
 
@@ -435,7 +457,6 @@ void MainWindow::on_actionEliminar_historia_triggered()
     dlgEliminarHistoria elimH(infoHistoria["id_historia"], infoUsuario["clave"]);
 
     connect(&elimH, &dlgEliminarHistoria::historiaEliminada, this, &MainWindow::on_historiaEliminada);
-
     elimH.exec();
 }
 
@@ -558,10 +579,13 @@ void MainWindow::on_actionRealizar_medicion_triggered()
 
     QVector<float> aux(31);
 
+    //divide los datos entre 100 para quitarles el factor por el que son multiplicados por el MiniScan,
+    //y los almacena en aux
     for(int i = 0; i < 31; ++i){
         aux[i] = datosEspectrales[i]/100.0;
     }
 
+    //invoca a las funciones que realizan los calculos relacionados con los resultados de una medicion
     datosAbsorbancia = ops.absorbancia(datosEspectrales);
     XYZ = ops.CIExyz(aux);
     LAB = ops.CIELAB(aux);
@@ -578,20 +602,16 @@ void MainWindow::on_actionVer_reflectancia_triggered()
         ref = NULL;
     }
 
-    if(ref == NULL){
+    //crea la ventana para visualizar la reflectancia
+    QVector<double> aux(31);
 
-        QVector<double> aux(31);
-
-        for(int i = 0; i < 31; ++i){
-            aux[i] = double(datosEspectrales[i]);
-        }
-
-        ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)", 100);
-        ref->agregarCurva(aux);
-        ref->show();
-    }else{
-        ref->showMaximized();
+    for(int i = 0; i < 31; ++i){
+        aux[i] = double(datosEspectrales[i]);
     }
+
+    ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)", 100);
+    ref->agregarCurva(aux);
+    ref->show();
 }
 
 void MainWindow::on_actionVer_absorbancia_triggered()
@@ -601,20 +621,16 @@ void MainWindow::on_actionVer_absorbancia_triggered()
         abs = NULL;
     }
 
-    if(abs == NULL){
+    //crea la ventana para visualizar la absorbancia
+    QVector<double> aux(31);
 
-        QVector<double> aux(31);
-
-        for(int i = 0; i < 31; ++i){
-            aux[i] = double(datosAbsorbancia[i]);
-        }
-
-        abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)", 100);
-        abs->agregarCurva(aux);
-        abs->show();
-    }else{
-        abs->showMaximized();
+    for(int i = 0; i < 31; ++i){
+        aux[i] = double(datosAbsorbancia[i]);
     }
+
+    abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)", 100);
+    abs->agregarCurva(aux);
+    abs->show();
 }
 
 void MainWindow::on_actionVer_absorcion_triggered()
@@ -624,25 +640,21 @@ void MainWindow::on_actionVer_absorcion_triggered()
         absorcion = NULL;
     }
 
-    if(absorcion == NULL){
+    //crea la ventana para visualizar la absorcion
+    QVector<double> aux(31);
+    double yMax = 0.0;
 
-        QVector<double> aux(31);
-        double yMax = 0.0;
+    for(int i = 0; i < 31; ++i){
+        aux[i] = double(datosAbsorcion[i]);
 
-        for(int i = 0; i < 31; ++i){
-            aux[i] = double(datosAbsorcion[i]);
-
-            if(yMax < aux[i]){
-                yMax = aux[i];
-            }
+        if(yMax < aux[i]){
+            yMax = aux[i];
         }
-
-        absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Valor de absorción", yMax + 50);
-        absorcion->agregarCurva(aux);
-        absorcion->show();
-    }else{
-        absorcion->showMaximized();
     }
+
+    absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Valor de absorción", yMax + 50);
+    absorcion->agregarCurva(aux);
+    absorcion->show();
 }
 
 void MainWindow::on_actionDatos_adicionales_triggered()
@@ -652,13 +664,9 @@ void MainWindow::on_actionDatos_adicionales_triggered()
         dts = NULL;
     }
 
-    if(dts == NULL){
-
-        dts = new dlgDatosAdicionales(XYZ, LAB, eritema);
-        dts->show();
-    }else{
-        dts->showMaximized();
-    }
+    //crea la ventana para visualizar los datos adicionales
+    dts = new dlgDatosAdicionales(XYZ, LAB, eritema);
+    dts->show();
 }
 
 void MainWindow::on_actionBorrar_resultados_triggered()
@@ -678,6 +686,8 @@ void MainWindow::on_actionRegistrar_muestra_triggered()
 
 void MainWindow::on_tipoMuestra(const QString tipo)
 {
+    //dependiendo de si la muestra que se va a registrar es un fototipo o una lesion,
+    //crea la ventana correspondiente
     if(tipo == "lesion"){
         dlgRegLesion regL(infoUsuario["clave"], infoUsuario["cedula"], infoHistoria["id_historia"], datosEspectrales, XYZ, LAB, datosAbsorcion, eritema);
 
@@ -785,6 +795,7 @@ void MainWindow::on_actionExportar_muestra_triggered()
 {
     int fila = 1;
 
+    //crea un archivo xlsx y escribe la informacion de la muestra cargada actualmente
     QXlsx::Document xlsx;
     xlsx.write("A" + QString().setNum(fila), "Información de la historia:");
     fila+=2;

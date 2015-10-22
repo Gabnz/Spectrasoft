@@ -2,9 +2,7 @@
 
 MiniScanXE::MiniScanXE()
 {
-    //si se puede usar el .dll sin registrar, pero hace falta determinar que estructura debe tener el .dll en vb.net para poderse usar de esa forma
-    //miniscan->setControl(":/dll/MSXEBridge.dll");
-
+    //Busca y asigna el control definido para MSXE.bridge
     miniscan.setControl("MSXE.Bridge");
 
     conectado = negroEstandarizado = blancoEstandarizado = false;
@@ -15,6 +13,7 @@ bool MiniScanXE::conectar()
 {
     QList<QSerialPortInfo> puertos = QSerialPortInfo::availablePorts();
 
+    //prueba abrir cada uno de los puertos COM disponibles en el momento
     while(!conectado && puertos.size() > 0){
 
         QSerialPortInfo puerto = puertos.at(0);
@@ -56,6 +55,7 @@ QList<QVariant> MiniScanXE::medir()
     QVariant resultado;
     QList<QVariant> medicion;
 
+    //realiza una medicion y la almacena
     resultado = miniscan.dynamicCall("medirMuestra()");
     medicion = resultado.toList();
 

@@ -58,7 +58,9 @@ public:
 
 private slots:
     /*
-     * Operaciones básicas de gestión del MiniScan, gestión de las mediciones y del software.
+     * Operaciones básicas de gestión del MiniScan, gestión de las mediciones y del software:
+     * Conectar, estandarizar, realizar medicion, ver reflectancia, ver absorbancia, ver absorcion,
+     * datos adicionales, borrar resultados, salir, acerca de.
      */
     void on_actionConectar_triggered();
 
@@ -83,7 +85,9 @@ private slots:
     void on_actionAcerca_de_triggered();
 
     /*
-     * Operaciones de gestión de usuario.
+     * Operaciones de gestión de usuario:
+     * Iniciar sesion, ver usuario, modificar usuario, cambiar clave,
+     * registrar usuario, administrar usuarios, cerrar sesion.
      */
     void on_actionIniciar_sesion_triggered();
 
@@ -106,7 +110,9 @@ private slots:
     void on_actionCerrar_sesion_triggered();
 
     /*
-     * Operaciones de gestión de historia.
+     * Operaciones de gestión de historia:
+     * Registrar historia, ver historia, buscar historia,
+     * modificar historia, eliminar historia, cerrar historia.
      */
     void on_actionRegistrar_historia_triggered();
 
@@ -129,7 +135,9 @@ private slots:
     void on_actionCerrar_historia_triggered();
 
     /*
-     * Operaciones de gestión de muestra.
+     * Operaciones de gestión de muestra:
+     * Registrar muestra, buscar muestra, modificar muestra,ver muestra,
+     *  modificar muestra, exportar muestra, eliminar muestra, cerrar muestra.
      */
     void on_tipoMuestra(const QString tipo);
 

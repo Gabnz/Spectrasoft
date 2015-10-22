@@ -11,6 +11,10 @@ class MiniScanXE
 {
 public:
     MiniScanXE();
+    /*
+     * Operaciones de comunicación con el MSXEBridge:
+     * Conectar, desconectar, estandarizar y medir.
+     */
     bool conectar();
     bool desconectar();
     bool estNegro();
