@@ -55,5 +55,6 @@
         <file>img/muestra_absorcion.png</file>
         <file>clasificador/DatosPrueba.xlsx</file>
         <file>clasificador/out.model</file>
+        <file>img/medicion.png</file>
     </qresource>
 </RCC>

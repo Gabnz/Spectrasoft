@@ -294,6 +294,12 @@ void MainWindow::on_actionConectar_triggered()
          ui->actionConectar->setIcon(QIcon(":img/on.png"));
     }
 
+    if(conectado){
+        ui->etqLogotipo->setPixmap(QPixmap::fromImage(QImage(":/img/logo_nuevo.png")));
+    }else{
+        ui->etqLogotipo->setPixmap(QPixmap::fromImage(QImage(":/img/logo_gris.png")));
+    }
+
     revisionBtns();
 }
 
