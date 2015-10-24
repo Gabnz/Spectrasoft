@@ -51,7 +51,6 @@ QVector<float> SpectralOps::CIExyz(QVector<float> medicion)
 {
     QVector<float> resultado;
     QVector<float> XYZ = CIEXYZ(medicion);
-    qDebug() << "X: " << XYZ[0] << "Y: " << XYZ[1] << "Z: " << XYZ[2];
     float x, y, z;
 
     x = y = z = 0.0;

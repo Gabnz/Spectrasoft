@@ -271,9 +271,9 @@ void MainWindow::borrarResultados()
 void MainWindow::on_actionConectar_triggered()
 {
     if(!conectado){
-        //conectado = true;
+        conectado = true;
         ui->actionConectar->setText("Desconectar");
-        conectado = miniscan.conectar();
+        //conectado = miniscan.conectar();
 
         if(conectado){
             QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
@@ -282,9 +282,9 @@ void MainWindow::on_actionConectar_triggered()
         }
         ui->actionConectar->setIcon(QIcon(":img/off.png"));
     }else{
-        //conectado = false;
+        conectado = false;
         ui->actionConectar->setText("Conectar");
-        conectado = miniscan.desconectar();
+        //conectado = miniscan.desconectar();
 
         if(!conectado){
             QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
@@ -603,75 +603,63 @@ void MainWindow::on_actionRealizar_medicion_triggered()
 
 void MainWindow::on_actionVer_reflectancia_triggered()
 {
-    if(ref != NULL && !ref->isMinimized() && !ref->isActiveWindow()){
-        delete ref;
-        ref = NULL;
+    if(ref == NULL){
+        //crea la ventana para visualizar la reflectancia
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosEspectrales[i]);
+        }
+
+        ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)", 100);
+        ref->agregarCurva(aux);
     }
-
-    //crea la ventana para visualizar la reflectancia
-    QVector<double> aux(31);
-
-    for(int i = 0; i < 31; ++i){
-        aux[i] = double(datosEspectrales[i]);
-    }
-
-    ref = new dlgGrafica("Curva de reflectancia difusa", "Longitud de onda (nm)", "Reflectancia (%)", 100);
-    ref->agregarCurva(aux);
     ref->show();
 }
 
 void MainWindow::on_actionVer_absorbancia_triggered()
 {
-    if(abs != NULL && !abs->isMinimized() && !abs->isActiveWindow()){
-        delete abs;
-        abs = NULL;
+    if(abs == NULL){
+        //crea la ventana para visualizar la absorbancia
+        QVector<double> aux(31);
+
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosAbsorbancia[i]);
+        }
+
+        abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)", 100);
+        abs->agregarCurva(aux);
     }
-
-    //crea la ventana para visualizar la absorbancia
-    QVector<double> aux(31);
-
-    for(int i = 0; i < 31; ++i){
-        aux[i] = double(datosAbsorbancia[i]);
-    }
-
-    abs = new dlgGrafica("Curva de absorbancia aparente", "Longitud de onda (nm)", "Absorbancia (%)", 100);
-    abs->agregarCurva(aux);
     abs->show();
 }
 
 void MainWindow::on_actionVer_absorcion_triggered()
 {
-    if(absorcion != NULL && !absorcion->isMinimized() && !absorcion->isActiveWindow()){
-        delete absorcion;
-        absorcion = NULL;
-    }
+    if(absorcion == NULL){
+        //crea la ventana para visualizar la absorcion
+        QVector<double> aux(31);
+        double yMax = 0.0;
 
-    //crea la ventana para visualizar la absorcion
-    QVector<double> aux(31);
-    double yMax = 0.0;
+        for(int i = 0; i < 31; ++i){
+            aux[i] = double(datosAbsorcion[i]);
 
-    for(int i = 0; i < 31; ++i){
-        aux[i] = double(datosAbsorcion[i]);
-
-        if(yMax < aux[i]){
-            yMax = aux[i];
+            if(yMax < aux[i]){
+                yMax = aux[i];
+            }
         }
-    }
 
-    absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Valor de absorción", yMax + 50);
-    absorcion->agregarCurva(aux);
+        absorcion = new dlgGrafica("Coeficiente de absorción", "Longitud de onda (nm)", "Coeficiente de absorción", yMax + 50);
+        absorcion->agregarCurva(aux);
+    }
     absorcion->show();
 }
 
 void MainWindow::on_actionDatos_adicionales_triggered()
 {
-    if(dts != NULL && !dts->isMinimized() && !dts->isActiveWindow()){
-        delete dts;
-        dts = NULL;
+    if(dts == NULL){
+        //crea la ventana para visualizar los datos adicionales
+        dts = new dlgDatosAdicionales(XYZ, LAB, eritema);
     }
-
-    //crea la ventana para visualizar los datos adicionales
-    dts = new dlgDatosAdicionales(XYZ, LAB, eritema);
     dts->show();
 }
 
