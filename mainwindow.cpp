@@ -68,7 +68,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 
     if(conectado){
-        //miniscan.desconectar();
+        miniscan.desconectar();
     }
     borrarResultados();
     event->accept();
@@ -270,9 +270,9 @@ void MainWindow::borrarResultados()
 void MainWindow::on_actionConectar_triggered()
 {
     if(!conectado){
-        conectado = true;
+        //conectado = true;
         ui->actionConectar->setText("Desconectar");
-        //conectado = miniscan.conectar();
+        conectado = miniscan.conectar();
 
         if(conectado){
             QMessageBox::information(this, "Conectado", "El MiniScan se ha conectado correctamente.");
@@ -281,9 +281,9 @@ void MainWindow::on_actionConectar_triggered()
         }
         ui->actionConectar->setIcon(QIcon(":img/off.png"));
     }else{
-        conectado = false;
+        //conectado = false;
         ui->actionConectar->setText("Conectar");
-        //conectado = miniscan.desconectar();
+        conectado = miniscan.desconectar();
 
         if(!conectado){
             QMessageBox::information(this, "Desconectado", "El MiniScan se ha desconectado correctamente.");
