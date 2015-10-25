@@ -3,8 +3,8 @@
   <DisplayName>Paquete principal</DisplayName>
   <Description>...</Description>
   <Version>0.1.0</Version>
-  <ReleaseDate>2015-06-27</ReleaseDate>
-  <Name>Dermasoft</Name>
+  <ReleaseDate>2015-10-25</ReleaseDate>
+  <Name>Spectrasoft</Name>
   <Licenses>
   <License name="GPL" file="license.txt" />
   </Licenses>
